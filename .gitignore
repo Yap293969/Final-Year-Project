@@ -1,0 +1,32 @@
+# --- Credentials: never commit -------------------------------------------------
+# A committed key stays in git history even after it is deleted in a later commit.
+Legacy_API_Credential(Kaggle)/
+kaggle.json
+.env
+
+# --- Data: too large for git, and reproducible from the notebook ---------------
+# data/raw is ~495 MB, data/processed ~147 MB, data/features ~30 MB. Provenance
+# lives in data/metadata/ (tracked below), which records the identifier, retrieval
+# time, byte count and SHA-256 of every raw file, so the data can be re-acquired
+# and verified without storing it here.
+data/raw/
+data/processed/
+data/features/
+*.zip
+*.npy
+
+# --- Tracked on purpose, despite sitting under data/ ---------------------------
+!data/metadata/
+!data/metadata/**
+
+# --- Python --------------------------------------------------------------------
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# --- Local notebook copies: git is the version history now ---------------------
+backups/
+
+# --- Machine-local editor settings ---------------------------------------------
+.claude/settings.local.json

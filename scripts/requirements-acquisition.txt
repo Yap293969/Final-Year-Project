@@ -1,0 +1,17 @@
+# Dataset acquisition stage only.
+# Deliberately minimal: no ML packages are installed at this stage.
+#
+# Version constraints are bounded so that a future major release cannot silently
+# change acquisition behaviour mid-project. Record the ACTUAL resolved versions in
+# docs/DATASET_SOURCES.md after installing (cell 2 of Anti_phishing_prototype.ipynb
+# prints them, or run `pip show requests pandas kaggle`).
+#
+# Verified on PyPI 2026-08-13: the `kaggle` package has NO 2.x release; the latest
+# published version is 1.7.4.5. The pin below therefore tracks the 1.7 line, which
+# is the version this project's scripts were written and tested against.
+# Note that kaggle >= 1.7 reads credentials from ~/.config/kaggle/kaggle.json,
+# with ~/.kaggle/kaggle.json still accepted as a fallback.
+
+requests>=2.31,<3
+pandas>=2.0,<3
+kaggle>=1.7.4,<1.8

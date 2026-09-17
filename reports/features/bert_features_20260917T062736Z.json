@@ -1,0 +1,119 @@
+{
+  "generated_at_utc": "2026-09-17T06:27:36+00:00",
+  "stage": "CRISP-DM modelling -- BERT contextual feature extraction",
+  "scope_note": "BERT used FROZEN as a feature extractor. No fine-tuning, no model training, no evaluation. The test splits were not read.",
+  "model": "bert-base-uncased",
+  "pooling": "mean",
+  "device": "cpu",
+  "batch_size": 32,
+  "shard_rows": 2048,
+  "run_tag": "subset512",
+  "max_rows_per_split": 512,
+  "is_full_run": false,
+  "splits_processed": [
+    "train",
+    "validation"
+  ],
+  "splits_deferred": [
+    "test"
+  ],
+  "task_settings": {
+    "email": {
+      "text_column": "text",
+      "max_length": 256
+    },
+    "url": {
+      "text_column": "url",
+      "max_length": 128
+    }
+  },
+  "all_checks_passed": true,
+  "datasets": [
+    {
+      "task": "email",
+      "split": "train",
+      "rows": 512,
+      "dimensions": 768,
+      "max_length": 256,
+      "seconds": 86.36,
+      "shards": 1,
+      "vector_norm_min": 7.5921,
+      "vector_norm_mean": 8.5328,
+      "vector_norm_max": 12.0372,
+      "checks_failed": [],
+      "label_counts": {
+        "0": 247,
+        "1": 265
+      },
+      "vectors_file": "data\\features\\email\\bert_subset512_train.npy",
+      "labels_file": "data\\features\\email\\bert_subset512_train_labels.npy",
+      "vectors_megabytes": 1.57,
+      "separation_cohens_d_max": 1.1928,
+      "separation_cohens_d_mean": 0.3293,
+      "separation_dims_above_0_5": 182
+    },
+    {
+      "task": "email",
+      "split": "validation",
+      "rows": 512,
+      "dimensions": 768,
+      "max_length": 256,
+      "seconds": 78.82,
+      "shards": 1,
+      "vector_norm_min": 7.5673,
+      "vector_norm_mean": 8.564,
+      "vector_norm_max": 12.7135,
+      "checks_failed": [],
+      "label_counts": {
+        "0": 249,
+        "1": 263
+      },
+      "vectors_file": "data\\features\\email\\bert_subset512_validation.npy",
+      "labels_file": "data\\features\\email\\bert_subset512_validation_labels.npy",
+      "vectors_megabytes": 1.57
+    },
+    {
+      "task": "url",
+      "split": "train",
+      "rows": 512,
+      "dimensions": 768,
+      "max_length": 128,
+      "seconds": 14.0,
+      "shards": 1,
+      "vector_norm_min": 8.1653,
+      "vector_norm_mean": 9.2619,
+      "vector_norm_max": 10.9138,
+      "checks_failed": [],
+      "label_counts": {
+        "0": 271,
+        "1": 241
+      },
+      "vectors_file": "data\\features\\url\\bert_subset512_train.npy",
+      "labels_file": "data\\features\\url\\bert_subset512_train_labels.npy",
+      "vectors_megabytes": 1.57,
+      "separation_cohens_d_max": 1.5861,
+      "separation_cohens_d_mean": 0.443,
+      "separation_dims_above_0_5": 284
+    },
+    {
+      "task": "url",
+      "split": "validation",
+      "rows": 512,
+      "dimensions": 768,
+      "max_length": 128,
+      "seconds": 16.43,
+      "shards": 1,
+      "vector_norm_min": 7.9934,
+      "vector_norm_mean": 9.2709,
+      "vector_norm_max": 10.8649,
+      "checks_failed": [],
+      "label_counts": {
+        "0": 257,
+        "1": 255
+      },
+      "vectors_file": "data\\features\\url\\bert_subset512_validation.npy",
+      "labels_file": "data\\features\\url\\bert_subset512_validation_labels.npy",
+      "vectors_megabytes": 1.57
+    }
+  ]
+}

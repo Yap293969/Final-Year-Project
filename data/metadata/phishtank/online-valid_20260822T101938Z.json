@@ -1,0 +1,58 @@
+{
+  "source_name": "PhishTank",
+  "source_operator": "Cisco Talos Intelligence Group",
+  "documentation_url": "https://phishtank.org/developer_info.php",
+  "feed_name": "online-valid (verified and currently online phishes)",
+  "outcome": "success",
+  "source_url": "http://data.phishtank.com/data/online-valid.csv",
+  "requested_at_utc": "2026-08-22T10:19:38+00:00",
+  "retrieved_at_utc": "2026-08-22T10:19:40+00:00",
+  "elapsed_seconds": 2.38,
+  "http_status": 200,
+  "http_content_type": "text/csv",
+  "http_etag": "\"dee4371fe4a772b46fc59feb19742809\"",
+  "http_last_modified": "Sat, 22 Aug 2026 08:22:44 GMT",
+  "http_content_length": "13965796",
+  "app_key_used": false,
+  "user_agent": "phishtank/fyp2-anti-phishing-research",
+  "local_filename": "online-valid_20260822T101938Z.csv",
+  "local_path": "data\\raw\\phishtank\\online-valid_20260822T101938Z.csv",
+  "file_size_bytes": 13965796,
+  "file_size_human": "13.3 MB",
+  "sha256": "f9e4d949835a413c226cb29661e21f94e56361c66a1fe7e2c1bfdf1f6afb4bfc",
+  "expected_columns": [
+    "phish_id",
+    "url",
+    "phish_detail_url",
+    "submission_time",
+    "verified",
+    "verification_time",
+    "online",
+    "target"
+  ],
+  "validation": {
+    "valid": true,
+    "header_found": [
+      "phish_id",
+      "url",
+      "phish_detail_url",
+      "submission_time",
+      "verified",
+      "verification_time",
+      "online",
+      "target"
+    ],
+    "missing_columns": [],
+    "expected_columns_present": true,
+    "data_rows": 72901
+  },
+  "documented_update_frequency": "hourly, on the hour",
+  "version_information": "PhishTank does not version this feed. The ETag, Last-Modified header and retrieval timestamp identify the snapshot.",
+  "modification_note": "Raw file stored exactly as served; never modified.",
+  "licence_note": "Use governed by PhishTank / Cisco terms. Free for research use.",
+  "runtime": {
+    "python_version": "3.12.0",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "runtime": "local"
+  }
+}

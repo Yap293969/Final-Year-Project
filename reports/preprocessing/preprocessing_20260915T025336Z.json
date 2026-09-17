@@ -1,0 +1,163 @@
+{
+  "generated_at_utc": "2026-09-15T02:53:36Z",
+  "stage": "CRISP-DM data preparation (preprocessing)",
+  "scope_note": "Cleaning, deduplication, source-leak neutralisation, class balancing and the train/validation/test split. No feature engineering, BERT feature extraction or model training was performed.",
+  "settings": {
+    "random_seed": 42,
+    "train_share": 0.7,
+    "validation_share": 0.15,
+    "test_share": 0.15,
+    "label_meaning": {
+      "1": "phishing",
+      "0": "legitimate"
+    }
+  },
+  "email": {
+    "decision": "candidate A, six corpora; aggregated phishing_email.csv excluded",
+    "sources": [
+      "data\\raw\\kaggle\\naserabdullahalam\\CEAS_08.csv",
+      "data\\raw\\kaggle\\naserabdullahalam\\Enron.csv",
+      "data\\raw\\kaggle\\naserabdullahalam\\Ling.csv",
+      "data\\raw\\kaggle\\naserabdullahalam\\Nazario.csv",
+      "data\\raw\\kaggle\\naserabdullahalam\\Nigerian_Fraud.csv",
+      "data\\raw\\kaggle\\naserabdullahalam\\SpamAssasin.csv"
+    ],
+    "text_field": "subject + body",
+    "dedup_key": "body only, lower-cased, punctuation removed",
+    "rows_loaded": 82486,
+    "rows_per_corpus": {
+      "CEAS_08": 39154,
+      "Enron": 29767,
+      "Ling": 2859,
+      "Nazario": 1565,
+      "Nigerian_Fraud": 3332,
+      "SpamAssasin": 5809
+    },
+    "blank_removed": 1,
+    "deduplication": {
+      "records_in": 82485,
+      "records_kept": 80643,
+      "duplicates_removed": 1840,
+      "conflicting_keys": 1,
+      "conflict_rows_removed": 2
+    },
+    "rows_kept": 80643,
+    "class_distribution": {
+      "phishing": 41480,
+      "legitimate": 39163
+    },
+    "split_rows": {
+      "train": 56450,
+      "validation": 12096,
+      "test": 12097
+    },
+    "load_seconds": 12.33
+  },
+  "url": {
+    "decision": "PhishTank snapshot pinned by name; sid321axn benign rows only; 1:1 undersample",
+    "phishing_source": "data\\raw\\phishtank\\online-valid_20260822T101938Z.csv",
+    "legitimate_source": "data\\raw\\kaggle\\sid321axn\\malicious_phish.csv",
+    "normalisation": [
+      "scheme removed (100.00% PhishTank vs 8.26% benign -- known problem 14)",
+      "trailing slash removed (33.05% vs 25.98%)",
+      "casing preserved (38.16% vs 34.66% -- not source-identifying)",
+      "www. preserved (4.13% vs 3.09% -- not source-identifying)"
+    ],
+    "rows_loaded": 501004,
+    "phishing_rows_loaded": 72901,
+    "legitimate_rows_loaded": 428103,
+    "blank_removed": 0,
+    "deduplication": {
+      "records_in": 501004,
+      "records_kept": 497272,
+      "duplicates_removed": 3730,
+      "conflicting_keys": 1,
+      "conflict_rows_removed": 2
+    },
+    "class_distribution_after_dedup": {
+      "phishing": 70245,
+      "legitimate": 427027
+    },
+    "undersample_ratio": 1,
+    "rows_kept": 140490,
+    "class_distribution": {
+      "phishing": 70245,
+      "legitimate": 70245
+    },
+    "split_rows": {
+      "train": 98344,
+      "validation": 21074,
+      "test": 21072
+    },
+    "load_seconds": 1.46
+  },
+  "leakage_checks": [
+    {
+      "task": "email",
+      "between": "train / test",
+      "shared_keys": 0
+    },
+    {
+      "task": "email",
+      "between": "train / validation",
+      "shared_keys": 0
+    },
+    {
+      "task": "email",
+      "between": "validation / test",
+      "shared_keys": 0
+    },
+    {
+      "task": "url",
+      "between": "train / test",
+      "shared_keys": 0
+    },
+    {
+      "task": "url",
+      "between": "train / validation",
+      "shared_keys": 0
+    },
+    {
+      "task": "url",
+      "between": "validation / test",
+      "shared_keys": 0
+    }
+  ],
+  "written_files": [
+    {
+      "path": "data\\processed\\email\\train.csv",
+      "rows": 56450,
+      "bytes": 97869579
+    },
+    {
+      "path": "data\\processed\\email\\validation.csv",
+      "rows": 12096,
+      "bytes": 25252140
+    },
+    {
+      "path": "data\\processed\\email\\test.csv",
+      "rows": 12097,
+      "bytes": 20600805
+    },
+    {
+      "path": "data\\processed\\url\\train.csv",
+      "rows": 98344,
+      "bytes": 6957589
+    },
+    {
+      "path": "data\\processed\\url\\validation.csv",
+      "rows": 21074,
+      "bytes": 1477250
+    },
+    {
+      "path": "data\\processed\\url\\test.csv",
+      "rows": 21072,
+      "bytes": 1477616
+    }
+  ],
+  "known_limitations": [
+    "Enron and Ling arrive already lower-cased while the other four corpora keep raw text. bert-base-uncased lower-cases its input, and casing was measured to be a weak label predictor (56.60% vs 45.18% phishing).",
+    "93.77% of PhishTank URLs contain a path against 99.93% of benign URLs. This asymmetry cannot be removed without destroying the URL, so it remains a residual source signal and is recorded rather than hidden.",
+    "PhishTank lists only currently-online phishes, so the snapshot cannot be reproduced by re-downloading. The pinned file is preserved on disk."
+  ]
+}
