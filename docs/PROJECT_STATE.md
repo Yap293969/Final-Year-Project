@@ -2,36 +2,44 @@
 
 > Purpose: single source of truth for "Where are we now?".
 > Update this file at the end of every working session or whenever a stage, dataset, model, experiment, or result changes.
-> Last updated: 2026-09-17
+> Last updated: 2026-09-18
 
 ## Current Stage
 
-**Dataset acquisition, inspection, preprocessing and URL feature engineering COMPLETE.
-BERT contextual feature extraction IMPLEMENTED AND VERIFIED, but NOT YET RUN IN FULL.**
+**The full pipeline of the approved architecture now exists and runs end to end.
+XGBoost training is IMPLEMENTED AND VERIFIED. One real baseline result exists. The
+proposed hybrid system has NOT been measured.**
 
-CRISP-DM position: **modelling, feature representation stage.** Both branches of the
-approved architecture now have their feature extraction code written and tested. The URL
-branch has its 35 lexical/structural features for train and validation. The BERT branch
-runs correctly end to end but has so far only been executed over a **512-row sample per
-split**, because a full pass needs a GPU. Nothing has been trained.
+CRISP-DM position: **modelling.** Sections 1-9 run without error. The blocker is
+unchanged from 2026-09-17: BERT has still only been run over a **512-row sample per
+split**, so three of the four trained models are fitted to 512 rows and their numbers
+mean nothing.
 
 | Thread | State |
 | --- | --- |
-| Email corpora (Kaggle, 2 candidates) | acquired 2026-08-17, measured 2026-08-22, primary selected and preprocessed 2026-09-10 |
-| Phishing URLs (PhishTank) | acquired 2026-08-18 and 2026-08-22, measured 2026-08-22, preprocessed 2026-09-10 |
+| Email corpora (Kaggle, 2 candidates) | acquired 2026-08-17, measured 2026-08-22, preprocessed 2026-09-10 |
+| Phishing URLs (PhishTank) | acquired 2026-08-18 and 2026-08-22, preprocessed 2026-09-10 |
 | Legitimate URLs (Kaggle `sid321axn`) | acquired and measured 2026-08-22, preprocessed 2026-09-10 |
-| Model environment (Stage 0) | complete and verified 2026-08-16 |
-| Train/validation/test splits | created 2026-09-10, leakage-checked, test set untouched |
-| URL lexical/structural features | 35 features extracted 2026-09-15 for train + validation; test deferred |
-| **URL BERT features** | **code verified 2026-09-17 on 512 rows/split; FULL RUN PENDING on GPU** |
-| **Email BERT features** | **code verified 2026-09-17 on 512 rows/split; FULL RUN PENDING on GPU** |
-| XGBoost training | not started |
+| Train/validation/test splits | created 2026-09-10, leakage-checked, **test still unread** |
+| URL lexical/structural features | 35 features, train + validation, 2026-09-15 |
+| URL + Email BERT features | **still only the 512-row sample — FULL RUN PENDING on GPU** |
+| **XGBoost training (section 9)** | **implemented and verified 2026-09-18; 4 models trained** |
+| **Measured results** | **one only: the URL lexical baseline. The hybrid is unmeasured.** |
 
-**Do not train anything yet.** The `.npy` files currently under `data/features/` carry the
-`subset512` tag and hold 512 rows per split, not the full data. They exist to prove the
-extraction code is correct, and are not a usable feature set.
+**What may be quoted, and what may not.** `url_lexical` was trained on the full 98,344
+train rows and measured on the full 21,074 validation rows: that is a real baseline
+result. `email_bert`, `url_bert` and `url_bert_lexical` were fitted to 512 rows each;
+they prove the code works and nothing more. **No statement may yet be made about whether
+adding BERT helps** (CLAUDE.md rule 4).
 
 ## Completed
+
+* **XGBoost training implemented, tested and verified** (2026-09-18): section 9 of
+  `Anti_phishing_prototype.ipynb` (9.1 helpers, 9.2 self-test, 9.3 settings, 9.4 training,
+  9.5 comparison and report). Notebook grew 84 -> 95 cells. All five new code cells
+  executed in a live kernel with 0 errors, without re-running sections 2 to 8. Self-test:
+  **23 of 23 assertions passed**, inside the notebook. Four models trained; one of them
+  on full data.
 
 * **BERT contextual feature extraction implemented, tested and verified** (2026-09-17):
   section 8 of `Anti_phishing_prototype.ipynb` (8.1 helpers, 8.2 self-test, 8.3 settings,
@@ -578,18 +586,74 @@ it with a CPU-only wheel — which is exactly the build that landed locally.
 
 ## Current Experiments
 
-None.
+**Experiment 1 — XGBoost on URL lexical/structural features (BASELINE).**
+The only experiment so far whose numbers mean anything.
+
+| Item | Value |
+| --- | --- |
+| Dataset | PhishTank phishing URLs + `sid321axn` benign URLs, preprocessed section 6 |
+| Number of samples | 98,344 train / 21,074 validation (test 21,072 **unread**) |
+| Class distribution | exactly balanced: 49,172 / 49,172 train, 10,537 / 10,537 validation |
+| Split | stratified, produced 2026-09-10, deduplicated before splitting |
+| Preprocessing | section 6 — scheme neutralised, deduplicated, balanced |
+| Feature extraction | section 7 — 35 lexical/structural features |
+| Model | `XGBClassifier`, xgboost 3.4.1 |
+| Hyperparameters | `n_estimators` 300, `max_depth` 6, `learning_rate` 0.1, `subsample` 0.8, `colsample_bytree` 0.8, `objective` binary:logistic, `tree_method` hist |
+| Random seed | 42 |
+| Execution time | 1.93 s to fit |
+| Metrics | see Current Results |
+
+**Experiments 2-4 — NOT VALID EXPERIMENTS.** `email_bert`, `url_bert` and
+`url_bert_lexical` were each fitted to 512 rows with 768 or 803 features. All three reach
+a training F1 of exactly 1.0000, which is memorisation, not learning. They are recorded
+as pipeline verification and **must not be cited as experiments**.
 
 ## Current Results
 
-None.
+Produced 2026-09-18 by section 9 of `Anti_phishing_prototype.ipynb`. Source of truth:
+`reports/training/training_20260918T093404Z.json`. **Measured on the validation split.
+The test split has never been opened.**
 
-No results have been produced. Any figure appearing in the report before this section is populated is not experimentally supported.
+### The one real result — URL lexical baseline
+
+| Metric | Value |
+| --- | --- |
+| Accuracy | **0.9339** |
+| Precision (phishing) | **0.9316** |
+| Recall (phishing) | **0.9366** |
+| F1 (phishing) | **0.9341** |
+
+Confusion on 21,074 validation URLs: 9,869 true positive, 9,812 true negative,
+725 false positive, 668 false negative. Train F1 0.9476 against validation F1 0.9341 — a
+gap of 0.0135, which is small, so the model is learning rather than memorising.
+
+**Interpretation.** 35 hand-built lexical features alone separate this URL data well.
+Two cautions attach to that number. First, it is a **baseline**, not the proposed system;
+the project proposes BERT + XGBoost, which is still unmeasured. Second, the benign and
+phishing URLs come from different sources, and known problem 14 records that the path
+difference (93.77% against 99.93%) could not be neutralised — so part of this score may
+reflect the sources rather than phishing behaviour. That is exactly why the hybrid
+comparison matters and why the test split is being kept sealed.
+
+### Not results — pipeline verification only
+
+Trained on the 512-row BERT sample. Recorded for completeness; **not to be quoted**.
+
+| Model | Features | Val accuracy | Val F1 | Train F1 |
+| --- | --- | ---: | ---: | ---: |
+| `email_bert` | 768 BERT | 0.9492 | 0.9511 | 1.0000 |
+| `url_bert` | 768 BERT | 0.8926 | 0.8902 | 1.0000 |
+| `url_bert_lexical` | 768 BERT + 35 lexical | 0.9043 | 0.9030 | 1.0000 |
+
+A training F1 of exactly 1.0000 on 512 rows with 768 features is the signature of a model
+that has memorised its training set. These figures say nothing about how the hybrid will
+perform.
 
 ## Known Problems
 
 0. **The BERT features on disk are a 512-row sample, not the real feature set.** Recorded
-   2026-09-17. Files are tagged `bert_subset512` precisely so they cannot be mistaken for
+   2026-09-17, still true on 2026-09-18 and now blocking three of the four trained
+   models in section 9 from producing anything quotable. Files are tagged `bert_subset512` precisely so they cannot be mistaken for
    a full run; a limited run and a full run write to separate folders and section 8.1
    refuses to join shards whose row counts do not match the split. Nothing may be trained
    until the full pass has been produced on a GPU.
@@ -794,34 +858,38 @@ No results have been produced. Any figure appearing in the report before this se
 
 ## Next Task
 
-**Produce the full BERT feature set on a Colab GPU runtime.** Everything else waits on it.
+**Run the full BERT extraction on a Colab GPU. Everything else waits on it, and nothing
+about the proposed system can be said until it is done.**
 
-1. Open `Anti_phishing_prototype.ipynb` on a Colab GPU runtime (Runtime → Change runtime
-   type → GPU). Section 1.2 already skips the `torch` install on Colab so its CUDA build
+1. Open `Anti_phishing_prototype.ipynb` on a Colab GPU runtime (Runtime -> Change runtime
+   type -> GPU). Section 1.2 already skips the `torch` install on Colab so its CUDA build
    is preserved.
-2. Run section 1 to set the project root and confirm `torch.cuda.is_available()` is now
-   `True`, then run section 8.
+2. Run section 1, confirm `torch.cuda.is_available()` is `True`, then run section 8.
 3. In section 8.3 set `MAX_ROWS_PER_SPLIT = None`, then run 8.4 and 8.5. Output lands in
-   `bert_full/` folders, entirely separate from the `subset512` sample already on disk.
-4. If the runtime disconnects, re-run 8.4 — completed shards are skipped and the run
-   resumes.
-5. Record the measured GPU name, CUDA version and real extraction time in the Modelling
-   Environment table above, replacing the CPU-only figures.
+   `bert_full/`, separate from the `subset512` sample.
+4. **Re-run sections 9.4 and 9.5. No code changes are needed** — section 9.3 detects a
+   full run automatically and prefers it over the sample, and the warnings about sample
+   data disappear on their own once the data is real.
+5. Record the measured GPU name, CUDA version and extraction time in the Modelling
+   Environment table, and the new metrics in Current Results.
 
-**After the full features exist**, the next stage is XGBoost training (Specification §10),
-which must not begin before then. The URL branch has two feature sets to combine — 35
-lexical/structural features and 768 BERT dimensions — and how they are joined is a
-modelling decision to be recorded here when it is made.
+**After that**, the remaining work in order:
 
-**Still outstanding, unrelated to BERT:**
+* Additional baseline models for comparison (Specification §11). Only the lexical-only
+  baseline exists, and one baseline is thin support for a claim about a hybrid.
+* Final evaluation on the **test** splits (Objective 3) — once, at the end, after every
+  modelling decision is settled.
+* Web prototype integration (Specification §14).
 
-* **Expire the Kaggle API token** at kaggle.com/settings → API (known problem 9). It is out
-  of the notebook and git-ignored, but was previously embedded.
+**Still outstanding, unrelated:**
+
+* **Expire the Kaggle API token** at kaggle.com/settings -> API (known problem 9).
 * Known problem 8 — the false PyPI claim in `scripts/requirements-acquisition.txt`.
 * Known problem 7 — payload validation in `scripts/acquire_phishtank.py`.
 * Known problem 21 — section 6 cells still carry no nbformat `id` field.
 
-Do not train any model, produce any metric, or read either test split until instructed.
+Do not read either test split, and do not tune hyperparameters against validation, until
+instructed.
 
 ## Important Decisions
 
@@ -851,6 +919,7 @@ Do not train any model, produce any metric, or read either test split until inst
 
 | Date | Change |
 | --- | --- |
+| 2026-09-18 | **XGBoost training implemented and verified; the first real measured result recorded.** Added section 9 to `Anti_phishing_prototype.ipynb` (9.1 helpers, 9.2 self-test, 9.3 settings, 9.4 training, 9.5 comparison and report); 84 -> 95 cells, five new code cells executed in a live kernel, 0 errors, sections 2-8 not re-run. Self-test 23/23, checking the metric arithmetic against a hand-worked confusion matrix (deliberately asymmetric so a precision/recall swap cannot hide), the BERT-to-lexical join against rows that are out of step, reproducibility under a fixed seed, and a negative control in which a model fitted to pure noise must NOT score well on unseen rows. Four models trained with fixed recorded hyperparameters (seed 42, xgboost 3.4.1): `email_bert`, `url_bert`, `url_bert_lexical` and a `url_lexical` baseline. **Only `url_lexical` ran on full data** (98,344 train / 21,074 validation) and is the project's first real result: accuracy 0.9339, precision 0.9316, recall 0.9366, F1 0.9341, train-validation F1 gap 0.0135. The other three were fitted to the 512-row BERT sample, all reached a training F1 of exactly 1.0000, and are recorded as pipeline verification that must not be quoted. Section 9.5 refuses in code to compare a sample-trained model against a full-data one, and refuses to state whether BERT helps until both sides are full. The test splits were not opened. `models/` added to `.gitignore`. |
 | 2026-09-17 | **BERT contextual feature extraction implemented and verified; git repository made safe before its first commit.** Added section 8 to `Anti_phishing_prototype.ipynb` (8.1 helpers, 8.2 self-test, 8.3 settings, 8.4 extraction, 8.5 verify/measure/write); 73 → 84 cells, five new code cells executed in a live kernel, 0 errors, sections 2–7 not re-run. Frozen `bert-base-uncased`, mean pooling over non-padding tokens, 768 dimensions; `max_length` 256 for email and 128 for URLs, both chosen from measured token distributions. Self-test 24/24, covering the failure that matters most — length-sorted batching reordering rows away from their labels — plus shard resume, atomic shard writes and refusal to join shards from a differently-sized run. Two real bugs were caught by that test and fixed: `np.save` appending `.npy` to the temporary shard name and breaking the atomic rename, and a short shard from a limited run being joinable into a full run. Run limited to 512 rows per split (CPU full pass measured at ~4.8 hours); all verification checks passed and `reports/features/bert_features_20260917T062736Z.json` was written. **The full feature set does not exist yet and nothing has been trained.** Separately: the project was found to be a git repository with zero commits, no `.gitignore`, and every file already staged — including a live Kaggle credential and ~670 MB of data. The index was cleared and a `.gitignore` added before the first commit, which covers 42 files and about 1 MB. Notebook backups taken to `backups/`. |
 | 2026-09-15 | **Notebook documentation pass, and a record correction.** (a) The status table in the notebook's title cell was stale — it still listed preprocessing and feature engineering together under "Later / not implemented" — and now records **6. Preprocessing** and **7. Feature Engineering** as implemented, with the test split's deferral stated. (b) The two stages were given short, clearly separated titles: `# 6. Data Preparation (Preprocessing)` became **`# 6. Preprocessing`**, and `# 7. URL Lexical and Structural Feature Engineering` became **`# 7. Feature Engineering — URL Lexical and Structural`**, following the house style of sections 2 and 3. (c) **Plain-language comments added to all 13 code cells of sections 6 and 7** at the owner's request: each cell gained a "WHAT THIS CELL DOES, in plain words" block, and 30 helper functions gained worked `Example:` lines (`shannon_entropy("abcd") -> 2.0`, `host_is_ip_address("1.2.3.256") -> False`, and so on). Section 7's five cells were **re-executed** afterwards and their outputs re-spliced; the feature CSVs hashed **identically** to before the comment pass, confirming the comments changed nothing. Section 6 was deliberately **not** re-executed, because cell 6.8 rewrites all six split files including the test splits; instead the edit was **proven** comment-only by parsing each cell before and after, stripping every docstring, and comparing the two abstract syntax trees — all 8 cells reported identical executable code, identical stored outputs and unchanged execution counts. (d) **Correction forced by a discovery:** all six split files were found rewritten at 02:53:36 UTC by a section 6 re-execution that is not accounted for, which voided the previous entry's proof that the test split still carried its 2026-09-10 modification time. The data was checked and is unharmed — the new preprocessing report is identical to the 2026-09-10 one bar its timestamp, 0 shared keys across all six split pairs, and the URL features rebuilt from the rewritten splits hash identically to those built from the originals. Recorded as known problem 22, and **modification times have been replaced by SHA-256 content hashes** for all six split files and both feature files under the new "Processed Split Integrity" heading. **No BERT feature extraction and no model training performed.** |
 | 2026-09-15 | **URL lexical and structural feature engineering completed and executed.** Added section 7 to `Anti_phishing_prototype.ipynb` (7.1 feature helpers, 7.2 self-test, 7.3 sources and settings, 7.4 extraction, 7.5 verify/measure/write). Notebook grew 62 → 73 cells; the 5 new code cells were executed in a fresh kernel with **0 errors**, without re-running sections 1–6 — section 7 reads only the processed CSVs, so sections 2–4 were never touched. Cells 0–60 verified **byte-identical** to their pre-existing state. Helpers written in **basic Python** and tested first against known-answer fixtures worked out by hand — **164 assertions**, including one regression test per silent-failure mode (the `@`-host rule, fragment-before-query, the empty-URL division, determinism, and every-value-is-a-number). **Produced:** `data/features/url/train.csv` (98,344 rows, 14.34 MB) and `validation.csv` (21,074 rows, 3.06 MB), 35 numeric features each, plus `reports/features/url_features_20260915T030436Z.json`. **Verified:** rows in == rows out exactly; 0 URLs begin with a scheme; 0 missing, 0 negative, 0 out-of-range and 0 non-binary values; 0 of 35 features constant on train; and the pipeline run twice in separate processes produced **byte-identical CSVs by SHA-256**. **The test split was not read** — and one line in cell 7.3 turns it on at final evaluation. *(This entry originally proved that with a modification time. That proof was voided later the same day — see known problem 22 and the 2026-09-15 documentation-pass entry above. The claim itself still holds; only its evidence changed, to the SHA-256 digests under "Processed Split Integrity".)* **Decisions recorded:** no feature selection (XGBoost receives all 35); constant features reported not removed; a 14-term suspicious-word list fixed in advance with no brand names; no WHOIS/DNS/page lookups; subdomains counted as "labels minus two" with the `co.uk` error stated. **A correction to the project record:** 7.5's first run refused to write, flagging 738 URLs as "still carrying a scheme". Measurement showed the check was wrong, not the data — **0** processed URLs *begin* with a scheme and all 738 carry one *inside*, as a redirect target. That became the distinction between `has_leading_scheme()` (integrity check) and `count_embedded_urls()` (feature), and the feature was cleared of source contamination by reproducing the effect **inside one file** (sid321axn's own phishing rows 0.806% vs its benign rows 0.104%). **Measured against expectation:** phishing URLs here are *shorter* than legitimate ones (mean 49.67 vs 56.82) with shorter paths — the separation comes from the **host** (longer, more hyphens, more digits, more subdomains), not the path. Known problem 14 updated with the measured consequence (no path-shaped feature reaches the ten strongest separators); known problems 19–21 added. **No BERT feature extraction and no model training performed.** |

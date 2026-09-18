@@ -30,3 +30,7 @@ backups/
 
 # --- Machine-local editor settings ---------------------------------------------
 .claude/settings.local.json
+
+# --- Trained models: regenerable from the notebook, and the sample-data ones
+# --- are not meaningful artefacts ----------------------------------------------
+models/
