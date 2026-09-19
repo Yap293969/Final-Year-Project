@@ -1,0 +1,168 @@
+{
+  "generated_at_utc": "2026-09-19T23:32:29+00:00",
+  "stage": "CRISP-DM modelling -- XGBoost training",
+  "scope_note": "Trained on the train split, measured on the validation split. The test split was not read. No hyperparameter search was run.",
+  "seed": 42,
+  "xgboost_parameters": {
+    "n_estimators": 300,
+    "max_depth": 6,
+    "learning_rate": 0.1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "n_jobs": -1
+  },
+  "xgboost_version": "3.4.1",
+  "train_split": "train",
+  "evaluation_split": "validation",
+  "bert_run_tags": {
+    "email": "subset512",
+    "url": "subset512"
+  },
+  "any_model_on_sample_data": true,
+  "models": [
+    {
+      "name": "email_bert",
+      "task": "email",
+      "features": "bert",
+      "description": "Email, BERT contextual features only",
+      "feature_note": "768 BERT",
+      "feature_columns": 768,
+      "train_rows": 512,
+      "validation_rows": 512,
+      "is_full_data": false,
+      "bert_run_tag": "subset512",
+      "training_seconds": 2.56,
+      "train_scores": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "true_negative": 247,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_positive": 265,
+        "rows": 512
+      },
+      "validation_scores": {
+        "accuracy": 0.9492,
+        "precision": 0.9405,
+        "recall": 0.962,
+        "f1": 0.9511,
+        "true_negative": 233,
+        "false_positive": 16,
+        "false_negative": 10,
+        "true_positive": 253,
+        "rows": 512
+      },
+      "model_file": "models\\email_bert.joblib"
+    },
+    {
+      "name": "url_bert",
+      "task": "url",
+      "features": "bert",
+      "description": "URL, BERT contextual features only",
+      "feature_note": "768 BERT",
+      "feature_columns": 768,
+      "train_rows": 512,
+      "validation_rows": 512,
+      "is_full_data": false,
+      "bert_run_tag": "subset512",
+      "training_seconds": 2.55,
+      "train_scores": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "true_negative": 271,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_positive": 241,
+        "rows": 512
+      },
+      "validation_scores": {
+        "accuracy": 0.8926,
+        "precision": 0.9065,
+        "recall": 0.8745,
+        "f1": 0.8902,
+        "true_negative": 234,
+        "false_positive": 23,
+        "false_negative": 32,
+        "true_positive": 223,
+        "rows": 512
+      },
+      "model_file": "models\\url_bert.joblib"
+    },
+    {
+      "name": "url_bert_lexical",
+      "task": "url",
+      "features": "bert+lexical",
+      "description": "URL, BERT + 35 lexical/structural features (the hybrid)",
+      "feature_note": "768 BERT + 35 lexical",
+      "feature_columns": 803,
+      "train_rows": 512,
+      "validation_rows": 512,
+      "is_full_data": false,
+      "bert_run_tag": "subset512",
+      "training_seconds": 2.46,
+      "train_scores": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "true_negative": 271,
+        "false_positive": 0,
+        "false_negative": 0,
+        "true_positive": 241,
+        "rows": 512
+      },
+      "validation_scores": {
+        "accuracy": 0.9043,
+        "precision": 0.912,
+        "recall": 0.8941,
+        "f1": 0.903,
+        "true_negative": 235,
+        "false_positive": 22,
+        "false_negative": 27,
+        "true_positive": 228,
+        "rows": 512
+      },
+      "model_file": "models\\url_bert_lexical.joblib"
+    },
+    {
+      "name": "url_lexical",
+      "task": "url",
+      "features": "lexical",
+      "description": "URL, 35 lexical/structural features only (BASELINE)",
+      "feature_note": "35 lexical",
+      "feature_columns": 35,
+      "train_rows": 98344,
+      "validation_rows": 21074,
+      "is_full_data": true,
+      "bert_run_tag": "subset512",
+      "training_seconds": 1.38,
+      "train_scores": {
+        "accuracy": 0.9475,
+        "precision": 0.9459,
+        "recall": 0.9493,
+        "f1": 0.9476,
+        "true_negative": 46502,
+        "false_positive": 2670,
+        "false_negative": 2495,
+        "true_positive": 46677,
+        "rows": 98344
+      },
+      "validation_scores": {
+        "accuracy": 0.9339,
+        "precision": 0.9316,
+        "recall": 0.9366,
+        "f1": 0.9341,
+        "true_negative": 9812,
+        "false_positive": 725,
+        "false_negative": 668,
+        "true_positive": 9869,
+        "rows": 21074
+      },
+      "model_file": "models\\url_lexical.joblib"
+    }
+  ]
+}

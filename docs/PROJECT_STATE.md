@@ -2,32 +2,41 @@
 
 > Purpose: single source of truth for "Where are we now?".
 > Update this file at the end of every working session or whenever a stage, dataset, model, experiment, or result changes.
-> Last updated: 2026-09-19
+> Last updated: 2026-09-20
 
 ## Current Stage
 
-**Baseline models COMPLETE, on full data, for both tasks. The proposed BERT + XGBoost
-hybrid is still measured only on a 512-row sample, so the project's central claim remains
-unproven.**
+**The pipeline is COMPLETE end to end, from raw data acquisition to a final measurement
+on held-out test data. Eight models have final test results. The proposed BERT + XGBoost
+system is NOT among them.**
 
-CRISP-DM position: **modelling.** Sections 1-10 run without error. The baselines gave the
-project its first real numbers for the **email** task, and set a high bar the hybrid must
-clear.
+CRISP-DM position: **evaluation.** Sections 1-11 run without error. The test splits were
+opened for the first time on 2026-09-20 and measured once.
 
 | Thread | State |
 | --- | --- |
 | Data acquisition, inspection, preprocessing | complete |
-| URL lexical/structural features | 35 features, train + validation |
-| URL + Email BERT features | **still only the 512-row sample — FULL RUN PENDING on GPU** |
-| XGBoost training (section 9) | implemented and verified; 4 models |
-| **Baseline models (section 10)** | **complete 2026-09-19; 7 baselines, all on full data** |
-| **Measured results** | **email and URL baselines are real; the hybrid is not** |
+| URL lexical features | train + validation (2026-09-15), **test added 2026-09-20** |
+| URL + Email BERT features | **still the 512-row sample — FULL RUN PENDING on GPU** |
+| XGBoost training (section 9) | complete |
+| Baseline models (section 10) | complete, 7 baselines on full data |
+| **Final evaluation (section 11)** | **complete for 8 models; 3 deliberately refused** |
 
-**The bar the hybrid must clear** (validation, full data): email F1 **0.9875**, URL F1
-**0.9680**, both from TF-IDF + logistic regression. The proposed system must beat those,
-not the majority-class floor.
+**The test splits have been used, but not spent on the proposed system.** Section 11
+refuses in code to measure a model built on the 512-row BERT sample, because that would
+waste the one honest measurement available AND produce a meaningless number. When the
+full BERT features exist, re-running 11.4 and 11.5 measures them on the same test split,
+and that measurement remains honest because nothing was changed in response to the
+results below.
 
 ## Completed
+
+* **Final test-set evaluation implemented and executed** (2026-09-20): section 11 of
+  `Anti_phishing_prototype.ipynb` (11.1 helpers, 11.2 self-test, 11.3 model list, 11.4
+  build test features and measure, 11.5 final results). Notebook grew 106 -> 117 cells,
+  0 errors. Self-test **12 of 12**. The URL test features, deferred since section 7, were
+  built here with the section 7 functions. Eight models measured on the test split; three
+  refused by design.
 
 * **Baseline models implemented, tested and executed on full data** (2026-09-19):
   section 10 of `Anti_phishing_prototype.ipynb` (10.1 helpers, 10.2 self-test, 10.3
@@ -193,13 +202,12 @@ data is verified only against the synthetic fixture.
   runtime. This is the immediate next task.
 * No BERT features for the **test** split — deferred with the same reasoning as the URL
   features.
-* No URL features for the **test** split — deliberately deferred.
+* ~~No URL features for the test split~~ — **built 2026-09-20** by section 11.4,
+  using the section 7 functions. `data/features/url/test.csv`, 21,072 rows.
 * No email engineered features. None are planned: Specification §6 gives the email branch
   BERT only, and §9 gives lexical/structural features to the URL branch alone.
-* **No final evaluation.** Both test splits remain unread. XGBoost training
-  (section 9) and baseline models (section 10) are done; the test-set evaluation
-  that answers Objective 3 is not, and must wait until every modelling decision is
-  settled.
+* **Final evaluation is PARTIAL.** Section 11 measured 8 models on the test splits on
+  2026-09-20. The 3 BERT models were refused and have no final result.
 * **The proposed hybrid is unmeasured.** Its three models ran on the 512-row BERT
   sample, so no claim about BERT + XGBoost can be made yet.
 * No GPU verified for this project — the only environment executed so far is CPU-only.
@@ -607,6 +615,11 @@ valid. Source: `reports/baselines/baselines_20260919T141131Z.json`.
 | Leakage control | TF-IDF vocabulary and `StandardScaler` fitted on the **training rows only**, then applied to validation. Tested in 10.2 with a positive control |
 | Execution time | TF-IDF preparation 17-24 s per task; fitting 0.00-2.29 s |
 
+**Experiment 9 — final test-set evaluation (section 11, 2026-09-20).** All eight
+full-data models above were retrained from the training split with their recorded
+settings and measured once on the test splits. The URL test features were built at
+this point. Results in Current Results below. Three BERT models were refused.
+
 **Experiment 8 — XGBoost on URL lexical features (section 9).** Still valid, unchanged:
 F1 0.9341.
 
@@ -615,59 +628,68 @@ to 512 rows and must not be cited.
 
 ## Current Results
 
-Measured on the **validation** split. **The test split has never been opened.**
-Sources: `reports/baselines/baselines_20260919T141131Z.json` and
-`reports/training/training_20260918T100950Z.json`.
+**FINAL TEST-SET RESULTS — Objective 3.** Measured 2026-09-20 by section 11. Source:
+`reports/evaluation/final_evaluation_20260919T235136Z.json`. The test splits were opened
+once and no model was adjusted afterwards.
 
-### Email — full data, 56,450 train / 12,096 validation
+### Email — test split, 12,097 rows
 
-| Model | Accuracy | Precision | Recall | F1 |
-| --- | ---: | ---: | ---: | ---: |
-| **`email_tfidf_logreg`** | **0.9871** | **0.9854** | **0.9896** | **0.9875** |
-| `email_tfidf_nb` | 0.9735 | 0.9858 | 0.9624 | 0.9740 |
-| `email_majority` (floor) | 0.5144 | 0.5144 | 1.0000 | 0.6793 |
+| Model | Accuracy | Precision | Recall | F1 | Validation F1 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| **`email_tfidf_logreg`** | **0.9864** | **0.9845** | **0.9891** | **0.9868** | 0.9875 |
+| `email_tfidf_nb` | 0.9743 | 0.9862 | 0.9635 | 0.9747 | 0.9740 |
+| `email_majority` (floor) | 0.5143 | 0.5143 | 1.0000 | 0.6793 | 0.6793 |
 
-### URL — full data, 98,344 train / 21,074 validation
+### URL — test split, 21,072 rows
 
-| Model | Accuracy | Precision | Recall | F1 |
-| --- | ---: | ---: | ---: | ---: |
-| **`url_tfidf_logreg`** | **0.9685** | **0.9821** | **0.9544** | **0.9680** |
-| `url_tfidf_nb` | 0.9486 | 0.9859 | 0.9102 | 0.9466 |
-| `url_lexical` (XGBoost, section 9) | 0.9339 | 0.9316 | 0.9366 | 0.9341 |
-| `url_lexical_logreg` | 0.8304 | 0.8277 | 0.8345 | 0.8311 |
-| `url_majority` (floor) | 0.5000 | 0.0000 | 0.0000 | 0.0000 |
+| Model | Accuracy | Precision | Recall | F1 | Validation F1 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| **`url_tfidf_logreg`** | **0.9682** | **0.9802** | **0.9557** | **0.9678** | 0.9680 |
+| `url_tfidf_nb` | 0.9496 | 0.9849 | 0.9132 | 0.9476 | 0.9466 |
+| `url_lexical` (XGBoost) | 0.9366 | 0.9361 | 0.9371 | 0.9366 | 0.9341 |
+| `url_lexical_logreg` | 0.8225 | 0.8242 | 0.8198 | 0.8220 | 0.8311 |
+| `url_majority` (floor) | 0.5000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
+
+### Errors on the test split
+
+| Model | Missed phishing | Wrongly flagged legitimate | of |
+| --- | ---: | ---: | ---: |
+| `email_tfidf_logreg` | 68 | 97 | 12,097 |
+| `email_tfidf_nb` | 227 | 84 | 12,097 |
+| `url_tfidf_logreg` | 467 | 203 | 21,072 |
+| `url_tfidf_nb` | 915 | 148 | 21,072 |
+| `url_lexical` | 663 | 674 | 21,072 |
+| `url_lexical_logreg` | 1,899 | 1,842 | 21,072 |
 
 ### Interpretation
 
-1. **The bar is high.** Classical TF-IDF + logistic regression reaches 0.9875 on email
-   and 0.9680 on URLs. The proposed BERT + XGBoost system must beat *these*, not the
-   floor. This is the single most useful thing the baselines established.
-2. **Representation matters more than classifier, on URLs.** TF-IDF character n-grams
-   with a linear model (0.9680) beat XGBoost on the 35 engineered features (0.9341). But
-   on those same 35 features, XGBoost (0.9341) beats a linear model (0.8311) by a wide
-   margin, so XGBoost's non-linearity is clearly earning its place *given those features*.
-3. **`url_majority` scores F1 0.0000 at 50% accuracy.** The URL classes are exactly
-   balanced, so "commonest class" is a tie and the tie-break picks legitimate; the model
-   never predicts phishing at all. Accuracy alone would have made a useless model look
-   like a coin flip rather than what it is — which is why all four metrics are reported.
-4. **Read every URL score against known problem 14.** The benign and phishing URLs come
-   from different sources with a path-shape difference that could not be neutralised. A
-   simple character n-gram model reaching 0.9680 may indicate the data is easy rather
-   than the method good.
-5. **The TF-IDF baselines read the whole email**, while the BERT branch truncates at 256
-   tokens (about 55% of emails fit whole). That is a genuine advantage the baselines hold
-   and must be stated when the comparison is finally made.
+1. **Test agrees with validation on every model.** The largest difference is 0.0091
+   (`url_lexical_logreg`); most are under 0.003. That consistency is itself a result: the
+   splits built in section 6 are clean, and no model was quietly fitted to validation.
+2. **The best measured results are baselines, not the proposed system.** F1 0.9868 on
+   email and 0.9678 on URLs both come from classical TF-IDF + logistic regression.
+3. **This is the bar the proposed system must clear.** Not the floor (0.6793 email,
+   0.0000 URL) — the TF-IDF baselines.
+4. **The two models make different kinds of mistake.** On email, `email_tfidf_nb` has
+   higher precision than `email_tfidf_logreg` (0.9862 against 0.9845) but misses over
+   three times as many phishing messages (227 against 68). Which is preferable depends on
+   whether a missed phishing email or a blocked legitimate one is worse for the user; that
+   is a design decision, not a modelling one.
+5. **Read every URL number against known problem 14.** The benign and phishing URLs come
+   from different sources with a path-shape difference that could not be neutralised.
 
-### Still not measured
+### What has NOT been measured
 
-The proposed hybrid. `email_bert`, `url_bert` and `url_bert_lexical` were fitted to 512
-rows, all reached a training F1 of exactly 1.0000, and say nothing about real performance.
+**The proposed system.** `email_bert`, `url_bert` and `url_bert_lexical` were refused
+because their BERT features are still the 512-row sample. **No claim may be made about
+BERT + XGBoost on the strength of the table above.**
 
 ## Known Problems
 
 0. **The BERT features on disk are a 512-row sample, not the real feature set.** Recorded
-   2026-09-17, still true on 2026-09-18 and now blocking three of the four trained
-   models in section 9 from producing anything quotable. Files are tagged `bert_subset512` precisely so they cannot be mistaken for
+   2026-09-17, still true on 2026-09-20. It now blocks the project's central claim:
+   section 11 refused to measure the three BERT models on the test split, so the
+   proposed system has no final result. Everything else is finished and waiting on it. Files are tagged `bert_subset512` precisely so they cannot be mistaken for
    a full run; a limited run and a full run write to separate folders and section 8.1
    refuses to join shards whose row counts do not match the split. Nothing may be trained
    until the full pass has been produced on a GPU.
@@ -872,28 +894,28 @@ rows, all reached a training F1 of exactly 1.0000, and say nothing about real pe
 
 ## Next Task
 
-**Run the full BERT extraction on a Colab GPU.** It is now the only thing standing
-between this project and its central claim. Every baseline it must be compared against
-already exists and is measured.
+**Run the full BERT extraction on a Colab GPU.** Everything else in the project is
+finished. This one step turns three pending rows into the project's central result.
 
 1. Open `Anti_phishing_prototype.ipynb` on a Colab GPU runtime (Runtime -> Change runtime
    type -> GPU). Section 1.2 already skips the `torch` install on Colab.
 2. Run section 1, confirm `torch.cuda.is_available()` is `True`, then run section 8.
 3. In section 8.3 set `MAX_ROWS_PER_SPLIT = None`, then run 8.4 and 8.5.
-4. **Re-run 9.4, 9.5 and 10.5. No code changes anywhere** — 9.3 detects a full BERT run
-   and prefers it automatically, and 10.5 reads section 9 results back from disk.
+4. **Re-run 9.4, 9.5, 10.5, 11.4 and 11.5. No code changes anywhere** — section 9.3
+   detects a full BERT run and prefers it, and section 11.3 stops refusing the BERT models
+   automatically once `BERT_RUN_TAGS` reports `full`.
 5. Record the GPU name, CUDA version and extraction time in the Modelling Environment
-   table, and the new metrics in Current Results.
+   table, and the new test metrics in Current Results.
 
-**The question to answer when it finishes:** does BERT + XGBoost beat F1 0.9875 on email
-and 0.9680 on URLs? If it does not, that is a legitimate finding and must be reported as
-such, not hidden (CLAUDE.md rule 3).
+**The question it answers:** does BERT + XGBoost beat **F1 0.9868 on email** and **0.9678
+on URLs**? If it does not, that is a legitimate finding and must be reported as such, not
+hidden or worked around (CLAUDE.md rule 3).
 
-**After that:**
+**Why the test split is still usable for that.** Nothing in the models was changed in
+response to the 2026-09-20 results. The BERT models were never measured on test, so
+measuring them when they are finished is their first and only look at it.
 
-* Final evaluation on the **test** splits (Objective 3) — once, at the end, after every
-  modelling decision is settled.
-* Web prototype integration (Specification §14).
+**After that:** web prototype integration (Specification §14).
 
 **Still outstanding, unrelated:**
 
@@ -902,8 +924,8 @@ such, not hidden (CLAUDE.md rule 3).
 * Known problem 7 — payload validation in `scripts/acquire_phishtank.py`.
 * Known problem 21 — section 6 cells still carry no nbformat `id` field.
 
-Do not read either test split, and do not tune hyperparameters against validation, until
-instructed.
+**Do not tune any model in response to the test results above.** That would turn the test
+split into a second validation set and destroy the honesty of every number in this file.
 
 ## Important Decisions
 
@@ -933,6 +955,7 @@ instructed.
 
 | Date | Change |
 | --- | --- |
+| 2026-09-20 | **Final test-set evaluation completed for every finished model; the pipeline is now complete end to end.** Added section 11 to `Anti_phishing_prototype.ipynb` (11.1 helpers, 11.2 self-test, 11.3 model list, 11.4 build test features and measure, 11.5 final results); 106 -> 117 cells, five new code cells executed in a live kernel, 0 errors. Self-test 12/12, covering two unrecoverable failures: test data leaking into the TF-IDF vocabulary (with a positive control), and spending the test split on an unfinished model. The URL test features, deliberately deferred since section 7, were built here with the section 7 functions (`data/features/url/test.csv`, 21,072 rows) and verified to align row-for-row with the processed test split. **Eight models measured on the test splits. Email: `email_tfidf_logreg` F1 0.9868, `email_tfidf_nb` 0.9747, floor 0.6793. URL: `url_tfidf_logreg` F1 0.9678, `url_tfidf_nb` 0.9476, `url_lexical` 0.9366, `url_lexical_logreg` 0.8220, floor 0.0000.** Test agreed with validation on every model, the largest difference being 0.0091, which confirms the section 6 splits are clean. **Three models were REFUSED by design** — `email_bert`, `url_bert`, `url_bert_lexical` — because their BERT features are still the 512-row sample; measuring them would have wasted the one honest test measurement on a meaningless number. The proposed system therefore has no final result, and the best numbers above belong to baselines. Each model was retrained from the training split rather than loaded from a file, and 11.4 raises if a train and test matrix ever differ in width, which is what a vectoriser re-fitted on test would look like. |
 | 2026-09-19 | **Baseline models added and executed on full data; the bar for the proposed system is now known.** Added section 10 to `Anti_phishing_prototype.ipynb` (10.1 helpers, 10.2 self-test, 10.3 settings, 10.4 training, 10.5 combined comparison); 95 -> 106 cells, five new code cells executed in a live kernel, 0 errors. Self-test 19/19, the important part being a leakage test: a word present only in validation must not enter the TF-IDF vocabulary, with a positive control confirming that fitting on train+validation together WOULD have captured it, so the test cannot pass for the wrong reason. The scaler is checked the same way. Seven baselines, every one on full data for both tasks, using the same splits, seed and `evaluate_classifier` as section 9 so the comparison is fair. **First real results for the email task:** `email_tfidf_logreg` F1 0.9875, `email_tfidf_nb` F1 0.9740, floor 0.6793. **URL:** `url_tfidf_logreg` F1 0.9680, `url_tfidf_nb` F1 0.9466, section 9's `url_lexical` 0.9341, `url_lexical_logreg` 0.8311, floor 0.0000. Two findings recorded: classical TF-IDF sets a high bar the hybrid must clear, and on URLs the representation matters more than the classifier while XGBoost still clearly beats a linear model on identical features. Section 10.5 again refuses to rank sample-trained models against full-data ones. The test splits were not opened. Also committed the artifacts of an uncommitted full notebook re-run from 2026-09-18, which reproduced section 9 exactly (`url_lexical` F1 0.9341), confirming the fixed seed works. |
 | 2026-09-18 | **XGBoost training implemented and verified; the first real measured result recorded.** Added section 9 to `Anti_phishing_prototype.ipynb` (9.1 helpers, 9.2 self-test, 9.3 settings, 9.4 training, 9.5 comparison and report); 84 -> 95 cells, five new code cells executed in a live kernel, 0 errors, sections 2-8 not re-run. Self-test 23/23, checking the metric arithmetic against a hand-worked confusion matrix (deliberately asymmetric so a precision/recall swap cannot hide), the BERT-to-lexical join against rows that are out of step, reproducibility under a fixed seed, and a negative control in which a model fitted to pure noise must NOT score well on unseen rows. Four models trained with fixed recorded hyperparameters (seed 42, xgboost 3.4.1): `email_bert`, `url_bert`, `url_bert_lexical` and a `url_lexical` baseline. **Only `url_lexical` ran on full data** (98,344 train / 21,074 validation) and is the project's first real result: accuracy 0.9339, precision 0.9316, recall 0.9366, F1 0.9341, train-validation F1 gap 0.0135. The other three were fitted to the 512-row BERT sample, all reached a training F1 of exactly 1.0000, and are recorded as pipeline verification that must not be quoted. Section 9.5 refuses in code to compare a sample-trained model against a full-data one, and refuses to state whether BERT helps until both sides are full. The test splits were not opened. `models/` added to `.gitignore`. |
 | 2026-09-17 | **BERT contextual feature extraction implemented and verified; git repository made safe before its first commit.** Added section 8 to `Anti_phishing_prototype.ipynb` (8.1 helpers, 8.2 self-test, 8.3 settings, 8.4 extraction, 8.5 verify/measure/write); 73 → 84 cells, five new code cells executed in a live kernel, 0 errors, sections 2–7 not re-run. Frozen `bert-base-uncased`, mean pooling over non-padding tokens, 768 dimensions; `max_length` 256 for email and 128 for URLs, both chosen from measured token distributions. Self-test 24/24, covering the failure that matters most — length-sorted batching reordering rows away from their labels — plus shard resume, atomic shard writes and refusal to join shards from a differently-sized run. Two real bugs were caught by that test and fixed: `np.save` appending `.npy` to the temporary shard name and breaking the atomic rename, and a short shard from a limited run being joinable into a full run. Run limited to 512 rows per split (CPU full pass measured at ~4.8 hours); all verification checks passed and `reports/features/bert_features_20260917T062736Z.json` was written. **The full feature set does not exist yet and nothing has been trained.** Separately: the project was found to be a git repository with zero commits, no `.gitignore`, and every file already staged — including a live Kaggle credential and ~670 MB of data. The index was cleared and a `.gitignore` added before the first commit, which covers 42 files and about 1 MB. Notebook backups taken to `backups/`. |
