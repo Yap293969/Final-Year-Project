@@ -1,0 +1,420 @@
+{
+  "generated_at_utc": "2026-09-22T12:04:11+00:00",
+  "stage": "CRISP-DM evaluation -- final test-set results (Objective 3)",
+  "scope_note": "Models retrained on the train split with their recorded settings and measured on the TEST split. Everything that learns from data was fitted on training rows only. No model was adjusted in response to these numbers.",
+  "seed": 42,
+  "train_split": "train",
+  "test_split": "test",
+  "validation_split_shown_for_comparison": "validation",
+  "xgboost_parameters": {
+    "n_estimators": 300,
+    "max_depth": 6,
+    "learning_rate": 0.1,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8,
+    "n_jobs": -1
+  },
+  "tfidf_settings": {
+    "tfidf_word": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        1
+      ],
+      "max_features": 50000,
+      "min_df": 2
+    },
+    "tfidf_char": {
+      "analyzer": "char_wb",
+      "ngram_range": [
+        3,
+        5
+      ],
+      "max_features": 50000,
+      "min_df": 2
+    }
+  },
+  "bert_run_tags": {
+    "email": "full",
+    "url": "full"
+  },
+  "models_measured": 11,
+  "models_refused": [],
+  "proposed_system_measured": true,
+  "results": [
+    {
+      "name": "email_majority",
+      "task": "email",
+      "family": "baseline",
+      "kind": "majority",
+      "description": "Email, always predicts the commonest class (the floor)",
+      "feature_note": "no features",
+      "feature_columns": 1,
+      "train_rows": 56450,
+      "test_rows": 12097,
+      "training_seconds": 0.0,
+      "validation_scores": {
+        "accuracy": 0.5144,
+        "precision": 0.5144,
+        "recall": 1.0,
+        "f1": 0.6793,
+        "true_negative": 0,
+        "false_positive": 5874,
+        "false_negative": 0,
+        "true_positive": 6222,
+        "rows": 12096
+      },
+      "test_scores": {
+        "accuracy": 0.5143,
+        "precision": 0.5143,
+        "recall": 1.0,
+        "f1": 0.6793,
+        "true_negative": 0,
+        "false_positive": 5875,
+        "false_negative": 0,
+        "true_positive": 6222,
+        "rows": 12097
+      }
+    },
+    {
+      "name": "email_tfidf_logreg",
+      "task": "email",
+      "family": "baseline",
+      "kind": "tfidf_logreg",
+      "description": "Email, TF-IDF words + logistic regression",
+      "feature_note": "50000 TF-IDF word",
+      "feature_columns": 50000,
+      "train_rows": 56450,
+      "test_rows": 12097,
+      "training_seconds": 1.82,
+      "validation_scores": {
+        "accuracy": 0.9871,
+        "precision": 0.9854,
+        "recall": 0.9896,
+        "f1": 0.9875,
+        "true_negative": 5783,
+        "false_positive": 91,
+        "false_negative": 65,
+        "true_positive": 6157,
+        "rows": 12096
+      },
+      "test_scores": {
+        "accuracy": 0.9864,
+        "precision": 0.9845,
+        "recall": 0.9891,
+        "f1": 0.9868,
+        "true_negative": 5778,
+        "false_positive": 97,
+        "false_negative": 68,
+        "true_positive": 6154,
+        "rows": 12097
+      }
+    },
+    {
+      "name": "email_tfidf_nb",
+      "task": "email",
+      "family": "baseline",
+      "kind": "tfidf_nb",
+      "description": "Email, TF-IDF words + Naive Bayes",
+      "feature_note": "50000 TF-IDF word",
+      "feature_columns": 50000,
+      "train_rows": 56450,
+      "test_rows": 12097,
+      "training_seconds": 0.04,
+      "validation_scores": {
+        "accuracy": 0.9735,
+        "precision": 0.9858,
+        "recall": 0.9624,
+        "f1": 0.974,
+        "true_negative": 5788,
+        "false_positive": 86,
+        "false_negative": 234,
+        "true_positive": 5988,
+        "rows": 12096
+      },
+      "test_scores": {
+        "accuracy": 0.9743,
+        "precision": 0.9862,
+        "recall": 0.9635,
+        "f1": 0.9747,
+        "true_negative": 5791,
+        "false_positive": 84,
+        "false_negative": 227,
+        "true_positive": 5995,
+        "rows": 12097
+      }
+    },
+    {
+      "name": "email_bert",
+      "task": "email",
+      "family": "proposed",
+      "kind": "bert_xgb",
+      "description": "Email, BERT + XGBoost (the proposed system)",
+      "feature_note": "768 BERT",
+      "feature_columns": 768,
+      "train_rows": 56450,
+      "test_rows": 12097,
+      "training_seconds": 40.56,
+      "validation_scores": {
+        "accuracy": 0.9843,
+        "precision": 0.984,
+        "recall": 0.9855,
+        "f1": 0.9847,
+        "true_negative": 5774,
+        "false_positive": 100,
+        "false_negative": 90,
+        "true_positive": 6132,
+        "rows": 12096
+      },
+      "test_scores": {
+        "accuracy": 0.9842,
+        "precision": 0.985,
+        "recall": 0.9842,
+        "f1": 0.9846,
+        "true_negative": 5782,
+        "false_positive": 93,
+        "false_negative": 98,
+        "true_positive": 6124,
+        "rows": 12097
+      }
+    },
+    {
+      "name": "url_majority",
+      "task": "url",
+      "family": "baseline",
+      "kind": "majority",
+      "description": "URL, always predicts the commonest class (the floor)",
+      "feature_note": "no features",
+      "feature_columns": 1,
+      "train_rows": 98344,
+      "test_rows": 21072,
+      "training_seconds": 0.0,
+      "validation_scores": {
+        "accuracy": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_negative": 10537,
+        "false_positive": 0,
+        "false_negative": 10537,
+        "true_positive": 0,
+        "rows": 21074
+      },
+      "test_scores": {
+        "accuracy": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_negative": 10536,
+        "false_positive": 0,
+        "false_negative": 10536,
+        "true_positive": 0,
+        "rows": 21072
+      }
+    },
+    {
+      "name": "url_tfidf_logreg",
+      "task": "url",
+      "family": "baseline",
+      "kind": "tfidf_logreg",
+      "description": "URL, TF-IDF character 3-5 grams + logistic regression",
+      "feature_note": "50000 TF-IDF char_wb",
+      "feature_columns": 50000,
+      "train_rows": 98344,
+      "test_rows": 21072,
+      "training_seconds": 2.65,
+      "validation_scores": {
+        "accuracy": 0.9685,
+        "precision": 0.9821,
+        "recall": 0.9544,
+        "f1": 0.968,
+        "true_negative": 10354,
+        "false_positive": 183,
+        "false_negative": 481,
+        "true_positive": 10056,
+        "rows": 21074
+      },
+      "test_scores": {
+        "accuracy": 0.9682,
+        "precision": 0.9802,
+        "recall": 0.9557,
+        "f1": 0.9678,
+        "true_negative": 10333,
+        "false_positive": 203,
+        "false_negative": 467,
+        "true_positive": 10069,
+        "rows": 21072
+      }
+    },
+    {
+      "name": "url_tfidf_nb",
+      "task": "url",
+      "family": "baseline",
+      "kind": "tfidf_nb",
+      "description": "URL, TF-IDF character 3-5 grams + Naive Bayes",
+      "feature_note": "50000 TF-IDF char_wb",
+      "feature_columns": 50000,
+      "train_rows": 98344,
+      "test_rows": 21072,
+      "training_seconds": 0.06,
+      "validation_scores": {
+        "accuracy": 0.9486,
+        "precision": 0.9859,
+        "recall": 0.9102,
+        "f1": 0.9466,
+        "true_negative": 10400,
+        "false_positive": 137,
+        "false_negative": 946,
+        "true_positive": 9591,
+        "rows": 21074
+      },
+      "test_scores": {
+        "accuracy": 0.9496,
+        "precision": 0.9849,
+        "recall": 0.9132,
+        "f1": 0.9476,
+        "true_negative": 10388,
+        "false_positive": 148,
+        "false_negative": 915,
+        "true_positive": 9621,
+        "rows": 21072
+      }
+    },
+    {
+      "name": "url_lexical_logreg",
+      "task": "url",
+      "family": "baseline",
+      "kind": "lexical_logreg",
+      "description": "URL, 35 lexical features + logistic regression",
+      "feature_note": "35 lexical (scaled)",
+      "feature_columns": 35,
+      "train_rows": 98344,
+      "test_rows": 21072,
+      "training_seconds": 3.3,
+      "validation_scores": {
+        "accuracy": 0.8304,
+        "precision": 0.8277,
+        "recall": 0.8345,
+        "f1": 0.8311,
+        "true_negative": 8707,
+        "false_positive": 1830,
+        "false_negative": 1744,
+        "true_positive": 8793,
+        "rows": 21074
+      },
+      "test_scores": {
+        "accuracy": 0.8225,
+        "precision": 0.8242,
+        "recall": 0.8198,
+        "f1": 0.822,
+        "true_negative": 8694,
+        "false_positive": 1842,
+        "false_negative": 1899,
+        "true_positive": 8637,
+        "rows": 21072
+      }
+    },
+    {
+      "name": "url_lexical",
+      "task": "url",
+      "family": "proposed component",
+      "kind": "lexical_xgb",
+      "description": "URL, 35 lexical features + XGBoost (section 9)",
+      "feature_note": "35 lexical",
+      "feature_columns": 35,
+      "train_rows": 98344,
+      "test_rows": 21072,
+      "training_seconds": 0.81,
+      "validation_scores": {
+        "accuracy": 0.9339,
+        "precision": 0.9316,
+        "recall": 0.9366,
+        "f1": 0.9341,
+        "true_negative": 9812,
+        "false_positive": 725,
+        "false_negative": 668,
+        "true_positive": 9869,
+        "rows": 21074
+      },
+      "test_scores": {
+        "accuracy": 0.9366,
+        "precision": 0.9361,
+        "recall": 0.9371,
+        "f1": 0.9366,
+        "true_negative": 9862,
+        "false_positive": 674,
+        "false_negative": 663,
+        "true_positive": 9873,
+        "rows": 21072
+      }
+    },
+    {
+      "name": "url_bert",
+      "task": "url",
+      "family": "proposed",
+      "kind": "bert_xgb",
+      "description": "URL, BERT + XGBoost",
+      "feature_note": "768 BERT",
+      "feature_columns": 768,
+      "train_rows": 98344,
+      "test_rows": 21072,
+      "training_seconds": 54.7,
+      "validation_scores": {
+        "accuracy": 0.9558,
+        "precision": 0.9564,
+        "recall": 0.9551,
+        "f1": 0.9557,
+        "true_negative": 10078,
+        "false_positive": 459,
+        "false_negative": 473,
+        "true_positive": 10064,
+        "rows": 21074
+      },
+      "test_scores": {
+        "accuracy": 0.9588,
+        "precision": 0.9621,
+        "recall": 0.9552,
+        "f1": 0.9587,
+        "true_negative": 10140,
+        "false_positive": 396,
+        "false_negative": 472,
+        "true_positive": 10064,
+        "rows": 21072
+      }
+    },
+    {
+      "name": "url_bert_lexical",
+      "task": "url",
+      "family": "proposed",
+      "kind": "bert_xgb",
+      "description": "URL, BERT + lexical + XGBoost (the proposed hybrid)",
+      "feature_note": "768 BERT + 35 lexical",
+      "feature_columns": 803,
+      "train_rows": 98344,
+      "test_rows": 21072,
+      "training_seconds": 57.96,
+      "validation_scores": {
+        "accuracy": 0.9623,
+        "precision": 0.9647,
+        "recall": 0.9597,
+        "f1": 0.9622,
+        "true_negative": 10167,
+        "false_positive": 370,
+        "false_negative": 425,
+        "true_positive": 10112,
+        "rows": 21074
+      },
+      "test_scores": {
+        "accuracy": 0.9642,
+        "precision": 0.9669,
+        "recall": 0.9614,
+        "f1": 0.9641,
+        "true_negative": 10189,
+        "false_positive": 347,
+        "false_negative": 407,
+        "true_positive": 10129,
+        "rows": 21072
+      }
+    }
+  ]
+}

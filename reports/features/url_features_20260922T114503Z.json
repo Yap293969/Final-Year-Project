@@ -1,0 +1,783 @@
+{
+  "generated_at_utc": "2026-09-22T11:45:03Z",
+  "stage": "URL lexical and structural feature engineering (Specification 6)",
+  "scope_note": "Deterministic per-URL feature extraction over the train and validation splits. No fitted parameter, no BERT feature extraction and no model training. The test split was not read.",
+  "input_splits": [
+    "data\\processed\\url\\train.csv",
+    "data\\processed\\url\\validation.csv"
+  ],
+  "deferred_splits": [
+    "test"
+  ],
+  "feature_count": 35,
+  "feature_names": [
+    "url_length",
+    "url_digit_count",
+    "url_digit_ratio",
+    "url_letter_ratio",
+    "url_uppercase_ratio",
+    "url_special_count",
+    "url_entropy",
+    "url_token_count",
+    "url_longest_token_length",
+    "count_dot",
+    "count_hyphen",
+    "count_underscore",
+    "count_slash",
+    "count_question",
+    "count_equals",
+    "count_at",
+    "count_ampersand",
+    "count_percent",
+    "host_length",
+    "host_dot_count",
+    "host_hyphen_count",
+    "host_digit_count",
+    "host_subdomain_count",
+    "host_tld_length",
+    "host_is_ip",
+    "host_has_port",
+    "host_has_punycode",
+    "host_has_www",
+    "path_length",
+    "path_depth",
+    "query_length",
+    "query_param_count",
+    "has_fragment",
+    "embedded_url_count",
+    "suspicious_word_count"
+  ],
+  "trace_columns": [
+    "url",
+    "label"
+  ],
+  "suspicious_words": [
+    "login",
+    "signin",
+    "account",
+    "update",
+    "verify",
+    "secure",
+    "confirm",
+    "password",
+    "bank",
+    "billing",
+    "invoice",
+    "support",
+    "recover",
+    "unlock"
+  ],
+  "leakage_position": "Every feature is computed from one URL string on its own, so this stage has no parameter that could be fitted on the training data and carried into validation or test (Specification 12). The test split is still left unread so that the audit trail in docs/PROJECT_STATE.md holds.",
+  "self_test_assertions_passed": 164,
+  "extraction": [
+    {
+      "split": "train",
+      "rows_in": 98344,
+      "rows_out": 98344,
+      "urls_with_a_leading_scheme": 0,
+      "urls_nesting_another_url": 607,
+      "blank_urls": 0,
+      "seconds": 4.7
+    },
+    {
+      "split": "validation",
+      "rows_in": 21074,
+      "rows_out": 21074,
+      "urls_with_a_leading_scheme": 0,
+      "urls_nesting_another_url": 131,
+      "blank_urls": 0,
+      "seconds": 1.4
+    }
+  ],
+  "constant_features_on_train": [],
+  "train_statistics": [
+    {
+      "feature": "url_length",
+      "min": 5,
+      "max": 25515,
+      "coverage": 1.0,
+      "mean": 53.2451,
+      "median": 37.0,
+      "phishing_mean": 49.6668,
+      "legitimate_mean": 56.8234,
+      "difference": -7.1566
+    },
+    {
+      "feature": "url_digit_count",
+      "min": 0,
+      "max": 3413,
+      "coverage": 0.573843,
+      "mean": 5.8617,
+      "median": 1.0,
+      "phishing_mean": 6.1118,
+      "legitimate_mean": 5.6115,
+      "difference": 0.5003
+    },
+    {
+      "feature": "url_digit_ratio",
+      "min": 0.0,
+      "max": 0.826087,
+      "coverage": 0.573843,
+      "mean": 0.0823,
+      "median": 0.0476,
+      "phishing_mean": 0.0921,
+      "legitimate_mean": 0.0726,
+      "difference": 0.0195
+    },
+    {
+      "feature": "url_letter_ratio",
+      "min": 0.0,
+      "max": 0.985075,
+      "coverage": 0.999919,
+      "mean": 0.7874,
+      "median": 0.8056,
+      "phishing_mean": 0.7812,
+      "legitimate_mean": 0.7936,
+      "difference": -0.0124
+    },
+    {
+      "feature": "url_uppercase_ratio",
+      "min": 0.0,
+      "max": 0.96,
+      "coverage": 0.369174,
+      "mean": 0.0478,
+      "median": 0.0,
+      "phishing_mean": 0.0653,
+      "legitimate_mean": 0.0302,
+      "difference": 0.0351
+    },
+    {
+      "feature": "url_special_count",
+      "min": 1,
+      "max": 213,
+      "coverage": 1.0,
+      "mean": 6.783,
+      "median": 5.0,
+      "phishing_mean": 5.5549,
+      "legitimate_mean": 8.0111,
+      "difference": -2.4562
+    },
+    {
+      "feature": "url_entropy",
+      "min": 1.79053,
+      "max": 6.025345,
+      "coverage": 1.0,
+      "mean": 4.1579,
+      "median": 4.1093,
+      "phishing_mean": 4.1234,
+      "legitimate_mean": 4.1923,
+      "difference": -0.0689
+    },
+    {
+      "feature": "url_token_count",
+      "min": 2,
+      "max": 209,
+      "coverage": 1.0,
+      "mean": 7.5811,
+      "median": 6.0,
+      "phishing_mean": 6.4107,
+      "legitimate_mean": 8.7514,
+      "difference": -2.3407
+    },
+    {
+      "feature": "url_longest_token_length",
+      "min": 2,
+      "max": 5527,
+      "coverage": 1.0,
+      "mean": 15.1358,
+      "median": 11.0,
+      "phishing_mean": 17.3555,
+      "legitimate_mean": 12.9162,
+      "difference": 4.4393
+    },
+    {
+      "feature": "count_dot",
+      "min": 0,
+      "max": 67,
+      "coverage": 0.99999,
+      "mean": 1.9618,
+      "median": 2.0,
+      "phishing_mean": 1.9886,
+      "legitimate_mean": 1.935,
+      "difference": 0.0536
+    },
+    {
+      "feature": "count_hyphen",
+      "min": 0,
+      "max": 50,
+      "coverage": 0.464289,
+      "mean": 1.3955,
+      "median": 0.0,
+      "phishing_mean": 0.9406,
+      "legitimate_mean": 1.8503,
+      "difference": -0.9097
+    },
+    {
+      "feature": "count_underscore",
+      "min": 0,
+      "max": 99,
+      "coverage": 0.148753,
+      "mean": 0.3393,
+      "median": 0.0,
+      "phishing_mean": 0.1919,
+      "legitimate_mean": 0.4867,
+      "difference": -0.2949
+    },
+    {
+      "feature": "count_slash",
+      "min": 0,
+      "max": 102,
+      "coverage": 0.772594,
+      "mean": 1.7883,
+      "median": 1.0,
+      "phishing_mean": 1.263,
+      "legitimate_mean": 2.3136,
+      "difference": -1.0507
+    },
+    {
+      "feature": "count_question",
+      "min": 0,
+      "max": 20,
+      "coverage": 0.163375,
+      "mean": 0.171,
+      "median": 0.0,
+      "phishing_mean": 0.1614,
+      "legitimate_mean": 0.1805,
+      "difference": -0.0191
+    },
+    {
+      "feature": "count_equals",
+      "min": 0,
+      "max": 47,
+      "coverage": 0.160152,
+      "mean": 0.368,
+      "median": 0.0,
+      "phishing_mean": 0.4163,
+      "legitimate_mean": 0.3197,
+      "difference": 0.0965
+    },
+    {
+      "feature": "count_at",
+      "min": 0,
+      "max": 10,
+      "coverage": 0.004281,
+      "mean": 0.0045,
+      "median": 0.0,
+      "phishing_mean": 0.0071,
+      "legitimate_mean": 0.0019,
+      "difference": 0.0052
+    },
+    {
+      "feature": "count_ampersand",
+      "min": 0,
+      "max": 43,
+      "coverage": 0.090773,
+      "mean": 0.2005,
+      "median": 0.0,
+      "phishing_mean": 0.2546,
+      "legitimate_mean": 0.1465,
+      "difference": 0.1081
+    },
+    {
+      "feature": "count_percent",
+      "min": 0,
+      "max": 150,
+      "coverage": 0.030719,
+      "mean": 0.3336,
+      "median": 0.0,
+      "phishing_mean": 0.1239,
+      "legitimate_mean": 0.5434,
+      "difference": -0.4195
+    },
+    {
+      "feature": "host_length",
+      "min": 4,
+      "max": 244,
+      "coverage": 1.0,
+      "mean": 18.8138,
+      "median": 16.0,
+      "phishing_mean": 20.9543,
+      "legitimate_mean": 16.6734,
+      "difference": 4.2809
+    },
+    {
+      "feature": "host_dot_count",
+      "min": 0,
+      "max": 24,
+      "coverage": 0.99999,
+      "mean": 1.5991,
+      "median": 2.0,
+      "phishing_mean": 1.787,
+      "legitimate_mean": 1.4112,
+      "difference": 0.3758
+    },
+    {
+      "feature": "host_hyphen_count",
+      "min": 0,
+      "max": 11,
+      "coverage": 0.205554,
+      "mean": 0.3087,
+      "median": 0.0,
+      "phishing_mean": 0.5182,
+      "legitimate_mean": 0.0991,
+      "difference": 0.4191
+    },
+    {
+      "feature": "host_digit_count",
+      "min": 0,
+      "max": 116,
+      "coverage": 0.169263,
+      "mean": 1.1262,
+      "median": 0.0,
+      "phishing_mean": 1.8221,
+      "legitimate_mean": 0.4304,
+      "difference": 1.3916
+    },
+    {
+      "feature": "host_subdomain_count",
+      "min": 0,
+      "max": 23,
+      "coverage": 0.506121,
+      "mean": 0.5976,
+      "median": 1.0,
+      "phishing_mean": 0.784,
+      "legitimate_mean": 0.4112,
+      "difference": 0.3728
+    },
+    {
+      "feature": "host_tld_length",
+      "min": 0,
+      "max": 9,
+      "coverage": 0.999237,
+      "mean": 2.8645,
+      "median": 3.0,
+      "phishing_mean": 2.8331,
+      "legitimate_mean": 2.896,
+      "difference": -0.0629
+    },
+    {
+      "feature": "host_is_ip",
+      "min": 0,
+      "max": 1,
+      "coverage": 0.000742,
+      "mean": 0.0007,
+      "median": 0.0,
+      "phishing_mean": 0.0015,
+      "legitimate_mean": 0.0,
+      "difference": 0.0015
+    },
+    {
+      "feature": "host_has_port",
+      "min": 0,
+      "max": 1,
+      "coverage": 0.001007,
+      "mean": 0.001,
+      "median": 0.0,
+      "phishing_mean": 0.0016,
+      "legitimate_mean": 0.0004,
+      "difference": 0.0013
+    },
+    {
+      "feature": "host_has_punycode",
+      "min": 0,
+      "max": 1,
+      "coverage": 0.000661,
+      "mean": 0.0007,
+      "median": 0.0,
+      "phishing_mean": 0.0012,
+      "legitimate_mean": 0.0001,
+      "difference": 0.0011
+    },
+    {
+      "feature": "host_has_www",
+      "min": 0,
+      "max": 1,
+      "coverage": 0.035661,
+      "mean": 0.0357,
+      "median": 0.0,
+      "phishing_mean": 0.0404,
+      "legitimate_mean": 0.0309,
+      "difference": 0.0095
+    },
+    {
+      "feature": "path_length",
+      "min": 0,
+      "max": 997,
+      "coverage": 0.772594,
+      "mean": 24.405,
+      "median": 13.0,
+      "phishing_mean": 16.588,
+      "legitimate_mean": 32.2221,
+      "difference": -15.6341
+    },
+    {
+      "feature": "path_depth",
+      "min": 0,
+      "max": 28,
+      "coverage": 0.753417,
+      "mean": 1.6993,
+      "median": 1.0,
+      "phishing_mean": 1.1834,
+      "legitimate_mean": 2.2153,
+      "difference": -1.0319
+    },
+    {
+      "feature": "query_length",
+      "min": 0,
+      "max": 3624,
+      "coverage": 0.162755,
+      "mean": 9.228,
+      "median": 0.0,
+      "phishing_mean": 10.7264,
+      "legitimate_mean": 7.7297,
+      "difference": 2.9967
+    },
+    {
+      "feature": "query_param_count",
+      "min": 0,
+      "max": 43,
+      "coverage": 0.162755,
+      "mean": 0.3592,
+      "median": 0.0,
+      "phishing_mean": 0.4094,
+      "legitimate_mean": 0.309,
+      "difference": 0.1004
+    },
+    {
+      "feature": "has_fragment",
+      "min": 0,
+      "max": 1,
+      "coverage": 0.003762,
+      "mean": 0.0038,
+      "median": 0.0,
+      "phishing_mean": 0.0073,
+      "legitimate_mean": 0.0002,
+      "difference": 0.007
+    },
+    {
+      "feature": "embedded_url_count",
+      "min": 0,
+      "max": 5,
+      "coverage": 0.006172,
+      "mean": 0.0069,
+      "median": 0.0,
+      "phishing_mean": 0.0126,
+      "legitimate_mean": 0.0013,
+      "difference": 0.0113
+    },
+    {
+      "feature": "suspicious_word_count",
+      "min": 0,
+      "max": 10,
+      "coverage": 0.05494,
+      "mean": 0.0768,
+      "median": 0.0,
+      "phishing_mean": 0.0621,
+      "legitimate_mean": 0.0915,
+      "difference": -0.0294
+    }
+  ],
+  "validation_statistics": [
+    {
+      "feature": "url_length",
+      "mean": 52.5952,
+      "phishing_mean": 47.9506,
+      "legitimate_mean": 57.2399
+    },
+    {
+      "feature": "url_digit_count",
+      "mean": 5.6969,
+      "phishing_mean": 5.7038,
+      "legitimate_mean": 5.6899
+    },
+    {
+      "feature": "url_digit_ratio",
+      "mean": 0.0811,
+      "phishing_mean": 0.0894,
+      "legitimate_mean": 0.0727
+    },
+    {
+      "feature": "url_letter_ratio",
+      "mean": 0.7887,
+      "phishing_mean": 0.7837,
+      "legitimate_mean": 0.7937
+    },
+    {
+      "feature": "url_uppercase_ratio",
+      "mean": 0.0482,
+      "phishing_mean": 0.0655,
+      "legitimate_mean": 0.0309
+    },
+    {
+      "feature": "url_special_count",
+      "mean": 6.7716,
+      "phishing_mean": 5.5149,
+      "legitimate_mean": 8.0284
+    },
+    {
+      "feature": "url_entropy",
+      "mean": 4.1549,
+      "phishing_mean": 4.1146,
+      "legitimate_mean": 4.1952
+    },
+    {
+      "feature": "url_token_count",
+      "mean": 7.5642,
+      "phishing_mean": 6.3739,
+      "legitimate_mean": 8.7545
+    },
+    {
+      "feature": "url_longest_token_length",
+      "mean": 15.0396,
+      "phishing_mean": 16.959,
+      "legitimate_mean": 13.1202
+    },
+    {
+      "feature": "count_dot",
+      "mean": 1.9831,
+      "phishing_mean": 1.9981,
+      "legitimate_mean": 1.9681
+    },
+    {
+      "feature": "count_hyphen",
+      "mean": 1.3598,
+      "phishing_mean": 0.9045,
+      "legitimate_mean": 1.8151
+    },
+    {
+      "feature": "count_underscore",
+      "mean": 0.3266,
+      "phishing_mean": 0.1812,
+      "legitimate_mean": 0.4721
+    },
+    {
+      "feature": "count_slash",
+      "mean": 1.7876,
+      "phishing_mean": 1.2674,
+      "legitimate_mean": 2.3078
+    },
+    {
+      "feature": "count_question",
+      "mean": 0.1724,
+      "phishing_mean": 0.1595,
+      "legitimate_mean": 0.1853
+    },
+    {
+      "feature": "count_equals",
+      "mean": 0.3675,
+      "phishing_mean": 0.4048,
+      "legitimate_mean": 0.3302
+    },
+    {
+      "feature": "count_at",
+      "mean": 0.0051,
+      "phishing_mean": 0.0085,
+      "legitimate_mean": 0.0017
+    },
+    {
+      "feature": "count_ampersand",
+      "mean": 0.1993,
+      "phishing_mean": 0.2467,
+      "legitimate_mean": 0.1519
+    },
+    {
+      "feature": "count_percent",
+      "mean": 0.338,
+      "phishing_mean": 0.1335,
+      "legitimate_mean": 0.5426
+    },
+    {
+      "feature": "host_length",
+      "mean": 18.8258,
+      "phishing_mean": 20.749,
+      "legitimate_mean": 16.9026
+    },
+    {
+      "feature": "host_dot_count",
+      "mean": 1.6121,
+      "phishing_mean": 1.7935,
+      "legitimate_mean": 1.4307
+    },
+    {
+      "feature": "host_hyphen_count",
+      "mean": 0.3018,
+      "phishing_mean": 0.502,
+      "legitimate_mean": 0.1015
+    },
+    {
+      "feature": "host_digit_count",
+      "mean": 1.1172,
+      "phishing_mean": 1.7528,
+      "legitimate_mean": 0.4816
+    },
+    {
+      "feature": "host_subdomain_count",
+      "mean": 0.6109,
+      "phishing_mean": 0.7912,
+      "legitimate_mean": 0.4307
+    },
+    {
+      "feature": "host_tld_length",
+      "mean": 2.8595,
+      "phishing_mean": 2.8308,
+      "legitimate_mean": 2.8882
+    },
+    {
+      "feature": "host_is_ip",
+      "mean": 0.0006,
+      "phishing_mean": 0.0011,
+      "legitimate_mean": 0.0
+    },
+    {
+      "feature": "host_has_port",
+      "mean": 0.0008,
+      "phishing_mean": 0.0014,
+      "legitimate_mean": 0.0002
+    },
+    {
+      "feature": "host_has_punycode",
+      "mean": 0.0005,
+      "phishing_mean": 0.001,
+      "legitimate_mean": 0.0
+    },
+    {
+      "feature": "host_has_www",
+      "mean": 0.0381,
+      "phishing_mean": 0.043,
+      "legitimate_mean": 0.0331
+    },
+    {
+      "feature": "path_length",
+      "mean": 24.3175,
+      "phishing_mean": 16.7045,
+      "legitimate_mean": 31.9305
+    },
+    {
+      "feature": "path_depth",
+      "mean": 1.6976,
+      "phishing_mean": 1.1911,
+      "legitimate_mean": 2.2041
+    },
+    {
+      "feature": "query_length",
+      "mean": 9.1759,
+      "phishing_mean": 10.1439,
+      "legitimate_mean": 8.2079
+    },
+    {
+      "feature": "query_param_count",
+      "mean": 0.3598,
+      "phishing_mean": 0.4009,
+      "legitimate_mean": 0.3187
+    },
+    {
+      "feature": "has_fragment",
+      "mean": 0.0039,
+      "phishing_mean": 0.0075,
+      "legitimate_mean": 0.0004
+    },
+    {
+      "feature": "embedded_url_count",
+      "mean": 0.0067,
+      "phishing_mean": 0.0125,
+      "legitimate_mean": 0.0009
+    },
+    {
+      "feature": "suspicious_word_count",
+      "mean": 0.079,
+      "phishing_mean": 0.0613,
+      "legitimate_mean": 0.0966
+    }
+  ],
+  "strongest_separation_on_train": [
+    {
+      "feature": "host_is_ip",
+      "separation": 2.1429,
+      "coverage": 0.000742,
+      "phishing_mean": 0.0015,
+      "legitimate_mean": 0.0
+    },
+    {
+      "feature": "has_fragment",
+      "separation": 1.8421,
+      "coverage": 0.003762,
+      "phishing_mean": 0.0073,
+      "legitimate_mean": 0.0002
+    },
+    {
+      "feature": "embedded_url_count",
+      "separation": 1.6377,
+      "coverage": 0.006172,
+      "phishing_mean": 0.0126,
+      "legitimate_mean": 0.0013
+    },
+    {
+      "feature": "host_has_punycode",
+      "separation": 1.5714,
+      "coverage": 0.000661,
+      "phishing_mean": 0.0012,
+      "legitimate_mean": 0.0001
+    },
+    {
+      "feature": "host_hyphen_count",
+      "separation": 1.3576,
+      "coverage": 0.205554,
+      "phishing_mean": 0.5182,
+      "legitimate_mean": 0.0991
+    },
+    {
+      "feature": "host_has_port",
+      "separation": 1.3,
+      "coverage": 0.001007,
+      "phishing_mean": 0.0016,
+      "legitimate_mean": 0.0004
+    },
+    {
+      "feature": "count_percent",
+      "separation": 1.2575,
+      "coverage": 0.030719,
+      "phishing_mean": 0.1239,
+      "legitimate_mean": 0.5434
+    },
+    {
+      "feature": "host_digit_count",
+      "separation": 1.2357,
+      "coverage": 0.169263,
+      "phishing_mean": 1.8221,
+      "legitimate_mean": 0.4304
+    },
+    {
+      "feature": "count_at",
+      "separation": 1.1556,
+      "coverage": 0.004281,
+      "phishing_mean": 0.0071,
+      "legitimate_mean": 0.0019
+    },
+    {
+      "feature": "count_underscore",
+      "separation": 0.8691,
+      "coverage": 0.148753,
+      "phishing_mean": 0.1919,
+      "legitimate_mean": 0.4867
+    }
+  ],
+  "separation_metric_note": "separation = |phishing mean - legitimate mean| / overall mean. It favours rare features, so it must always be read next to coverage (the share of rows where the feature is not zero). A feature can top the ranking and still decide almost nothing.",
+  "written_files": [
+    {
+      "path": "data\\features\\url\\train.csv",
+      "rows": 98344,
+      "bytes": 15038607
+    },
+    {
+      "path": "data\\features\\url\\validation.csv",
+      "rows": 21074,
+      "bytes": 3209766
+    }
+  ],
+  "known_limitations": [
+    "Known problem 14, residual: 93.77% of PhishTank URLs contain a path against 99.93% of benign URLs. path_length, path_depth and count_slash therefore carry some source provenance as well as phishing signal, and unlike the scheme this cannot be removed without destroying the URL.",
+    "host_subdomain_count uses the simple rule 'labels minus two', so a two-part public suffix such as co.uk reads one subdomain too many. A public-suffix list was rejected as an extra dependency that would have to be versioned and defended.",
+    "The suspicious-word list was fixed in advance from the phishing-URL literature and contains no brand names. A list tuned by inspecting the training labels would be a fitted parameter, and it would not transfer to the brands attacked next year.",
+    "These features describe the URL string only. Nothing is resolved over the network -- no WHOIS age, no DNS record, no page content -- because PhishTank lists only currently-online phishes, so a lookup made today would describe a different internet from the one the snapshot captured."
+  ]
+}

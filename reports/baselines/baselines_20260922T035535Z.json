@@ -1,0 +1,291 @@
+{
+  "generated_at_utc": "2026-09-22T03:55:35+00:00",
+  "stage": "CRISP-DM modelling -- baseline models for comparison",
+  "scope_note": "Baselines trained on the train split and measured on the validation split, with the same seed and the same measuring code as section 9. The test split was not read. Everything that learns from data -- TF-IDF vocabulary, scaler -- was fitted on the training rows only.",
+  "seed": 42,
+  "train_split": "train",
+  "evaluation_split": "validation",
+  "tfidf_settings": {
+    "tfidf_word": {
+      "analyzer": "word",
+      "ngram_range": [
+        1,
+        1
+      ],
+      "max_features": 50000,
+      "min_df": 2
+    },
+    "tfidf_char": {
+      "analyzer": "char_wb",
+      "ngram_range": [
+        3,
+        5
+      ],
+      "max_features": 50000,
+      "min_df": 2
+    }
+  },
+  "section9_report_used": "training_20260922T035249Z.json",
+  "proposed_models_still_on_sample_data": 0,
+  "baselines": [
+    {
+      "name": "email_majority",
+      "task": "email",
+      "representation": "none",
+      "model": "majority",
+      "description": "Email, always predicts the commonest class (the floor)",
+      "feature_note": "no features",
+      "feature_columns": 1,
+      "train_rows": 56450,
+      "validation_rows": 12096,
+      "is_full_data": true,
+      "is_baseline": true,
+      "prepare_seconds": 0.97,
+      "training_seconds": 0.0,
+      "train_scores": {
+        "accuracy": 0.5144,
+        "precision": 0.5144,
+        "recall": 1.0,
+        "f1": 0.6793,
+        "true_negative": 0,
+        "false_positive": 27414,
+        "false_negative": 0,
+        "true_positive": 29036,
+        "rows": 56450
+      },
+      "validation_scores": {
+        "accuracy": 0.5144,
+        "precision": 0.5144,
+        "recall": 1.0,
+        "f1": 0.6793,
+        "true_negative": 0,
+        "false_positive": 5874,
+        "false_negative": 0,
+        "true_positive": 6222,
+        "rows": 12096
+      }
+    },
+    {
+      "name": "email_tfidf_logreg",
+      "task": "email",
+      "representation": "tfidf_word",
+      "model": "logreg",
+      "description": "Email, TF-IDF words + logistic regression (classical text pipeline)",
+      "feature_note": "50000 TF-IDF word",
+      "feature_columns": 50000,
+      "train_rows": 56450,
+      "validation_rows": 12096,
+      "is_full_data": true,
+      "is_baseline": true,
+      "prepare_seconds": 16.78,
+      "training_seconds": 1.21,
+      "train_scores": {
+        "accuracy": 0.9914,
+        "precision": 0.9895,
+        "recall": 0.9938,
+        "f1": 0.9916,
+        "true_negative": 27109,
+        "false_positive": 305,
+        "false_negative": 181,
+        "true_positive": 28855,
+        "rows": 56450
+      },
+      "validation_scores": {
+        "accuracy": 0.9871,
+        "precision": 0.9854,
+        "recall": 0.9896,
+        "f1": 0.9875,
+        "true_negative": 5783,
+        "false_positive": 91,
+        "false_negative": 65,
+        "true_positive": 6157,
+        "rows": 12096
+      }
+    },
+    {
+      "name": "email_tfidf_nb",
+      "task": "email",
+      "representation": "tfidf_word",
+      "model": "naive_bayes",
+      "description": "Email, TF-IDF words + Naive Bayes (the classic spam filter)",
+      "feature_note": "50000 TF-IDF word",
+      "feature_columns": 50000,
+      "train_rows": 56450,
+      "validation_rows": 12096,
+      "is_full_data": true,
+      "is_baseline": true,
+      "prepare_seconds": 16.44,
+      "training_seconds": 0.02,
+      "train_scores": {
+        "accuracy": 0.9796,
+        "precision": 0.989,
+        "recall": 0.9711,
+        "f1": 0.98,
+        "true_negative": 27101,
+        "false_positive": 313,
+        "false_negative": 839,
+        "true_positive": 28197,
+        "rows": 56450
+      },
+      "validation_scores": {
+        "accuracy": 0.9735,
+        "precision": 0.9858,
+        "recall": 0.9624,
+        "f1": 0.974,
+        "true_negative": 5788,
+        "false_positive": 86,
+        "false_negative": 234,
+        "true_positive": 5988,
+        "rows": 12096
+      }
+    },
+    {
+      "name": "url_majority",
+      "task": "url",
+      "representation": "none",
+      "model": "majority",
+      "description": "URL, always predicts the commonest class (the floor)",
+      "feature_note": "no features",
+      "feature_columns": 1,
+      "train_rows": 98344,
+      "validation_rows": 21074,
+      "is_full_data": true,
+      "is_baseline": true,
+      "prepare_seconds": 0.11,
+      "training_seconds": 0.0,
+      "train_scores": {
+        "accuracy": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_negative": 49172,
+        "false_positive": 0,
+        "false_negative": 49172,
+        "true_positive": 0,
+        "rows": 98344
+      },
+      "validation_scores": {
+        "accuracy": 0.5,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "true_negative": 10537,
+        "false_positive": 0,
+        "false_negative": 10537,
+        "true_positive": 0,
+        "rows": 21074
+      }
+    },
+    {
+      "name": "url_tfidf_logreg",
+      "task": "url",
+      "representation": "tfidf_char",
+      "model": "logreg",
+      "description": "URL, TF-IDF character 3-5 grams + logistic regression",
+      "feature_note": "50000 TF-IDF char_wb",
+      "feature_columns": 50000,
+      "train_rows": 98344,
+      "validation_rows": 21074,
+      "is_full_data": true,
+      "is_baseline": true,
+      "prepare_seconds": 23.42,
+      "training_seconds": 2.16,
+      "train_scores": {
+        "accuracy": 0.9775,
+        "precision": 0.9881,
+        "recall": 0.9666,
+        "f1": 0.9772,
+        "true_negative": 48598,
+        "false_positive": 574,
+        "false_negative": 1641,
+        "true_positive": 47531,
+        "rows": 98344
+      },
+      "validation_scores": {
+        "accuracy": 0.9685,
+        "precision": 0.9821,
+        "recall": 0.9544,
+        "f1": 0.968,
+        "true_negative": 10354,
+        "false_positive": 183,
+        "false_negative": 481,
+        "true_positive": 10056,
+        "rows": 21074
+      }
+    },
+    {
+      "name": "url_tfidf_nb",
+      "task": "url",
+      "representation": "tfidf_char",
+      "model": "naive_bayes",
+      "description": "URL, TF-IDF character 3-5 grams + Naive Bayes",
+      "feature_note": "50000 TF-IDF char_wb",
+      "feature_columns": 50000,
+      "train_rows": 98344,
+      "validation_rows": 21074,
+      "is_full_data": true,
+      "is_baseline": true,
+      "prepare_seconds": 23.33,
+      "training_seconds": 0.03,
+      "train_scores": {
+        "accuracy": 0.9534,
+        "precision": 0.9876,
+        "recall": 0.9184,
+        "f1": 0.9517,
+        "true_negative": 48604,
+        "false_positive": 568,
+        "false_negative": 4011,
+        "true_positive": 45161,
+        "rows": 98344
+      },
+      "validation_scores": {
+        "accuracy": 0.9486,
+        "precision": 0.9859,
+        "recall": 0.9102,
+        "f1": 0.9466,
+        "true_negative": 10400,
+        "false_positive": 137,
+        "false_negative": 946,
+        "true_positive": 9591,
+        "rows": 21074
+      }
+    },
+    {
+      "name": "url_lexical_logreg",
+      "task": "url",
+      "representation": "lexical",
+      "model": "logreg",
+      "description": "URL, the SAME 35 lexical features as section 9, but a linear model",
+      "feature_note": "35 lexical (scaled)",
+      "feature_columns": 35,
+      "train_rows": 98344,
+      "validation_rows": 21074,
+      "is_full_data": true,
+      "is_baseline": true,
+      "prepare_seconds": 0.29,
+      "training_seconds": 2.41,
+      "train_scores": {
+        "accuracy": 0.8295,
+        "precision": 0.831,
+        "recall": 0.8271,
+        "f1": 0.8291,
+        "true_negative": 40902,
+        "false_positive": 8270,
+        "false_negative": 8500,
+        "true_positive": 40672,
+        "rows": 98344
+      },
+      "validation_scores": {
+        "accuracy": 0.8304,
+        "precision": 0.8277,
+        "recall": 0.8345,
+        "f1": 0.8311,
+        "true_negative": 8707,
+        "false_positive": 1830,
+        "false_negative": 1744,
+        "true_positive": 8793,
+        "rows": 21074
+      }
+    }
+  ]
+}
