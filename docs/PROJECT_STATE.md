@@ -2,7 +2,7 @@
 
 > Purpose: single source of truth for "Where are we now?".
 > Update this file at the end of every working session or whenever a stage, dataset, model, experiment, or result changes.
-> Last updated: 2026-09-22
+> Last updated: 2026-10-10
 
 ## Current Stage
 
@@ -22,6 +22,7 @@ CRISP-DM position: **deployment.** Sections 1-12 run without error.
 | Baseline models (section 10) | complete, 7 baselines on full data |
 | Final evaluation (section 11) | **complete: 11 models, none refused** |
 | Web prototype (section 12) | **complete and verified** |
+| SHAP explanations (sections 12.4-12.5) | **implemented 2026-10-10; verified in a test harness, not yet re-run on the real models** |
 
 **The headline result is that the proposed system works but did not beat the baselines.**
 BERT + XGBoost reached F1 0.9846 on email and 0.9641 on URLs; TF-IDF + logistic
@@ -30,6 +31,20 @@ baselines' favour. This is recorded as the result rather than explained away; se
 Current Results for the full reading.
 
 ## Completed
+
+* **SHAP explanations added to the web prototype** (2026-10-10): new sections 12.4
+  (explanation helpers) and 12.5 (self-test); the interface and smoke test move to 12.6
+  and 12.7. Notebook 129 -> 133 cells. Each answer now shows *why* the model decided:
+  links with exact TreeSHAP built into XGBoost (no new library), emails with the `shap`
+  0.53.0 Partition explainer over words. **Verification so far is a test harness, not
+  the real models:** sections 6.1, 7.1, 9.1 and 12.1-12.7 were executed unchanged against
+  synthetic data, with BERT replaced by a stand-in embedder (real `BertTokenizerFast`,
+  mean-pooled random token vectors) because the BERT weights could not be downloaded in
+  that environment. Results: 12.2 52/52, 12.5 35/35, all 25 pre-launch checks, and the
+  live server answered all five endpoints over HTTP. **Sections 12.1-12.7 must still be
+  re-run in the project kernel** before any explanation is quoted or demonstrated.
+  Also fixed: a duplicated counter line in 12.2 that made its stored output read
+  **51 passed, 1 failed** (not the 52/52 recorded on 2026-09-22) - see known problem 23.
 
 * **Web prototype implemented, tested and verified** (2026-09-22): section 12 of
   `Anti_phishing_prototype.ipynb` (12.1 helpers, 12.2 self-test, 12.3 model selection and
@@ -608,6 +623,14 @@ Versions below were **measured** by executing the notebook on 2026-08-16, not de
 | tqdm | `>=4.66,<5` | progress reporting for long extraction passes | **4.67.3** |
 | joblib | `>=1.3,<2` | model and feature persistence | **1.5.2** |
 
+**Added 2026-10-10:** `shap` 0.53.0, installed by section 12.4 only, for the email
+explanations in the prototype. It is installed with numpy, pandas, xgboost and
+scikit-learn pinned to the versions already in the kernel, so it cannot upgrade them;
+checked on 2026-10-10 that it installs against numpy 2.3.3 / xgboost 3.4.1 /
+scikit-learn 1.9.0 without changing them, and that a cp312 Windows wheel exists. It is
+not used for training, evaluation or model selection. The "optional later experiments"
+note below is kept as the original record.
+
 Deliberately excluded, with reasons: `datasets` (pandas suffices for the CSV corpora),
 `nltk` / `spacy` (classical NLP preprocessing is not in the approved method; BERT
 supplies its own tokeniser), `lightgbm` / `catboost` (additional models beyond
@@ -806,6 +829,37 @@ normalises to the stored training form in all 200 cases.
   written as data and 12.2 asserts every feature name exists in `FEATURE_NAMES`, because a
   mistyped name would read as zero and the message would silently never appear.
 * User input is never echoed into the result card, so nothing typed can alter the markup.
+  The email *explanation* card (12.4) must show the user's words, so every word is passed
+  through `html.escape()`; 12.5 and 12.7 test that pasted `<script>` and `<div>` text is
+  shown as text and cannot unbalance the card.
+
+### Explanations (sections 12.4-12.5, added 2026-10-10)
+
+| Item | Links (`url_bert_lexical`) | Emails (`email_bert`) |
+| --- | --- | --- |
+| Method | TreeSHAP built into XGBoost, `pred_contribs=True` | `shap` Partition explainer over the whole text -> BERT -> XGBoost path |
+| Exact? | yes | approximate; detail depends on the budget |
+| What is shown | the 768 BERT contributions **summed** into one item, plus each of the 35 lexical features by name | each word coloured by its push, plus the top words each way |
+| Cost | milliseconds, shown with the verdict | `EMAIL_EXPLAIN_MAX_EVALS` BERT re-scorings (100 on CPU, 300 on GPU), on a separate "Explain why" button |
+| Text limit | - | cut to what BERT reads (256 tokens), at a word boundary |
+
+Values are in **log-odds**, never shown as percentages. Positive pushes towards phishing.
+The 768 BERT values are summed because one BERT dimension has no meaning to a reader;
+SHAP values are additive, so the sum is exact.
+
+The fixed warning rules from 12.1 are kept but now headed **"General warning signs
+(fixed rules, not the model's reasons)"**, because they can contradict SHAP: section 7
+measured phishing URLs here as *shorter* than legitimate ones (49.67 vs 56.82), so the
+`url_length` rule can point the opposite way to what the model learned.
+
+What 12.5 proves, on 50 real **validation** rows (never test): pushes add up to the
+model's raw score; that score gives the probability shown; its sign matches the
+verdict; the BERT block is 768 columns wide and the named columns hold exactly the
+section 7 feature values, so no feature name can be attached to the wrong number.
+
+**Rule kept:** nothing about the models may be changed in response to what SHAP shows.
+The test split has been opened, so retraining or dropping features now would invalidate
+section 11. Explanations are reported as what the model does, not as a reason to tune.
 
 ## Known Problems
 
@@ -1016,7 +1070,25 @@ normalises to the stored training form in all 200 cases.
     external tool edits it** (known problem 13), and prefer content hashes over timestamps
     for every future integrity claim.
 
+23. **The 12.2 self-test had a silent failure** (found 2026-10-10). A duplicated line
+    (`_unchanged = _unchanged + 1` twice) made "stored URLs survive preparation
+    unchanged" count 400 against 200, so the stored output read **51 passed, 1 failed**
+    while this file recorded 52/52. The cell only prints its result and does not stop the
+    notebook, which is why it went unnoticed. The preparation itself was never wrong. Fixed
+    by removing the duplicate; the harness then gave 52/52. The new 12.5 raises on any
+    failure so the same thing cannot happen there.
+24. **Email explanations are slow on CPU.** Estimated 9-18 s at 100 re-scorings from the
+    5.6 rows/s measured in section 8, not yet measured with the real BERT. Section 12.7
+    times the scam example and records it as `email_example_seconds` in the prototype
+    report. For a live demonstration, use Colab with a GPU or press "Explain why" on the
+    example email once before presenting.
+
 ## Next Task
+
+**Re-run sections 12.1 to 12.7 in the project kernel** (sections 8.3, 9 and 11 must be
+in the kernel first, exactly as for the original prototype). Close the notebook in VS
+Code before any external edit and take a backup (known problem 13). Then check: 12.2
+shows 52/52, 12.5 shows 0 failed, and 12.7 records `email_example_seconds`.
 
 **The implementation is finished.** Sections 1-12 run end to end with 0 errors, all three
 research objectives have supporting measured evidence, and the prototype serves the
@@ -1081,6 +1153,7 @@ into a second validation set and destroy the honesty of every number in this fil
 
 | Date | Change |
 | --- | --- |
+| 2026-10-10 | **SHAP explanations added to the prototype.** New 12.4 (helpers) and 12.5 (self-test, 35 checks, raises on failure); old 12.4/12.5 renumbered 12.6/12.7 and extended with an "Explain why" button for emails, an instant explanation card for links, 7 new smoke checks and an `explanations` block in the prototype report. Links: exact TreeSHAP from XGBoost with the 768 BERT values summed into one item. Emails: `shap` 0.53.0 Partition explainer over words, text cut to what BERT reads, `[MASK]` masking, budget 100 (CPU) / 300 (GPU). All user text in explanation cards is HTML-escaped. The fixed URL rules are relabelled "General warning signs" because they can contradict the model (url_length). Fixed known problem 23 in 12.2. Verified in a test harness only (synthetic data, stand-in BERT): 12.2 52/52, 12.5 35/35, all pre-launch checks, five endpoints over HTTP. Not yet re-run on the real models. No model, feature, split or result changed. |
 | 2026-09-22 | **Full BERT extraction completed, the proposed system measured for the first time, and the web prototype built - the project is now complete end to end.** (a) **Section 8 full run:** `MAX_ROWS_PER_SPLIT = None` over all three splits of both tasks, 245 minutes on CPU (no GPU was ever available), 0 failures, `all_checks_passed: true`, `reports/features/bert_features_20260921T114709Z.json`. Alignment was checked beyond the extraction's own tests by comparing the saved label arrays against the processed CSVs row for row - identical on all six splits - and the 35 lexical columns were confirmed to line up with the BERT rows on all three URL splits, so the hybrid join cannot be silently misaligned. (b) **Sections 9, 10 and 11 re-run:** 11.9 minutes, 0 failures, `bert_run_tags` now `full`, `any_model_on_sample_data: false`, nothing refused. **The proposed system has its first real result: `email_bert` test F1 0.9846, `url_bert_lexical` 0.9641, `url_bert` 0.9587.** (c) **The headline finding is negative and is recorded as such:** the TF-IDF baselines stayed narrowly ahead - `email_tfidf_logreg` 0.9868 against 0.9846, `url_tfidf_logreg` 0.9678 against 0.9641. No claim is made that BERT + XGBoost is better (CLAUDE.md rules 3 and 4). The defensible Objective 2 result is that the hybrid beats each of its own parts: BERT + lexical 0.9641 against lexical-only 0.9366 and BERT-only 0.9587. Two measured reasons for the baselines' edge are recorded rather than speculated: the baselines read whole emails while BERT truncates at 256 tokens, and a frozen BERT never adapts to the task while character n-grams are strong on URL-shaped strings. Overfitting is also recorded - `email_bert` reaches train F1 1.0000 - and deliberately not tuned, because tuning after the test split was opened would invalidate every number in this file. (d) **Section 12, the web prototype:** 117 -> 128 cells, 0 errors, gradio 6.28.0 as the only new dependency. Self-test 52/52 plus 18 pre-launch smoke checks plus an HTTP fetch of the running server returning 200 with the correct title. Verified against train/serve skew on 200 real processed rows. Two bugs were caught before launch: three warning-rule feature names did not exist in `FEATURE_NAMES` and would have read as zero so the messages would never have appeared (the rules are now data and a test asserts every name), and gradio 6 moved `theme` from `Blocks()` to `launch()` where passing it to the wrong one is accepted silently and the theme simply dropped. The prototype serves the **proposed** system rather than the highest-scoring model, as a documented setting with both options implemented, and states the better baseline's F1 on screen. (e) All 128 notebook cells were given nbformat `id` fields, resolving known problem 21; the notebook now validates with no warnings. |
 | 2026-09-20 | **Final test-set evaluation completed for every finished model; the pipeline is now complete end to end.** Added section 11 to `Anti_phishing_prototype.ipynb` (11.1 helpers, 11.2 self-test, 11.3 model list, 11.4 build test features and measure, 11.5 final results); 106 -> 117 cells, five new code cells executed in a live kernel, 0 errors. Self-test 12/12, covering two unrecoverable failures: test data leaking into the TF-IDF vocabulary (with a positive control), and spending the test split on an unfinished model. The URL test features, deliberately deferred since section 7, were built here with the section 7 functions (`data/features/url/test.csv`, 21,072 rows) and verified to align row-for-row with the processed test split. **Eight models measured on the test splits. Email: `email_tfidf_logreg` F1 0.9868, `email_tfidf_nb` 0.9747, floor 0.6793. URL: `url_tfidf_logreg` F1 0.9678, `url_tfidf_nb` 0.9476, `url_lexical` 0.9366, `url_lexical_logreg` 0.8220, floor 0.0000.** Test agreed with validation on every model, the largest difference being 0.0091, which confirms the section 6 splits are clean. **Three models were REFUSED by design** — `email_bert`, `url_bert`, `url_bert_lexical` — because their BERT features are still the 512-row sample; measuring them would have wasted the one honest test measurement on a meaningless number. The proposed system therefore has no final result, and the best numbers above belong to baselines. Each model was retrained from the training split rather than loaded from a file, and 11.4 raises if a train and test matrix ever differ in width, which is what a vectoriser re-fitted on test would look like. |
 | 2026-09-19 | **Baseline models added and executed on full data; the bar for the proposed system is now known.** Added section 10 to `Anti_phishing_prototype.ipynb` (10.1 helpers, 10.2 self-test, 10.3 settings, 10.4 training, 10.5 combined comparison); 95 -> 106 cells, five new code cells executed in a live kernel, 0 errors. Self-test 19/19, the important part being a leakage test: a word present only in validation must not enter the TF-IDF vocabulary, with a positive control confirming that fitting on train+validation together WOULD have captured it, so the test cannot pass for the wrong reason. The scaler is checked the same way. Seven baselines, every one on full data for both tasks, using the same splits, seed and `evaluate_classifier` as section 9 so the comparison is fair. **First real results for the email task:** `email_tfidf_logreg` F1 0.9875, `email_tfidf_nb` F1 0.9740, floor 0.6793. **URL:** `url_tfidf_logreg` F1 0.9680, `url_tfidf_nb` F1 0.9466, section 9's `url_lexical` 0.9341, `url_lexical_logreg` 0.8311, floor 0.0000. Two findings recorded: classical TF-IDF sets a high bar the hybrid must clear, and on URLs the representation matters more than the classifier while XGBoost still clearly beats a linear model on identical features. Section 10.5 again refuses to rank sample-trained models against full-data ones. The test splits were not opened. Also committed the artifacts of an uncommitted full notebook re-run from 2026-09-18, which reproduced section 9 exactly (`url_lexical` F1 0.9341), confirming the fixed seed works. |
