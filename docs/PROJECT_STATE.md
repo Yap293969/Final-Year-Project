@@ -21,8 +21,9 @@ CRISP-DM position: **deployment.** Sections 1-12 run without error.
 | XGBoost training (section 9) | complete, on the full BERT features |
 | Baseline models (section 10) | complete, 7 baselines on full data |
 | Final evaluation (section 11) | **complete: 11 models, none refused** |
-| Web prototype (section 12) | **complete and verified** |
+| Web prototype (section 12) | **interface being rebuilt for Netlify** (2026-10-10): gradio removed, `web/` page added; not yet connected to the real models |
 | SHAP explanations (sections 12.4-12.5) | **implemented 2026-10-10; verified in a test harness, not yet re-run on the real models** |
+| Web API between `web/` and the models | **not started** - the next step |
 
 **The headline result is that the proposed system works but did not beat the baselines.**
 BERT + XGBoost reached F1 0.9846 on email and 0.9641 on URLs; TF-IDF + logistic
@@ -31,6 +32,28 @@ baselines' favour. This is recorded as the result rather than explained away; se
 Current Results for the full reading.
 
 ## Completed
+
+* **Interface moved from gradio to a web page for Netlify** (2026-10-10). The deployment
+  target is now Netlify, which hosts static pages and cannot run the Python models, so:
+  * **Added `web/`**: `index.html`, `css/style.css`, `js/config.js`, `js/app.js` and
+    `README.md`. HTML, CSS, JavaScript and Bootstrap 5.3.3 (loaded from jsDelivr with
+    integrity hashes checked against the npm package). An email tab and a link tab, the
+    verdict and confidence, the SHAP reasons for links, and an "Explain why" button that
+    marks each word of an email. `web/README.md` defines the five requests the page makes
+    (`/api/health`, `/api/check-email`, `/api/explain-email`, `/api/check-url`).
+  * **Removed from the notebook**: the gradio interface and launch (old 12.6 and 12.7),
+    the gradio install in 12.3, and the Python HTML cards (`render_verdict_html`,
+    `VERDICT_STYLES`, `render_link_explanation_html`, `render_email_explanation_html`)
+    with their tests. The predictors and every helper the web API will need are kept.
+    Notebook 133 -> 130 cells; the new 12.6 is a note pointing to `web/`.
+  * **Tested in a harness, not on the real models**: 12.1-12.5 ran with synthetic data and
+    a stand-in for BERT (12.2 **37/37**, 12.5 **29/29**; the counts fell because the card
+    tests left with the cards). A throwaway test-only server answered the page's requests
+    with the real `classify()`, `url_warning_signs()`, `explain_link()` and
+    `explain_email()` output, and the page passed **25/25** browser checks at desktop and
+    phone width: verdicts, reasons, word marking, pasted `<script>`/`<img>` shown as text
+    and never run, a clear message when the server is down, no sideways scrolling.
+  * **Until the web API exists there is no working demo.** See known problem 25.
 
 * **SHAP explanations added to the web prototype** (2026-10-10): new sections 12.4
   (explanation helpers) and 12.5 (self-test); the interface and smoke test move to 12.6
@@ -778,6 +801,11 @@ adjusted afterwards.
 
 ## Web Prototype (section 12, 2026-09-22)
 
+> **Superseded on 2026-10-10.** The gradio interface described below was removed and
+> replaced by the web page in `web/` (see Completed). The model-selection policy, the
+> train/serve parity checks and the honesty rules below still apply to the predictors
+> that 12.3 builds; only the interface changed.
+
 Implemented as **section 12 of `Anti_phishing_prototype.ipynb`** (12.1 helpers, 12.2
 self-test, 12.3 model selection and build, 12.4 interface, 12.5 smoke test and launch).
 Satisfies Specification section 14. Record:
@@ -1083,12 +1111,19 @@ section 11. Explanations are reported as what the model does, not as a reason to
     report. For a live demonstration, use Colab with a GPU or press "Explain why" on the
     example email once before presenting.
 
+25. **No working demo until the web API exists** (2026-10-10). The gradio interface was
+    removed and `web/` is not connected to the models yet, so the prototype cannot be
+    demonstrated end to end. The page says "The model server isn't connected" instead of
+    showing invented answers.
+
 ## Next Task
 
-**Re-run sections 12.1 to 12.7 in the project kernel** (sections 8.3, 9 and 11 must be
-in the kernel first, exactly as for the original prototype). Close the notebook in VS
-Code before any external edit and take a backup (known problem 13). Then check: 12.2
-shows 52/52, 12.5 shows 0 failed, and 12.7 records `email_example_seconds`.
+**Build the web API** that answers the requests listed in `web/README.md`, around the
+predictors from 12.3 and the helpers from 12.1 and 12.4. It must run somewhere that can
+host Python and BERT (not Netlify itself); the page on Netlify then points at it through
+`web/js/config.js`. Before that, **re-run sections 12.1 to 12.5 in the project kernel**
+(sections 8.3, 9 and 11 first) and check 12.2 shows 37/37 and 12.5 shows 0 failed. Close
+the notebook in VS Code before any external edit and take a backup (known problem 13).
 
 **The implementation is finished.** Sections 1-12 run end to end with 0 errors, all three
 research objectives have supporting measured evidence, and the prototype serves the
@@ -1147,12 +1182,14 @@ into a second validation set and destroy the honesty of every number in this fil
 * The suspicious-word list is fixed in advance from the literature and excludes brand names, so it is prior knowledge rather than a parameter fitted on the data (2026-09-15).
 * No network lookups in feature engineering — no WHOIS, DNS or page fetch — because PhishTank lists only currently-online phishes (2026-09-15).
 * File integrity is claimed with SHA-256 content hashes, never with modification times (2026-09-15, after known problem 22).
+* **The deployment target is Netlify** (2026-10-10, owner's decision). The interface is a static HTML/CSS/JavaScript/Bootstrap page in `web/`. The Python models cannot run on Netlify itself (Netlify Functions run JavaScript, TypeScript or Go, and `bert-base-uncased` alone is about 440 MB), so they will be served by a separate web API that the page calls.
 * Comment-only edits to an executed cell are permitted without re-executing it, but must be proven comment-only by comparing the parsed code with docstrings stripped (2026-09-15).
 
 ## Change Log
 
 | Date | Change |
 | --- | --- |
+| 2026-10-10 | **Interface moved from gradio to `web/` for Netlify.** Added `web/index.html`, `css/style.css`, `js/config.js`, `js/app.js` and `README.md` (HTML, CSS, JavaScript, Bootstrap 5.3.3 with integrity hashes). Removed the gradio interface and launch (old 12.6, 12.7), the gradio install in 12.3, and the Python HTML cards with their tests; 133 -> 130 cells, new 12.6 is a note pointing to `web/`. All user and server text is put on screen with `textContent`, replacing the `html.escape()` protection. Harness: 12.2 37/37, 12.5 29/29, and 25/25 browser checks against a test-only server returning the real helper output. Not connected to the real models yet: the web API is the next step. Netlify recorded as the deployment target under Important Decisions. |
 | 2026-10-10 | **SHAP explanations added to the prototype.** New 12.4 (helpers) and 12.5 (self-test, 35 checks, raises on failure); old 12.4/12.5 renumbered 12.6/12.7 and extended with an "Explain why" button for emails, an instant explanation card for links, 7 new smoke checks and an `explanations` block in the prototype report. Links: exact TreeSHAP from XGBoost with the 768 BERT values summed into one item. Emails: `shap` 0.53.0 Partition explainer over words, text cut to what BERT reads, `[MASK]` masking, budget 100 (CPU) / 300 (GPU). All user text in explanation cards is HTML-escaped. The fixed URL rules are relabelled "General warning signs" because they can contradict the model (url_length). Fixed known problem 23 in 12.2. Verified in a test harness only (synthetic data, stand-in BERT): 12.2 52/52, 12.5 35/35, all pre-launch checks, five endpoints over HTTP. Not yet re-run on the real models. No model, feature, split or result changed. |
 | 2026-09-22 | **Full BERT extraction completed, the proposed system measured for the first time, and the web prototype built - the project is now complete end to end.** (a) **Section 8 full run:** `MAX_ROWS_PER_SPLIT = None` over all three splits of both tasks, 245 minutes on CPU (no GPU was ever available), 0 failures, `all_checks_passed: true`, `reports/features/bert_features_20260921T114709Z.json`. Alignment was checked beyond the extraction's own tests by comparing the saved label arrays against the processed CSVs row for row - identical on all six splits - and the 35 lexical columns were confirmed to line up with the BERT rows on all three URL splits, so the hybrid join cannot be silently misaligned. (b) **Sections 9, 10 and 11 re-run:** 11.9 minutes, 0 failures, `bert_run_tags` now `full`, `any_model_on_sample_data: false`, nothing refused. **The proposed system has its first real result: `email_bert` test F1 0.9846, `url_bert_lexical` 0.9641, `url_bert` 0.9587.** (c) **The headline finding is negative and is recorded as such:** the TF-IDF baselines stayed narrowly ahead - `email_tfidf_logreg` 0.9868 against 0.9846, `url_tfidf_logreg` 0.9678 against 0.9641. No claim is made that BERT + XGBoost is better (CLAUDE.md rules 3 and 4). The defensible Objective 2 result is that the hybrid beats each of its own parts: BERT + lexical 0.9641 against lexical-only 0.9366 and BERT-only 0.9587. Two measured reasons for the baselines' edge are recorded rather than speculated: the baselines read whole emails while BERT truncates at 256 tokens, and a frozen BERT never adapts to the task while character n-grams are strong on URL-shaped strings. Overfitting is also recorded - `email_bert` reaches train F1 1.0000 - and deliberately not tuned, because tuning after the test split was opened would invalidate every number in this file. (d) **Section 12, the web prototype:** 117 -> 128 cells, 0 errors, gradio 6.28.0 as the only new dependency. Self-test 52/52 plus 18 pre-launch smoke checks plus an HTTP fetch of the running server returning 200 with the correct title. Verified against train/serve skew on 200 real processed rows. Two bugs were caught before launch: three warning-rule feature names did not exist in `FEATURE_NAMES` and would have read as zero so the messages would never have appeared (the rules are now data and a test asserts every name), and gradio 6 moved `theme` from `Blocks()` to `launch()` where passing it to the wrong one is accepted silently and the theme simply dropped. The prototype serves the **proposed** system rather than the highest-scoring model, as a documented setting with both options implemented, and states the better baseline's F1 on screen. (e) All 128 notebook cells were given nbformat `id` fields, resolving known problem 21; the notebook now validates with no warnings. |
 | 2026-09-20 | **Final test-set evaluation completed for every finished model; the pipeline is now complete end to end.** Added section 11 to `Anti_phishing_prototype.ipynb` (11.1 helpers, 11.2 self-test, 11.3 model list, 11.4 build test features and measure, 11.5 final results); 106 -> 117 cells, five new code cells executed in a live kernel, 0 errors. Self-test 12/12, covering two unrecoverable failures: test data leaking into the TF-IDF vocabulary (with a positive control), and spending the test split on an unfinished model. The URL test features, deliberately deferred since section 7, were built here with the section 7 functions (`data/features/url/test.csv`, 21,072 rows) and verified to align row-for-row with the processed test split. **Eight models measured on the test splits. Email: `email_tfidf_logreg` F1 0.9868, `email_tfidf_nb` 0.9747, floor 0.6793. URL: `url_tfidf_logreg` F1 0.9678, `url_tfidf_nb` 0.9476, `url_lexical` 0.9366, `url_lexical_logreg` 0.8220, floor 0.0000.** Test agreed with validation on every model, the largest difference being 0.0091, which confirms the section 6 splits are clean. **Three models were REFUSED by design** — `email_bert`, `url_bert`, `url_bert_lexical` — because their BERT features are still the 512-row sample; measuring them would have wasted the one honest test measurement on a meaningless number. The proposed system therefore has no final result, and the best numbers above belong to baselines. Each model was retrained from the training split rather than loaded from a file, and 11.4 raises if a train and test matrix ever differ in width, which is what a vectoriser re-fitted on test would look like. |

@@ -1,0 +1,377 @@
+/* Is this a scam? -- styles on top of Bootstrap 5.3.
+ *
+ * The page is built for a phone first: one column, large touch targets.
+ * Red always means "towards phishing" and green "towards legitimate",
+ * in the verdict, the reason bars and the highlighted words alike.
+ */
+
+:root {
+  --ink: #1b2440;          /* text */
+  --ink-soft: #545e78;     /* secondary text */
+  --paper: #f3f5fa;        /* page background */
+  --surface: #ffffff;      /* cards and inputs */
+  --line: #d6dbe6;         /* borders */
+  --action: #2e3ba8;       /* buttons and active tab */
+  --action-dark: #232d86;
+  --phish: #c5221f;        /* towards phishing */
+  --phish-tint: #fdecea;
+  --safe: #1b7f3b;         /* towards legitimate */
+  --safe-tint: #e8f5ec;
+
+  --bs-body-font-family: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bs-body-color: var(--ink);
+  --bs-body-bg: var(--paper);
+  --bs-link-color-rgb: 46, 59, 168;
+  --bs-border-color: var(--line);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+.page {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 3rem;
+}
+
+/* --- Header ------------------------------------------------------------- */
+
+.page-header {
+  margin-bottom: 1.75rem;
+}
+
+.page-title {
+  font-size: clamp(2.4rem, 9vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.75rem;
+}
+
+.page-lead {
+  font-size: 1.15rem;
+  color: var(--ink-soft);
+  max-width: 34rem;
+  margin: 0;
+}
+
+.server-status {
+  font-size: 0.95rem;
+}
+
+/* --- Tabs and forms ----------------------------------------------------- */
+
+.check-tabs {
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.check-tabs .nav-link {
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  font-weight: 700;
+}
+
+.check-tabs .nav-link.active {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #fff;
+}
+
+.check-form {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.form-label {
+  font-weight: 700;
+}
+
+.form-control {
+  border-color: var(--line);
+}
+
+.form-control:focus {
+  border-color: var(--action);
+  box-shadow: 0 0 0 0.25rem rgba(46, 59, 168, 0.2);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--action);
+  --bs-btn-border-color: var(--action);
+  --bs-btn-hover-bg: var(--action-dark);
+  --bs-btn-hover-border-color: var(--action-dark);
+  --bs-btn-active-bg: var(--action-dark);
+  --bs-btn-active-border-color: var(--action-dark);
+  --bs-btn-disabled-bg: var(--action);
+  --bs-btn-disabled-border-color: var(--action);
+  --bs-btn-focus-shadow-rgb: 46, 59, 168;
+  font-weight: 700;
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--action);
+  --bs-btn-border-color: var(--action);
+  --bs-btn-hover-bg: var(--action);
+  --bs-btn-hover-border-color: var(--action);
+  --bs-btn-active-bg: var(--action-dark);
+  --bs-btn-active-border-color: var(--action-dark);
+  --bs-btn-focus-shadow-rgb: 46, 59, 168;
+  font-weight: 700;
+}
+
+.check-tabs .nav-link:focus-visible {
+  box-shadow: 0 0 0 0.25rem rgba(46, 59, 168, 0.35);
+}
+
+.form-actions .btn {
+  width: 100%;
+}
+
+@media (min-width: 576px) {
+  .form-actions .btn {
+    width: auto;
+  }
+}
+
+.examples {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+.examples-label {
+  color: var(--ink-soft);
+}
+
+.examples .btn-link {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+/* --- Results ------------------------------------------------------------ */
+
+.result-area:empty {
+  display: none;
+}
+
+.result-area {
+  margin-top: 1rem;
+}
+
+/* The verdict: the one loud element on the page. */
+.verdict {
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border: 2px solid;
+}
+
+.verdict-phishing {
+  background: var(--phish-tint);
+  border-color: var(--phish);
+  color: #8c1d16;
+}
+
+.verdict-legitimate {
+  background: var(--safe-tint);
+  border-color: var(--safe);
+  color: #14532b;
+}
+
+.verdict-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0 0 0.35rem;
+}
+
+.verdict-advice {
+  margin: 0;
+}
+
+.confidence {
+  margin-top: 1rem;
+}
+
+.confidence-label {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.confidence .progress {
+  height: 0.6rem;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.verdict-phishing .progress-bar { background: var(--phish); }
+.verdict-legitimate .progress-bar { background: var(--safe); }
+
+.warning-signs {
+  margin-top: 1rem;
+}
+
+.warning-signs h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+}
+
+.warning-signs ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+/* The "why" card. Quieter than the verdict, on purpose. */
+.why {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1.25rem;
+}
+
+.why h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.why-intro {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.reason {
+  margin-top: 1rem;
+}
+
+.reason-label {
+  margin: 0;
+}
+
+.reason-push {
+  font-size: 0.85rem;
+  margin: 0.1rem 0 0.3rem;
+}
+
+.reason-push.to-phishing { color: var(--phish); }
+.reason-push.to-legitimate { color: var(--safe); }
+
+.reason-bar {
+  height: 0.5rem;
+  background: var(--paper);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.reason-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
+.reason-bar .to-phishing { background: var(--phish); }
+.reason-bar .to-legitimate { background: var(--safe); }
+
+/* Words in an explained email are marked like a highlighter pen: the colour
+ * sits in the lower part of the line, and its strength follows the push. */
+.marked-text {
+  margin-top: 1rem;
+  line-height: 2;
+  overflow-wrap: anywhere;
+}
+
+.mark-word {
+  --strength: 0;
+  border-radius: 0.2em;
+  padding: 0 0.05em;
+}
+
+.mark-word.to-phishing {
+  background: linear-gradient(transparent 40%, rgba(242, 78, 66, var(--strength)) 40%);
+}
+
+.mark-word.to-legitimate {
+  background: linear-gradient(transparent 40%, rgba(46, 160, 87, var(--strength)) 40%);
+}
+
+.word-list {
+  margin-top: 1rem;
+}
+
+.word-list h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+.word-chip {
+  display: inline-block;
+  margin: 0 0.35rem 0.35rem 0;
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
+
+.word-chip.to-phishing { background: var(--phish-tint); color: var(--phish); }
+.word-chip.to-legitimate { background: var(--safe-tint); color: var(--safe); }
+
+.why-method {
+  margin: 1rem 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.explain-block {
+  margin-top: 1rem;
+}
+
+.explain-note {
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  margin: 0.4rem 0 0;
+}
+
+.error-card {
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid #b06000;
+}
+
+.error-card p {
+  margin: 0;
+}
+
+/* --- Footer ------------------------------------------------------------- */
+
+.page-footer {
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.page-footer p {
+  margin-bottom: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade {
+    transition: none;
+  }
+}
