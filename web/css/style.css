@@ -3,30 +3,27 @@
  * The page is built for a phone first: one column, large touch targets.
  * Red always means "towards phishing" and green "towards legitimate",
  * in the verdict, the reason bars and the highlighted words alike.
+ * The colours come from theme.css, so the page follows the visitor's
+ * Default / Dark / Light setting.
  */
 
 :root {
-  --ink: #1b2440;          /* text */
-  --ink-soft: #545e78;     /* secondary text */
-  --paper: #f3f5fa;        /* page background */
-  --surface: #ffffff;      /* cards and inputs */
-  --line: #d6dbe6;         /* borders */
-  --action: #2e3ba8;       /* buttons and active tab */
-  --action-dark: #232d86;
-  --phish: #c5221f;        /* towards phishing */
-  --phish-tint: #fdecea;
-  --safe: #1b7f3b;         /* towards legitimate */
-  --safe-tint: #e8f5ec;
-
+  /* Colours live in theme.css (Default, Dark and Light), shared with the
+   * landing page. Only the typeface and Bootstrap's hooks are set here. */
   --bs-body-font-family: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
   --bs-body-color: var(--ink);
-  --bs-body-bg: var(--paper);
-  --bs-link-color-rgb: 46, 59, 168;
+  --bs-body-bg: var(--bg);
   --bs-border-color: var(--line);
+  --bs-secondary-color: var(--ink-mute);
 }
 
 body {
-  background: var(--paper);
+  min-height: 100vh;
+  background:
+    radial-gradient(1100px 600px at 10% -10%, var(--bg-glow-1) 0%, transparent 60%),
+    radial-gradient(800px 500px at 100% 20%, var(--bg-glow-2) 0%, transparent 65%),
+    var(--bg);
+  background-attachment: fixed;
   color: var(--ink);
   font-size: 1.0625rem;
   line-height: 1.55;
@@ -57,6 +54,7 @@ body {
   line-height: 1.05;
   letter-spacing: -0.02em;
   margin: 0 0 0.75rem;
+  color: var(--ink-strong);
 }
 
 .page-lead {
@@ -79,7 +77,7 @@ body {
 
 .check-tabs .nav-link {
   color: var(--ink);
-  background: var(--surface);
+  background: var(--surface-glass);
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.5rem 1.1rem;
@@ -87,13 +85,13 @@ body {
 }
 
 .check-tabs .nav-link.active {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: #fff;
+  background: var(--action);
+  border-color: var(--action);
+  color: var(--action-ink);
 }
 
 .check-form {
-  background: var(--surface);
+  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 1rem;
   padding: 1.25rem;
@@ -104,15 +102,27 @@ body {
 }
 
 .form-control {
-  border-color: var(--line);
+  border-color: var(--line-strong);
+  background-color: var(--input-bg);
+  color: var(--input-ink);
+}
+
+.form-control::placeholder {
+  color: var(--ink-mute);
 }
 
 .form-control:focus {
   border-color: var(--action);
-  box-shadow: 0 0 0 0.25rem rgba(46, 59, 168, 0.2);
+  background-color: var(--input-bg);
+  color: var(--input-ink);
+  box-shadow: 0 0 0 0.25rem rgba(var(--action-rgb), 0.25);
 }
 
 .btn-primary {
+  --bs-btn-color: var(--action-ink);
+  --bs-btn-hover-color: var(--action-ink);
+  --bs-btn-active-color: var(--action-ink);
+  --bs-btn-disabled-color: var(--action-ink);
   --bs-btn-bg: var(--action);
   --bs-btn-border-color: var(--action);
   --bs-btn-hover-bg: var(--action-dark);
@@ -121,23 +131,25 @@ body {
   --bs-btn-active-border-color: var(--action-dark);
   --bs-btn-disabled-bg: var(--action);
   --bs-btn-disabled-border-color: var(--action);
-  --bs-btn-focus-shadow-rgb: 46, 59, 168;
+  --bs-btn-focus-shadow-rgb: var(--action-rgb);
   font-weight: 700;
 }
 
 .btn-outline-primary {
-  --bs-btn-color: var(--action);
+  --bs-btn-color: var(--accent-2);
+  --bs-btn-hover-color: var(--action-ink);
+  --bs-btn-active-color: var(--action-ink);
   --bs-btn-border-color: var(--action);
   --bs-btn-hover-bg: var(--action);
   --bs-btn-hover-border-color: var(--action);
   --bs-btn-active-bg: var(--action-dark);
   --bs-btn-active-border-color: var(--action-dark);
-  --bs-btn-focus-shadow-rgb: 46, 59, 168;
+  --bs-btn-focus-shadow-rgb: var(--action-rgb);
   font-weight: 700;
 }
 
 .check-tabs .nav-link:focus-visible {
-  box-shadow: 0 0 0 0.25rem rgba(46, 59, 168, 0.35);
+  box-shadow: 0 0 0 0.25rem rgba(var(--action-rgb), 0.35);
 }
 
 .form-actions .btn {
@@ -186,15 +198,15 @@ body {
 }
 
 .verdict-phishing {
-  background: var(--phish-tint);
+  background: var(--phish-soft);
   border-color: var(--phish);
-  color: #8c1d16;
+  color: var(--phish-ink);
 }
 
 .verdict-legitimate {
-  background: var(--safe-tint);
+  background: var(--safe-soft);
   border-color: var(--safe);
-  color: #14532b;
+  color: var(--safe-ink);
 }
 
 .verdict-title {
@@ -219,7 +231,7 @@ body {
 
 .confidence .progress {
   height: 0.6rem;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--track);
 }
 
 .verdict-phishing .progress-bar { background: var(--phish); }
@@ -242,7 +254,7 @@ body {
 
 /* The "why" card. Quieter than the verdict, on purpose. */
 .why {
-  background: var(--surface);
+  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 1rem;
   padding: 1.25rem;
@@ -273,12 +285,12 @@ body {
   margin: 0.1rem 0 0.3rem;
 }
 
-.reason-push.to-phishing { color: var(--phish); }
-.reason-push.to-legitimate { color: var(--safe); }
+.reason-push.to-phishing { color: var(--phish-ink); }
+.reason-push.to-legitimate { color: var(--safe-ink); }
 
 .reason-bar {
   height: 0.5rem;
-  background: var(--paper);
+  background: var(--track);
   border-radius: 999px;
   overflow: hidden;
 }
@@ -332,8 +344,8 @@ body {
   font-size: 0.9rem;
 }
 
-.word-chip.to-phishing { background: var(--phish-tint); color: var(--phish); }
-.word-chip.to-legitimate { background: var(--safe-tint); color: var(--safe); }
+.word-chip.to-phishing { background: var(--phish-soft); color: var(--phish-ink); }
+.word-chip.to-legitimate { background: var(--safe-soft); color: var(--safe-ink); }
 
 .why-method {
   margin: 1rem 0 0;
@@ -354,9 +366,9 @@ body {
 .error-card {
   border-radius: 1rem;
   padding: 1rem 1.25rem;
-  background: var(--surface);
+  background: var(--panel);
   border: 1px solid var(--line);
-  border-left: 4px solid #b06000;
+  border-left: 4px solid var(--warn);
 }
 
 .error-card p {

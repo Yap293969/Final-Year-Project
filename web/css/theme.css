@@ -1,0 +1,399 @@
+/* Is this a scam? -- the three colour themes, shared by every page.
+ *
+ *   default  the landing page's navy "research console" look
+ *   dark     the same layout on near-black, with less blue
+ *   light    a light page for bright rooms and printing
+ *
+ * js/theme.js puts the chosen theme on <html data-theme="...">, and the
+ * settings button lets the visitor change it. Every colour the pages use is
+ * a variable here, so a theme is only a list of values.
+ *
+ * Whatever the theme, red always means "towards phishing", amber "a weaker
+ * warning sign" and green "towards legitimate".
+ */
+
+/* --- Default: navy (the landing page's original colours) ----------------------- */
+
+:root,
+:root[data-theme="default"] {
+  color-scheme: dark;
+
+  --bg: #0a0f1f;
+  --bg-glow-1: #16224a;
+  --bg-glow-2: #121d40;
+  --grid-line: rgba(120, 150, 230, 0.075);
+  --glow-a: rgba(70, 100, 220, 0.28);
+  --glow-b: rgba(90, 130, 255, 0.22);
+  --glow-opacity: 0.55;
+  --star: #a9c4ff;
+
+  --panel: rgba(14, 20, 40, 0.78);
+  --surface: #0f162c;
+  --surface-glass: rgba(12, 18, 38, 0.65);
+  --row: rgba(255, 255, 255, 0.035);
+  --input-bg: rgba(8, 12, 26, 0.7);
+  --input-ink: #d6dcef;
+  --line: rgba(140, 160, 220, 0.16);
+  --line-strong: rgba(140, 160, 220, 0.28);
+
+  --ink: #eef1fa;
+  --ink-strong: #f2f4fb;
+  --ink-soft: #a3acc6;
+  --ink-mute: #6f7a98;
+  --ink-chip: #b6bfd8;
+  --ink-row: #c4cbe0;
+  --ink-eyebrow: #c9d3ee;
+  --ink-lead-strong: #dfe5f6;
+
+  --accent: #7ea6ff;
+  --accent-2: #a9c4ff;
+  --accent-rgb: 126, 166, 255;
+  --word-gradient: linear-gradient(100deg, #8fb2ff 0%, #c7d8ff 55%, #8fb2ff 100%);
+
+  --action: #5b86f5;
+  --action-dark: #4a73de;
+  --action-ink: #ffffff;
+  --action-rgb: 110, 150, 255;
+  --btn-top: #8bafff;
+  --btn-bottom: #6a93f7;
+  --ghost-bg: rgba(10, 15, 31, 0.55);
+  --ghost-hover-bg: rgba(30, 42, 80, 0.55);
+  --chip-bg: rgba(16, 23, 46, 0.6);
+  --eyebrow-bg: rgba(20, 30, 62, 0.55);
+
+  --monitor-bg: linear-gradient(180deg, rgba(18, 25, 50, 0.92), rgba(11, 16, 34, 0.92));
+  --monitor-shadow: 0 30px 80px -30px rgba(40, 70, 170, 0.6), 0 0 60px -20px rgba(110, 150, 255, 0.35);
+  --monitor-edge: rgba(160, 190, 255, 0.9);
+  --shield-filter: none;
+
+  --phish: #ff4d5e;
+  --phish-ink: #ff6b79;
+  --phish-soft: rgba(255, 77, 94, 0.14);
+  --phish-line: rgba(255, 77, 94, 0.45);
+  --phish-glow: rgba(255, 77, 94, 0.35);
+  --warn: #ff9440;
+  --safe: #34d399;
+  --safe-ink: #4fe0ac;
+  --safe-soft: rgba(52, 211, 153, 0.13);
+  --safe-line: rgba(52, 211, 153, 0.4);
+  --safe-glow: rgba(52, 211, 153, 0.3);
+  --track: rgba(255, 255, 255, 0.08);
+
+  --bs-link-color-rgb: 169, 196, 255;
+  --bs-link-hover-color-rgb: 199, 216, 255;
+}
+
+/* --- Dark: near-black and neutral ---------------------------------------------- */
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #060607;
+  --bg-glow-1: #131317;
+  --bg-glow-2: #101013;
+  --grid-line: rgba(255, 255, 255, 0.04);
+  --glow-a: rgba(90, 110, 170, 0.14);
+  --glow-b: rgba(110, 130, 200, 0.1);
+  --glow-opacity: 0.5;
+  --star: #c9cbd4;
+
+  --panel: rgba(20, 20, 24, 0.82);
+  --surface: #131316;
+  --surface-glass: rgba(18, 18, 21, 0.72);
+  --row: rgba(255, 255, 255, 0.035);
+  --input-bg: rgba(0, 0, 0, 0.55);
+  --input-ink: #dcdce2;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  --ink: #ececef;
+  --ink-strong: #f5f5f7;
+  --ink-soft: #a1a1ab;
+  --ink-mute: #6c6c76;
+  --ink-chip: #b9b9c2;
+  --ink-row: #c8c8cf;
+  --ink-eyebrow: #d0d0d7;
+  --ink-lead-strong: #e6e6ea;
+
+  --accent: #7ea6ff;
+  --accent-2: #a9c4ff;
+  --accent-rgb: 126, 166, 255;
+  --word-gradient: linear-gradient(100deg, #8fb2ff 0%, #d6e2ff 55%, #8fb2ff 100%);
+
+  --action: #5b86f5;
+  --action-dark: #4a73de;
+  --action-ink: #ffffff;
+  --action-rgb: 110, 150, 255;
+  --btn-top: #86aaff;
+  --btn-bottom: #6089f2;
+  --ghost-bg: rgba(0, 0, 0, 0.45);
+  --ghost-hover-bg: rgba(40, 40, 48, 0.6);
+  --chip-bg: rgba(22, 22, 26, 0.7);
+  --eyebrow-bg: rgba(26, 26, 31, 0.7);
+
+  --monitor-bg: linear-gradient(180deg, rgba(24, 24, 28, 0.94), rgba(12, 12, 14, 0.94));
+  --monitor-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.9), 0 0 50px -24px rgba(110, 140, 220, 0.25);
+  --monitor-edge: rgba(200, 210, 240, 0.6);
+  --shield-filter: none;
+
+  --phish: #ff4d5e;
+  --phish-ink: #ff6b79;
+  --phish-soft: rgba(255, 77, 94, 0.13);
+  --phish-line: rgba(255, 77, 94, 0.45);
+  --phish-glow: rgba(255, 77, 94, 0.3);
+  --warn: #ff9440;
+  --safe: #34d399;
+  --safe-ink: #4fe0ac;
+  --safe-soft: rgba(52, 211, 153, 0.12);
+  --safe-line: rgba(52, 211, 153, 0.4);
+  --safe-glow: rgba(52, 211, 153, 0.25);
+  --track: rgba(255, 255, 255, 0.08);
+
+  --bs-link-color-rgb: 169, 196, 255;
+  --bs-link-hover-color-rgb: 199, 216, 255;
+}
+
+/* --- Light ----------------------------------------------------------------------- */
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f4f6fb;
+  --bg-glow-1: #dfe7fb;
+  --bg-glow-2: #e7ecfa;
+  --grid-line: rgba(40, 70, 160, 0.07);
+  --glow-a: rgba(110, 140, 255, 0.2);
+  --glow-b: rgba(130, 160, 255, 0.16);
+  --glow-opacity: 0.6;
+  --star: #6f8fe0;
+
+  --panel: rgba(255, 255, 255, 0.85);
+  --surface: #ffffff;
+  --surface-glass: rgba(255, 255, 255, 0.78);
+  --row: rgba(30, 50, 110, 0.035);
+  --input-bg: #f3f6fc;
+  --input-ink: #1d2642;
+  --line: rgba(30, 45, 90, 0.12);
+  --line-strong: rgba(30, 45, 90, 0.2);
+
+  --ink: #141b33;
+  --ink-strong: #0f1630;
+  --ink-soft: #4a5573;
+  --ink-mute: #66718e;
+  --ink-chip: #3c4766;
+  --ink-row: #2f3a58;
+  --ink-eyebrow: #2c3a63;
+  --ink-lead-strong: #141b33;
+
+  --accent: #3d6be0;
+  --accent-2: #2f57c4;
+  --accent-rgb: 61, 107, 224;
+  --word-gradient: linear-gradient(100deg, #2f5bd8 0%, #7c9cf0 55%, #2f5bd8 100%);
+
+  --action: #3a63d8;
+  --action-dark: #2d50b8;
+  --action-ink: #ffffff;
+  --action-rgb: 58, 99, 216;
+  --btn-top: #6f97ff;
+  --btn-bottom: #4672ea;
+  --ghost-bg: rgba(255, 255, 255, 0.7);
+  --ghost-hover-bg: #ffffff;
+  --chip-bg: rgba(255, 255, 255, 0.75);
+  --eyebrow-bg: rgba(255, 255, 255, 0.75);
+
+  --monitor-bg: linear-gradient(180deg, #ffffff, #f6f8fd);
+  --monitor-shadow: 0 30px 70px -32px rgba(40, 70, 160, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  --monitor-edge: rgba(90, 130, 240, 0.7);
+  --shield-filter: brightness(0.62) saturate(1.6);
+
+  --phish: #e0283b;
+  --phish-ink: #c81d30;
+  --phish-soft: rgba(224, 40, 59, 0.09);
+  --phish-line: rgba(224, 40, 59, 0.4);
+  --phish-glow: rgba(224, 40, 59, 0.18);
+  --warn: #e07010;
+  --safe: #13935f;
+  --safe-ink: #0f7d50;
+  --safe-soft: rgba(19, 147, 95, 0.1);
+  --safe-line: rgba(19, 147, 95, 0.4);
+  --safe-glow: rgba(19, 147, 95, 0.15);
+  --track: rgba(20, 30, 70, 0.08);
+
+  --bs-link-color-rgb: 46, 74, 190;
+  --bs-link-hover-color-rgb: 33, 55, 150;
+}
+
+/* Bootstrap reads link colours from these; derived from the theme's values above. */
+:root[data-theme] {
+  --bs-link-color: rgb(var(--bs-link-color-rgb));
+  --bs-link-hover-color: rgb(var(--bs-link-hover-color-rgb));
+}
+
+/* --- The settings button and its panel (built by js/theme.js) ------------------- */
+
+.theme-settings {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 30;
+  font-family: var(--font-body, system-ui, sans-serif);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  height: 40px;
+  padding: 0 0.85rem 0 0.7rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--ink-chip);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.theme-toggle:hover,
+.theme-toggle[aria-expanded="true"] {
+  color: var(--ink);
+  border-color: rgba(var(--accent-rgb), 0.55);
+}
+.theme-toggle:focus-visible,
+.theme-option:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.theme-toggle svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.4s ease;
+}
+.theme-toggle[aria-expanded="true"] svg { transform: rotate(60deg); }
+
+.theme-panel {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 260px;
+  padding: 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.55);
+  color: var(--ink);
+  transform-origin: top right;
+  animation: theme-panel-in 0.18s ease-out;
+}
+.theme-panel[hidden] { display: none; }
+
+@keyframes theme-panel-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.theme-panel-title {
+  margin: 0 0 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+.theme-panel-note {
+  margin: 0 0 0.7rem;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+
+.theme-options {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: var(--row);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.theme-option:hover { border-color: var(--line-strong); }
+.theme-option[aria-checked="true"] {
+  border-color: rgba(var(--accent-rgb), 0.7);
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
+.theme-swatch {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+.theme-swatch::after {
+  /* a small accent dot, like the pill on each page */
+  content: "";
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.theme-swatch--default { background: linear-gradient(135deg, #16224a, #0a0f1f); }
+.theme-swatch--default::after { background: #7ea6ff; }
+.theme-swatch--dark { background: linear-gradient(135deg, #1b1b20, #050506); }
+.theme-swatch--dark::after { background: #a9c4ff; }
+.theme-swatch--light { background: linear-gradient(135deg, #ffffff, #e3e9f8); }
+.theme-swatch--light::after { background: #3d6be0; }
+
+.theme-option-text { display: grid; line-height: 1.2; flex: 1; }
+.theme-option-hint {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--ink-mute);
+}
+
+.theme-check {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0;
+}
+.theme-option[aria-checked="true"] .theme-check { opacity: 1; }
+
+@media (max-width: 575.98px) {
+  .theme-settings { top: 0.75rem; right: 0.75rem; }
+  .theme-toggle-label { display: none; }
+  .theme-toggle { width: 40px; padding: 0; justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-panel { animation: none; }
+  .theme-toggle svg { transition: none; }
+}

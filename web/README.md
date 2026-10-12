@@ -7,11 +7,13 @@ sections 12.6 and 12.7.
 | File | What it is |
 | --- | --- |
 | `index.html` | the landing page: what the prototype does, its measured test F1-scores, and an animated scan monitor |
-| `css/landing.css` | the landing page's dark look, on top of Bootstrap |
+| `css/theme.css` | the three colour themes (Default, Dark, Light) shared by both pages, and the Theme button's look |
+| `js/theme.js` | applies the saved theme before the page is drawn, and adds the Theme button (top-right) |
+| `css/landing.css` | the landing page's layout and motion, on top of Bootstrap |
 | `js/landing.js` | the landing page's motion: count-up figures, typed examples, the Lottie shield |
 | `animations/shield-scan.json` | the Lottie (JSON) shield animation, made by `scripts/make_shield_lottie.py` |
 | `check.html` | the checker: two tabs (email, link), the forms, and where answers appear |
-| `css/style.css` | the checker's look, on top of Bootstrap |
+| `css/style.css` | the checker's layout, on top of Bootstrap |
 | `js/config.js` | **where the model server is** (`apiBaseUrl`) — the only setting |
 | `js/app.js` | sends what the user pasted to the model server and shows the answer |
 
@@ -25,6 +27,22 @@ are the real held-out test results (`docs/PROJECT_STATE.md`): F1 0.9846 for emai
 0.9641 for links. Animations are switched off for visitors who ask their system for
 reduced motion. The Lottie player is `lottie-web` 5.12.2 from jsDelivr, pinned with an
 integrity hash like Bootstrap.
+
+### Colour themes
+
+A **Theme** button in the top-right corner of every page offers three looks:
+
+| Theme | Look |
+| --- | --- |
+| Default | navy blue, the landing page's original colours |
+| Dark | near-black and neutral |
+| Light | light background, for daylight and projectors |
+
+The choice is saved in the visitor's browser (`localStorage`, key `isthisascam-theme`) and
+applies to both pages. Every colour is a variable in `css/theme.css`, so a theme is only a
+list of values that the pages' own stylesheets use. Red still means "towards
+phishing" and green "towards legitimate" in every theme. If the browser blocks storage, the
+theme still switches but is not remembered.
 
 ## Status
 
