@@ -1,0 +1,12 @@
+# Python packages for the model server (server/app.py).
+# The versions match the ones the notebook was trained and measured with
+# (docs/PROJECT_STATE.md, "Modelling Environment"), so the server computes the
+# same BERT features and the same XGBoost scores as the notebook did.
+torch==2.13.0
+transformers==5.15.0
+xgboost==3.4.1
+shap==0.53.0
+numpy>=2.0,<3
+# The web API itself.
+fastapi>=0.115
+uvicorn>=0.30
