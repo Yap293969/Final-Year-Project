@@ -6,10 +6,25 @@ sections 12.6 and 12.7.
 
 | File | What it is |
 | --- | --- |
-| `index.html` | the page: two tabs (email, link), the forms, and where answers appear |
-| `css/style.css` | the look, on top of Bootstrap |
+| `index.html` | the landing page: what the prototype does, its measured test F1-scores, and an animated scan monitor |
+| `css/landing.css` | the landing page's dark look, on top of Bootstrap |
+| `js/landing.js` | the landing page's motion: count-up figures, typed examples, the Lottie shield |
+| `animations/shield-scan.json` | the Lottie (JSON) shield animation, made by `scripts/make_shield_lottie.py` |
+| `check.html` | the checker: two tabs (email, link), the forms, and where answers appear |
+| `css/style.css` | the checker's look, on top of Bootstrap |
 | `js/config.js` | **where the model server is** (`apiBaseUrl`) — the only setting |
 | `js/app.js` | sends what the user pasted to the model server and shows the answer |
+
+`netlify.toml` at the repository root tells Netlify to publish this folder as it is.
+
+### The landing page's scan monitor
+
+The three results it cycles through are **illustrations** of what an answer looks like,
+not live model output, and the monitor says so on screen. The figures under the headline
+are the real held-out test results (`docs/PROJECT_STATE.md`): F1 0.9846 for email and
+0.9641 for links. Animations are switched off for visitors who ask their system for
+reduced motion. The Lottie player is `lottie-web` 5.12.2 from jsDelivr, pinned with an
+integrity hash like Bootstrap.
 
 ## Status
 
@@ -23,8 +38,9 @@ answering the requests below. The helpers it needs already exist: `classify()` a
 
 ## Trying the page
 
-Open `index.html` in a browser, or serve the folder (for example with Laragon, or
-`python -m http.server` from inside `web/`). With no model server the page loads and
+Serve the folder (for example with Laragon, or
+`python -m http.server` from inside `web/`). Opening `index.html` straight from disk works except for the Lottie
+shield, which browsers only load over http. With no model server `check.html` loads and
 says it isn't connected.
 
 ## What the page asks the model server

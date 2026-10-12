@@ -1,0 +1,3 @@
+# Netlify: the site is the static web/ folder. There is nothing to build.
+[build]
+  publish = "web"
