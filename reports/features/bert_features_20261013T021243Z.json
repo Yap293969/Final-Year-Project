@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-22T11:48:27+00:00",
+  "generated_at_utc": "2026-10-13T02:12:43+00:00",
   "stage": "CRISP-DM modelling -- BERT contextual feature extraction",
   "scope_note": "BERT used FROZEN as a feature extractor. No fine-tuning, no model training, no evaluation. The test splits were not read.",
   "model": "bert-base-uncased",

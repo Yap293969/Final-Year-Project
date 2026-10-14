@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-22T03:48:39Z",
+  "generated_at_utc": "2026-10-13T02:06:54Z",
   "stage": "CRISP-DM data preparation (preprocessing)",
   "scope_note": "Cleaning, deduplication, source-leak neutralisation, class balancing and the train/validation/test split. No feature engineering, BERT feature extraction or model training was performed.",
   "settings": {
@@ -51,7 +51,7 @@
       "validation": 12096,
       "test": 12097
     },
-    "load_seconds": 9.97
+    "load_seconds": 10.08
   },
   "url": {
     "decision": "PhishTank snapshot pinned by name; sid321axn benign rows only; 1:1 undersample",

@@ -49,7 +49,7 @@ from xgboost import XGBClassifier
 SERVER_FOLDER = os.path.dirname(os.path.abspath(__file__))
 PROJECT_FOLDER = os.path.dirname(SERVER_FOLDER)
 NOTEBOOK_PATH = os.environ.get(
-    "NOTEBOOK_PATH", os.path.join(PROJECT_FOLDER, "Anti_phishing_prototype.ipynb"))
+    "NOTEBOOK_PATH", os.path.join(PROJECT_FOLDER, "C:\git_project\www\Final-Year-Project\Anti_phishing_prototype.ipynb"))
 MODELS_FOLDER = os.environ.get("MODELS_FOLDER", os.path.join(SERVER_FOLDER, "models"))
 PORT = int(os.environ.get("PORT", "8000"))
 
@@ -86,8 +86,19 @@ def read_notebook_cells(path):
             "app.py inside the project's server/ folder (or set NOTEBOOK_PATH)." % path)
     with open(path, "r", encoding="utf-8") as handle:
         notebook = json.load(handle)
-    return ["".join(cell["source"]) for cell in notebook["cells"]
-            if cell["cell_type"] == "code"]
+
+    cells = notebook.get("cells", [])
+    sources = []
+    for cell in cells:
+        if cell.get("cell_type") != "code":
+            continue
+        source = cell.get("source", "")
+        if source is None:
+            source = ""
+        elif isinstance(source, list):
+            source = "".join(source)
+        sources.append(str(source))
+    return sources
 
 
 def find_cell(cells, first_line):
@@ -95,7 +106,7 @@ def find_cell(cells, first_line):
     matches = [source for source in cells if source.lstrip().startswith(first_line)]
     if len(matches) != 1:
         raise ValueError("Expected exactly one notebook cell starting with %r, found %d."
-                         % (first_line, len(matches)))
+                        % (first_line, len(matches)))
     return matches[0]
 
 
@@ -106,11 +117,19 @@ def read_settings(cell_source, names):
     which the server wants, so only the plain assignments listed in `names` are taken.
     """
     settings = {}
-    for node in ast.parse(cell_source).body:
+    try:
+        parsed = ast.parse(cell_source)
+    except SyntaxError as exc:
+        raise ValueError("The notebook settings cell could not be parsed: %s" % exc) from exc
+
+    for node in parsed.body:
         if isinstance(node, ast.Assign) and len(node.targets) == 1:
             target = node.targets[0]
             if isinstance(target, ast.Name) and target.id in names:
-                settings[target.id] = ast.literal_eval(node.value)
+                try:
+                    settings[target.id] = ast.literal_eval(node.value)
+                except (ValueError, TypeError):
+                    continue
     missing = [name for name in names if name not in settings]
     if missing:
         raise ValueError("Cell 8.3 no longer sets %s." % ", ".join(missing))
@@ -123,7 +142,7 @@ def load_notebook_helpers(path):
 
     # The same names the notebook's own imports cell (1.3) provides.
     namespace = {"__name__": "notebook_helpers", "os": os, "json": json, "time": time,
-                 "np": np, "torch": torch, "xgboost": xgboost}
+                "np": np, "torch": torch, "xgboost": xgboost}
 
     # 6.1, 7.1 and 8.1 only define functions, so they are run first, in notebook order.
     for first_line in HELPER_CELLS[:3]:

@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-01T05:14:24+00:00",
+  "generated_at_utc": "2026-10-13T02:47:49+00:00",
   "stage": "CRISP-DM modelling -- XGBoost training",
   "scope_note": "Trained on the train split, measured on the validation split. The test split was not read. No hyperparameter search was run.",
   "seed": 42,
@@ -31,7 +31,7 @@
       "validation_rows": 12096,
       "is_full_data": true,
       "bert_run_tag": "full",
-      "training_seconds": 40.24,
+      "training_seconds": 154.63,
       "train_scores": {
         "accuracy": 1.0,
         "precision": 1.0,
@@ -67,7 +67,7 @@
       "validation_rows": 21074,
       "is_full_data": true,
       "bert_run_tag": "full",
-      "training_seconds": 55.06,
+      "training_seconds": 106.84,
       "train_scores": {
         "accuracy": 0.9969,
         "precision": 0.997,
@@ -103,7 +103,7 @@
       "validation_rows": 21074,
       "is_full_data": true,
       "bert_run_tag": "full",
-      "training_seconds": 54.05,
+      "training_seconds": 92.9,
       "train_scores": {
         "accuracy": 0.9977,
         "precision": 0.9977,
@@ -139,7 +139,7 @@
       "validation_rows": 21074,
       "is_full_data": true,
       "bert_run_tag": "full",
-      "training_seconds": 1.23,
+      "training_seconds": 2.38,
       "train_scores": {
         "accuracy": 0.9475,
         "precision": 0.9459,

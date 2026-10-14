@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-01T05:02:18Z",
+  "generated_at_utc": "2026-10-13T02:07:37Z",
   "stage": "URL lexical and structural feature engineering (Specification 6)",
   "scope_note": "Deterministic per-URL feature extraction over the train and validation splits. No fitted parameter, no BERT feature extraction and no model training. The test split was not read.",
   "input_splits": [
@@ -77,7 +77,7 @@
       "urls_with_a_leading_scheme": 0,
       "urls_nesting_another_url": 607,
       "blank_urls": 0,
-      "seconds": 6.83
+      "seconds": 3.72
     },
     {
       "split": "validation",
@@ -86,7 +86,7 @@
       "urls_with_a_leading_scheme": 0,
       "urls_nesting_another_url": 131,
       "blank_urls": 0,
-      "seconds": 1.42
+      "seconds": 0.81
     }
   ],
   "constant_features_on_train": [],

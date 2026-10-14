@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-09-22T03:38:21+00:00",
+  "generated_at_utc": "2026-10-13T02:20:20+00:00",
   "stage": "CRISP-DM modelling -- baseline models for comparison",
   "scope_note": "Baselines trained on the train split and measured on the validation split, with the same seed and the same measuring code as section 9. The test split was not read. Everything that learns from data -- TF-IDF vocabulary, scaler -- was fitted on the training rows only.",
   "seed": 42,
@@ -25,7 +25,7 @@
       "min_df": 2
     }
   },
-  "section9_report_used": "training_20260922T033619Z.json",
+  "section9_report_used": "training_20261013T021650Z.json",
   "proposed_models_still_on_sample_data": 0,
   "baselines": [
     {
@@ -40,7 +40,7 @@
       "validation_rows": 12096,
       "is_full_data": true,
       "is_baseline": true,
-      "prepare_seconds": 0.95,
+      "prepare_seconds": 1.51,
       "training_seconds": 0.0,
       "train_scores": {
         "accuracy": 0.5144,
@@ -77,8 +77,8 @@
       "validation_rows": 12096,
       "is_full_data": true,
       "is_baseline": true,
-      "prepare_seconds": 16.39,
-      "training_seconds": 1.15,
+      "prepare_seconds": 26.79,
+      "training_seconds": 1.59,
       "train_scores": {
         "accuracy": 0.9914,
         "precision": 0.9895,
@@ -114,8 +114,8 @@
       "validation_rows": 12096,
       "is_full_data": true,
       "is_baseline": true,
-      "prepare_seconds": 16.27,
-      "training_seconds": 0.02,
+      "prepare_seconds": 25.37,
+      "training_seconds": 0.03,
       "train_scores": {
         "accuracy": 0.9796,
         "precision": 0.989,
@@ -151,7 +151,7 @@
       "validation_rows": 21074,
       "is_full_data": true,
       "is_baseline": true,
-      "prepare_seconds": 0.13,
+      "prepare_seconds": 0.16,
       "training_seconds": 0.0,
       "train_scores": {
         "accuracy": 0.5,
@@ -188,8 +188,8 @@
       "validation_rows": 21074,
       "is_full_data": true,
       "is_baseline": true,
-      "prepare_seconds": 22.82,
-      "training_seconds": 2.21,
+      "prepare_seconds": 38.04,
+      "training_seconds": 2.94,
       "train_scores": {
         "accuracy": 0.9775,
         "precision": 0.9881,
@@ -225,8 +225,8 @@
       "validation_rows": 21074,
       "is_full_data": true,
       "is_baseline": true,
-      "prepare_seconds": 23.25,
-      "training_seconds": 0.03,
+      "prepare_seconds": 36.63,
+      "training_seconds": 0.05,
       "train_scores": {
         "accuracy": 0.9534,
         "precision": 0.9876,
@@ -262,8 +262,8 @@
       "validation_rows": 21074,
       "is_full_data": true,
       "is_baseline": true,
-      "prepare_seconds": 0.3,
-      "training_seconds": 2.35,
+      "prepare_seconds": 0.47,
+      "training_seconds": 3.37,
       "train_scores": {
         "accuracy": 0.8295,
         "precision": 0.831,
