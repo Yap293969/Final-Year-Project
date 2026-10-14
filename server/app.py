@@ -49,7 +49,7 @@ from xgboost import XGBClassifier
 SERVER_FOLDER = os.path.dirname(os.path.abspath(__file__))
 PROJECT_FOLDER = os.path.dirname(SERVER_FOLDER)
 NOTEBOOK_PATH = os.environ.get(
-    "NOTEBOOK_PATH", os.path.join(PROJECT_FOLDER, "C:\git_project\www\Final-Year-Project\Anti_phishing_prototype.ipynb"))
+    "NOTEBOOK_PATH", os.path.join(PROJECT_FOLDER, "C:/git_project/www/Final-Year-Project/Anti_phishing_prototype.ipynb"))
 MODELS_FOLDER = os.environ.get("MODELS_FOLDER", os.path.join(SERVER_FOLDER, "models"))
 PORT = int(os.environ.get("PORT", "8000"))
 
