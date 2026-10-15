@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-13T02:01:33+00:00",
+  "generated_at_utc": "2026-10-15T02:08:18+00:00",
   "stage": "CRISP-DM data understanding -- inspection only",
   "scope_note": "Read-only measurement. No cleaning, deduplication, merging, balancing, splitting, feature engineering or training was performed.",
   "method_note": "Every figure is a FULL-file count. Nothing is sampled. Malformed rows are counted and reported rather than silently dropped. Label columns are declared from the real file headers, never inferred.",
@@ -50,7 +50,7 @@
         "0": 17312
       },
       "text_column": "body",
-      "inspection_seconds": 3.3,
+      "inspection_seconds": 2.77,
       "duplicate_text_normalised": 795,
       "blank_text_rows": 0,
       "text_length_chars": {
@@ -92,7 +92,7 @@
         "1": 13976
       },
       "text_column": "body",
-      "inspection_seconds": 2.18,
+      "inspection_seconds": 2.16,
       "duplicate_text_normalised": 407,
       "blank_text_rows": 0,
       "text_length_chars": {
@@ -134,7 +134,7 @@
         "1": 458
       },
       "text_column": "body",
-      "inspection_seconds": 0.42,
+      "inspection_seconds": 0.59,
       "duplicate_text_normalised": 0,
       "blank_text_rows": 0,
       "text_length_chars": {
@@ -183,7 +183,7 @@
         "1": 1565
       },
       "text_column": "body",
-      "inspection_seconds": 0.33,
+      "inspection_seconds": 0.46,
       "duplicate_text_normalised": 38,
       "blank_text_rows": 2,
       "text_length_chars": {
@@ -232,7 +232,7 @@
         "1": 3332
       },
       "text_column": "body",
-      "inspection_seconds": 0.49,
+      "inspection_seconds": 0.57,
       "duplicate_text_normalised": 61,
       "blank_text_rows": 1,
       "text_length_chars": {
@@ -282,7 +282,7 @@
         "1": 1718
       },
       "text_column": "body",
-      "inspection_seconds": 0.61,
+      "inspection_seconds": 0.82,
       "duplicate_text_normalised": 24,
       "blank_text_rows": 2,
       "text_length_chars": {
@@ -322,7 +322,7 @@
         "0": 39595
       },
       "text_column": "text_combined",
-      "inspection_seconds": 4.51,
+      "inspection_seconds": 5.85,
       "duplicate_text_normalised": 408,
       "blank_text_rows": 1,
       "text_length_chars": {
@@ -364,7 +364,7 @@
         "Phishing Email": 7328
       },
       "text_column": "Email Text",
-      "inspection_seconds": 3.25,
+      "inspection_seconds": 3.69,
       "duplicate_text_normalised": 1135,
       "blank_text_rows": 19,
       "text_length_chars": {
@@ -406,7 +406,7 @@
         "malware": 32520
       },
       "text_column": "url",
-      "inspection_seconds": 3.23,
+      "inspection_seconds": 3.64,
       "duplicate_text_normalised": 10138,
       "blank_text_rows": 0,
       "text_length_chars": {
@@ -456,7 +456,7 @@
       },
       "class_distribution": {},
       "text_column": "url",
-      "inspection_seconds": 0.58,
+      "inspection_seconds": 0.64,
       "duplicate_text_normalised": 3,
       "blank_text_rows": 0,
       "text_length_chars": {

@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-10-13T02:30:54+00:00",
+  "generated_at_utc": "2026-10-15T02:38:04+00:00",
   "stage": "CRISP-DM evaluation -- final test-set results (Objective 3)",
   "scope_note": "Models retrained on the train split with their recorded settings and measured on the TEST split. Everything that learns from data was fitted on training rows only. No model was adjusted in response to these numbers.",
   "seed": 42,
@@ -86,7 +86,7 @@
       "feature_columns": 50000,
       "train_rows": 56450,
       "test_rows": 12097,
-      "training_seconds": 2.92,
+      "training_seconds": 1.19,
       "validation_scores": {
         "accuracy": 0.9871,
         "precision": 0.9854,
@@ -120,7 +120,7 @@
       "feature_columns": 50000,
       "train_rows": 56450,
       "test_rows": 12097,
-      "training_seconds": 0.05,
+      "training_seconds": 0.02,
       "validation_scores": {
         "accuracy": 0.9735,
         "precision": 0.9858,
@@ -154,7 +154,7 @@
       "feature_columns": 768,
       "train_rows": 56450,
       "test_rows": 12097,
-      "training_seconds": 52.45,
+      "training_seconds": 33.13,
       "validation_scores": {
         "accuracy": 0.9843,
         "precision": 0.984,
@@ -222,7 +222,7 @@
       "feature_columns": 50000,
       "train_rows": 98344,
       "test_rows": 21072,
-      "training_seconds": 3.38,
+      "training_seconds": 2.12,
       "validation_scores": {
         "accuracy": 0.9685,
         "precision": 0.9821,
@@ -256,7 +256,7 @@
       "feature_columns": 50000,
       "train_rows": 98344,
       "test_rows": 21072,
-      "training_seconds": 0.09,
+      "training_seconds": 0.03,
       "validation_scores": {
         "accuracy": 0.9486,
         "precision": 0.9859,
@@ -290,7 +290,7 @@
       "feature_columns": 35,
       "train_rows": 98344,
       "test_rows": 21072,
-      "training_seconds": 4.15,
+      "training_seconds": 2.34,
       "validation_scores": {
         "accuracy": 0.8304,
         "precision": 0.8277,
@@ -324,7 +324,7 @@
       "feature_columns": 35,
       "train_rows": 98344,
       "test_rows": 21072,
-      "training_seconds": 2.52,
+      "training_seconds": 0.76,
       "validation_scores": {
         "accuracy": 0.9339,
         "precision": 0.9316,
@@ -358,7 +358,7 @@
       "feature_columns": 768,
       "train_rows": 98344,
       "test_rows": 21072,
-      "training_seconds": 78.61,
+      "training_seconds": 46.09,
       "validation_scores": {
         "accuracy": 0.9558,
         "precision": 0.9564,
@@ -392,7 +392,7 @@
       "feature_columns": 803,
       "train_rows": 98344,
       "test_rows": 21072,
-      "training_seconds": 73.67,
+      "training_seconds": 47.53,
       "validation_scores": {
         "accuracy": 0.9623,
         "precision": 0.9647,
