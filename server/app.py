@@ -220,7 +220,7 @@ app = FastAPI(title="Is this a scam? -- model server",
 # your site only, set ALLOWED_ORIGINS, e.g. "https://your-site.netlify.app".
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("ALLOWED_ORIGINS", "*").split(","),
+    allow_origins=os.environ.get("ALLOWED_ORIGINS", "https://fascinating-gaufre-07e604.netlify.app/").split(","),
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )
