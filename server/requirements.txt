@@ -7,7 +7,8 @@ transformers==5.15.0
 xgboost==3.4.1
 shap==0.53.0
 numpy>=2.0,<3
-# The web API itself.
+# The web API itself. app.py is a FastAPI app, so it is served by uvicorn
+# (Render start command: uvicorn app:app --host 0.0.0.0 --port $PORT --workers 1).
+# gunicorn is not needed: it serves Flask/WSGI apps, and this is an ASGI app.
 fastapi>=0.115
 uvicorn>=0.30
-gunicorn

@@ -33,4 +33,7 @@ backups/
 
 # --- Trained models: regenerable from the notebook, and the sample-data ones
 # --- are not meaningful artefacts ----------------------------------------------
-models/
+# The leading "/" means ONLY the project-root models/ folder. Without it, "models/"
+# also matched server/models/, so the two exported XGBoost models the model server
+# needs were never pushed to GitHub, and Render could not load them.
+/models/

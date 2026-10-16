@@ -49,7 +49,7 @@ from xgboost import XGBClassifier
 SERVER_FOLDER = os.path.dirname(os.path.abspath(__file__))
 PROJECT_FOLDER = os.path.dirname(SERVER_FOLDER)
 NOTEBOOK_PATH = os.environ.get(
-    "NOTEBOOK_PATH", os.path.join(PROJECT_FOLDER, "Anti_phishing_prototype.ipynb"))
+    "NOTEBOOK_PATH", os.path.join(SERVER_FOLDER, "Anti_phishing_prototype.ipynb"))
 MODELS_FOLDER = os.environ.get("MODELS_FOLDER", os.path.join(SERVER_FOLDER, "models"))
 PORT = int(os.environ.get("PORT", "8000"))
 
@@ -220,7 +220,7 @@ app = FastAPI(title="Is this a scam? -- model server",
 # your site only, set ALLOWED_ORIGINS, e.g. "https://your-site.netlify.app".
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("ALLOWED_ORIGINS", "https://fascinating-gaufre-07e604.netlify.app/" "http://localhost:8000").split(","),
+    allow_origins=os.environ.get("ALLOWED_ORIGINS", "https://fascinating-gaufre-07e604.netlify.app,http://localhost:8000").split(","),
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )

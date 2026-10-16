@@ -1,0 +1,32 @@
+{
+  "bert_model_name": "bert-base-uncased",
+  "pooling": "mean",
+  "trained_with": {
+    "xgboost": "3.4.1"
+  },
+  "exported_with": {
+    "xgboost": "3.2.0",
+    "script": "server/export_saved_models.py",
+    "evaluation_report": "final_evaluation_20261013T023054Z.json"
+  },
+  "models": {
+    "email": {
+      "name": "email_bert",
+      "file": "email_bert.json",
+      "representation": "bert",
+      "test_f1": 0.9846,
+      "test_accuracy": 0.9842,
+      "best_other_name": "email_tfidf_logreg",
+      "best_other_f1": 0.9868
+    },
+    "url": {
+      "name": "url_bert_lexical",
+      "file": "url_bert_lexical.json",
+      "representation": "bert+lexical",
+      "test_f1": 0.9641,
+      "test_accuracy": 0.9642,
+      "best_other_name": "url_tfidf_logreg",
+      "best_other_f1": 0.9678
+    }
+  }
+}
