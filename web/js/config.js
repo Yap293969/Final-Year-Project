@@ -6,5 +6,5 @@
 //
 // This is the only line to change when the model server moves.
 window.APP_CONFIG = {
-  apiBaseUrl: ""
+  apiBaseUrl: "https://sara-before-desirable-simple.trycloudflare.com"
 };
