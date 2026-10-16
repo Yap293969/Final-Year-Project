@@ -10,3 +10,4 @@ numpy>=2.0,<3
 # The web API itself.
 fastapi>=0.115
 uvicorn>=0.30
+gunicorn
