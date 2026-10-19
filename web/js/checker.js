@@ -451,11 +451,14 @@
     });
 })();
 
-// Open the link tab when the page is reached as Checker.html#url (the homepage's
-// "Check a link" button). Moved here from the bottom of the HTML page.
+// Open the tab named in the address: Checker.html#url (the homepage's "Check a
+// link" button) or Checker.html#email ("Check an email"). With no hash the email
+// tab shows, as before.
 (function () {
   "use strict";
-  if (location.hash === "#url" && window.bootstrap) {
-    bootstrap.Tab.getOrCreateInstance(document.getElementById("url-tab")).show();
+  var tabs = { "#url": "url-tab", "#email": "email-tab" };
+  var tab = document.getElementById(tabs[location.hash] || "");
+  if (tab && window.bootstrap) {
+    bootstrap.Tab.getOrCreateInstance(tab).show();
   }
 })();

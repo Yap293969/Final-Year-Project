@@ -29,14 +29,14 @@ web/
 | --- | --- |
 | `index.html` | the site's entry point; Netlify and Laragon open it for the root address, and it forwards to `Homepage.html` |
 | `Homepage.html` | the homepage: what the prototype does, its measured test F1-scores, and an animated scan monitor |
-| `Checker.html` | the checker: two tabs (email, link), the forms, and where answers appear. `Checker.html#url` opens the link tab |
+| `Checker.html` | the checker: two tabs (email, link), the forms, and where answers appear. `Checker.html#url` opens the link tab and `Checker.html#email` the email tab |
 | `css/theme.css` | the three colour themes (Default, Dark, Light) shared by every page, and the Theme button's look |
 | `css/homepage.css` | the homepage's layout and motion, on top of Bootstrap (`delay-0` ... `delay-5` set the order things appear in) |
 | `css/checker.css` | the checker's layout, on top of Bootstrap |
 | `js/theme.js` | applies the saved theme before the page is drawn, and adds the Theme button (top-right) |
 | `js/config.js` | **where the model server is** (`apiBaseUrl`) — the only setting |
 | `js/homepage.js` | the homepage's motion: count-up figures, typed examples, the Lottie shield |
-| `js/checker.js` | sends what the user pasted to the model server, shows the answer, and opens the link tab for `#url` |
+| `js/checker.js` | sends what the user pasted to the model server, shows the answer, and opens the tab named by `#url` or `#email` |
 | `animations/shield-scan.json` | the Lottie (JSON) shield animation, made by `scripts/make_shield_lottie.py` |
 
 No page has inline `<script>` or `style="..."`: all behaviour is in `js/` and all styling in `css/`.

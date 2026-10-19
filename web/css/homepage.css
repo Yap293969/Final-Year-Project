@@ -213,7 +213,7 @@ main, .site-footer { position: relative; z-index: 1; }
   margin-bottom: 1.5rem;
 }
 
-.btn-glow, .btn-ghost {
+.btn-glow, .btn-soft, .btn-ghost {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
@@ -230,11 +230,25 @@ main, .site-footer { position: relative; z-index: 1; }
   background: linear-gradient(180deg, var(--btn-top) 0%, var(--btn-bottom) 100%);
   box-shadow: 0 10px 34px -8px rgba(var(--action-rgb), 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
-.btn-glow svg, .btn-ghost svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.btn-glow svg, .btn-soft svg, .btn-ghost svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
 .btn-glow:hover, .btn-glow:focus-visible {
   color: var(--action-ink);
   transform: translateY(-2px);
   box-shadow: 0 16px 40px -8px rgba(var(--action-rgb), 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Second action ("Check an email"): accent outline, so it reads as a button
+   without competing with the glowing "Check a link". */
+.btn-soft {
+  color: var(--ink-strong);
+  border: 1px solid rgba(var(--accent-rgb), 0.55);
+  background: rgba(var(--accent-rgb), 0.1);
+}
+.btn-soft:hover, .btn-soft:focus-visible {
+  color: var(--ink-strong);
+  transform: translateY(-2px);
+  border-color: rgba(var(--accent-rgb), 0.85);
+  background: rgba(var(--accent-rgb), 0.18);
 }
 
 .btn-ghost {
@@ -250,7 +264,7 @@ main, .site-footer { position: relative; z-index: 1; }
 }
 .btn-ghost:hover span { transform: translateX(4px); }
 
-.btn-glow:focus-visible, .btn-ghost:focus-visible {
+.btn-glow:focus-visible, .btn-soft:focus-visible, .btn-ghost:focus-visible {
   outline: 2px solid var(--accent-2);
   outline-offset: 3px;
 }
