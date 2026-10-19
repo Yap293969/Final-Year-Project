@@ -1,4 +1,4 @@
-// Is this a scam? -- landing page motion.
+// Is this a scam? -- Homepage.html motion.
 //
 // 1. The word in the headline follows the monitor: "link" or "email".
 // 2. The four figures count up when the page opens.

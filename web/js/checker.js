@@ -1,4 +1,4 @@
-// Is this a scam? -- the page's behaviour.
+// Is this a scam? -- Checker.html behaviour.
 //
 // WHAT THIS FILE DOES, in plain words
 // -----------------------------------
@@ -449,4 +449,13 @@
                            "Start the model server, then reload this page.";
       status.hidden = false;
     });
+})();
+
+// Open the link tab when the page is reached as Checker.html#url (the homepage's
+// "Check a link" button). Moved here from the bottom of the HTML page.
+(function () {
+  "use strict";
+  if (location.hash === "#url" && window.bootstrap) {
+    bootstrap.Tab.getOrCreateInstance(document.getElementById("url-tab")).show();
+  }
 })();

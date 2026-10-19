@@ -1,4 +1,4 @@
-/* Is this a scam? -- landing page.
+/* Is this a scam? -- Homepage.html styles.
  *
  * "Research console" look: a faint grid, soft glows, and a scan monitor on
  * the right. The colours come from theme.css, so the page follows the
@@ -111,6 +111,14 @@ main, .site-footer { position: relative; z-index: 1; }
   animation: reveal 0.7s cubic-bezier(.2, .7, .2, 1) forwards;
   animation-delay: calc(var(--d, 0) * 90ms + 80ms);
 }
+
+/* The order things appear in: add delay-0 ... delay-5 next to "reveal" in the HTML. */
+.delay-0 { --d: 0; }
+.delay-1 { --d: 1; }
+.delay-2 { --d: 2; }
+.delay-3 { --d: 3; }
+.delay-4 { --d: 4; }
+.delay-5 { --d: 5; }
 
 @keyframes reveal {
   to { opacity: 1; transform: none; }

@@ -1,3 +1,10 @@
 # Netlify: the site is the static web/ folder. There is nothing to build.
 [build]
   publish = "web"
+
+# Pages were renamed on 2026-10-19 (index.html -> Homepage.html, check.html -> Checker.html).
+# Old links and bookmarks still land on the right page.
+[[redirects]]
+  from = "/check.html"
+  to = "/Checker.html"
+  status = 301

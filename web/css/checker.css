@@ -1,4 +1,4 @@
-/* Is this a scam? -- styles on top of Bootstrap 5.3.
+/* Is this a scam? -- Checker.html styles, on top of Bootstrap 5.3.
  *
  * The page is built for a phone first: one column, large touch targets.
  * Red always means "towards phishing" and green "towards legitimate",
@@ -9,7 +9,7 @@
 
 :root {
   /* Colours live in theme.css (Default, Dark and Light), shared with the
-   * landing page. Only the typeface and Bootstrap's hooks are set here. */
+   * homepage. Only the typeface and Bootstrap's hooks are set here. */
   --bs-body-font-family: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
   --bs-body-color: var(--ink);
   --bs-body-bg: var(--bg);

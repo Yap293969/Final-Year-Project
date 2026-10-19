@@ -1,6 +1,6 @@
 /* Is this a scam? -- the three colour themes, shared by every page.
  *
- *   default  the landing page's navy "research console" look
+ *   default  the homepage's navy "research console" look
  *   dark     the same layout on near-black, with less blue
  *   light    a light page for bright rooms and printing
  *
@@ -12,7 +12,7 @@
  * warning sign" and green "towards legitimate".
  */
 
-/* --- Default: navy (the landing page's original colours) ----------------------- */
+/* --- Default: navy (the homepage's original colours) ----------------------- */
 
 :root,
 :root[data-theme="default"] {

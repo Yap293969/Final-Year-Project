@@ -4,22 +4,53 @@ The interface of the prototype, built with HTML, CSS, JavaScript and Bootstrap 5
 can be hosted on Netlify. It replaces the gradio interface that used to live in notebook
 sections 12.6 and 12.7.
 
+One HTML page per screen, with that page's own CSS and JavaScript named after it.
+Files used by every page are listed first.
+
+```
+web/
+├── index.html          entry point only: sends the visitor to Homepage.html
+├── Homepage.html       the homepage
+├── Checker.html        the email and link checker
+├── css/
+│   ├── theme.css       shared: the three colour themes
+│   ├── homepage.css    Homepage.html only
+│   └── checker.css     Checker.html only
+├── js/
+│   ├── theme.js        shared: theme setting and the Theme button
+│   ├── config.js       shared: where the model server is
+│   ├── homepage.js     Homepage.html only
+│   └── checker.js      Checker.html only
+└── animations/
+    └── shield-scan.json
+```
+
 | File | What it is |
 | --- | --- |
-| `index.html` | the landing page: what the prototype does, its measured test F1-scores, and an animated scan monitor |
-| `css/theme.css` | the three colour themes (Default, Dark, Light) shared by both pages, and the Theme button's look |
+| `index.html` | the site's entry point; Netlify and Laragon open it for the root address, and it forwards to `Homepage.html` |
+| `Homepage.html` | the homepage: what the prototype does, its measured test F1-scores, and an animated scan monitor |
+| `Checker.html` | the checker: two tabs (email, link), the forms, and where answers appear. `Checker.html#url` opens the link tab |
+| `css/theme.css` | the three colour themes (Default, Dark, Light) shared by every page, and the Theme button's look |
+| `css/homepage.css` | the homepage's layout and motion, on top of Bootstrap (`delay-0` ... `delay-5` set the order things appear in) |
+| `css/checker.css` | the checker's layout, on top of Bootstrap |
 | `js/theme.js` | applies the saved theme before the page is drawn, and adds the Theme button (top-right) |
-| `css/landing.css` | the landing page's layout and motion, on top of Bootstrap |
-| `js/landing.js` | the landing page's motion: count-up figures, typed examples, the Lottie shield |
-| `animations/shield-scan.json` | the Lottie (JSON) shield animation, made by `scripts/make_shield_lottie.py` |
-| `check.html` | the checker: two tabs (email, link), the forms, and where answers appear |
-| `css/style.css` | the checker's layout, on top of Bootstrap |
 | `js/config.js` | **where the model server is** (`apiBaseUrl`) — the only setting |
-| `js/app.js` | sends what the user pasted to the model server and shows the answer |
+| `js/homepage.js` | the homepage's motion: count-up figures, typed examples, the Lottie shield |
+| `js/checker.js` | sends what the user pasted to the model server, shows the answer, and opens the link tab for `#url` |
+| `animations/shield-scan.json` | the Lottie (JSON) shield animation, made by `scripts/make_shield_lottie.py` |
 
-`netlify.toml` at the repository root tells Netlify to publish this folder as it is.
+No page has inline `<script>` or `style="..."`: all behaviour is in `js/` and all styling in `css/`.
 
-### The landing page's scan monitor
+### Adding a new page
+
+Name it after what it is (e.g. `Flashcards.html`), give it its own `css/flashcards.css` and
+`js/flashcards.js`, and load the shared files the same way the existing pages do:
+`js/theme.js` and `css/theme.css` in `<head>`, then the page's own stylesheet.
+
+`netlify.toml` at the repository root tells Netlify to publish this folder as it is, and
+forwards the old `check.html` address to `Checker.html`.
+
+### The homepage's scan monitor
 
 The three results it cycles through are **illustrations** of what an answer looks like,
 not live model output, and the monitor says so on screen. The figures under the headline
@@ -34,7 +65,7 @@ A **Theme** button in the top-right corner of every page offers three looks:
 
 | Theme | Look |
 | --- | --- |
-| Default | navy blue, the landing page's original colours |
+| Default | navy blue, the homepage's original colours |
 | Dark | near-black and neutral |
 | Light | light background, for daylight and projectors |
 
@@ -48,7 +79,7 @@ theme still switches but is not remembered.
 
 **Not connected yet.** The page is finished enough to use, but the models (BERT +
 XGBoost) are Python and run in the notebook, and nothing serves them over the web yet.
-Until that model server exists, the page shows "The model server isn't connected".
+Until that model server exists, the checker shows "The model server isn't connected".
 
 The next step is a small web API around the predictors that notebook section 12.3 builds,
 answering the requests below. The helpers it needs already exist: `classify()` and
@@ -57,8 +88,8 @@ answering the requests below. The helpers it needs already exist: `classify()` a
 ## Trying the page
 
 Serve the folder (for example with Laragon, or
-`python -m http.server` from inside `web/`). Opening `index.html` straight from disk works except for the Lottie
-shield, which browsers only load over http. With no model server `check.html` loads and
+`python -m http.server` from inside `web/`). Opening `Homepage.html` straight from disk works except for the Lottie
+shield, which browsers only load over http. With no model server `Checker.html` loads and
 says it isn't connected.
 
 ## What the page asks the model server
