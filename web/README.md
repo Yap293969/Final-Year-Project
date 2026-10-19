@@ -15,6 +15,7 @@ web/
 ├── Learn.html          the guide for young people: what phishing is and how to spot it
 ├── css/
 │   ├── theme.css       shared: the three colour themes
+│   ├── nav.css         shared: the site header (Home, Learn, Checker)
 │   ├── homepage.css    Homepage.html only
 │   ├── learn.css       Learn.html only
 │   └── checker.css     Checker.html only
@@ -38,6 +39,7 @@ web/
 | `css/learn.css` | the education page's layout, cards and motion, on top of Bootstrap |
 | `js/learn.js` | the education page's behaviour: plays each animation only while it is on screen, fades parts in, the chapter bar and reading progress, the "Show the red flags" practice, and the link quiz |
 | `animations/learn-*.json` | the education page's seven Lottie animations, made by `scripts/make_learn_lotties.py` (`python scripts/make_learn_lotties.py web/animations`) |
+| `css/nav.css` | the site header shared by every page: the name on the left, Home / Learn / Checker on the right, the current page highlighted (`aria-current="page"`), and the top-right corner kept free for the Theme button |
 | `css/theme.css` | the three colour themes (Default, Dark, Light) shared by every page, and the Theme button's look |
 | `css/homepage.css` | the homepage's layout and motion, on top of Bootstrap (`delay-0` ... `delay-5` set the order things appear in) |
 | `css/checker.css` | the checker's layout, on top of Bootstrap |
@@ -53,7 +55,9 @@ No page has inline `<script>` or `style="..."`: all behaviour is in `js/` and al
 
 Name it after what it is (e.g. `Flashcards.html`), give it its own `css/flashcards.css` and
 `js/flashcards.js`, and load the shared files the same way the existing pages do:
-`js/theme.js` and `css/theme.css` in `<head>`, then the page's own stylesheet.
+`js/theme.js`, `css/theme.css` and `css/nav.css` in `<head>`, then the page's own stylesheet.
+Copy the `<header class="site-nav">` block from an existing page, add the new page to its
+list of links on every page, and move `aria-current="page"` to the new page's own link.
 
 `netlify.toml` at the repository root tells Netlify to publish this folder as it is, and
 forwards the old `check.html` address to `Checker.html`.

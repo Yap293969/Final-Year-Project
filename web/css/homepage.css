@@ -658,7 +658,7 @@ main, .site-footer { position: relative; z-index: 1; }
 }
 
 @media (max-width: 575.98px) {
-  .hero { padding-top: 4.25rem; } /* room for the Theme button in the corner */
+  .hero { padding-top: 2rem; }
   .hero-title br { display: none; }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .stat:nth-child(3) { border-left: 0; }

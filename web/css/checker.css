@@ -41,15 +41,6 @@ body {
   margin-bottom: 1.75rem;
 }
 
-.page-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
-
-.back-home {
-  display: inline-block;
-  margin-bottom: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
 .page-title {
   font-size: clamp(2.4rem, 9vw, 3.5rem);
   font-weight: 700;

@@ -21,15 +21,29 @@
        the saved theme shows from the first frame; theme.css holds the colours. -->
   <script src="js/theme.js"></script>
   <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/checker.css">
 </head>
 <body>
+  <!-- Site header, the same on every page (styles in css/nav.css). -->
+  <header class="site-nav">
+    <div class="container-xl site-nav-inner">
+      <a class="site-brand" href="Homepage.html">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5 26 7v8.2c0 6-4.2 10.8-10 13.3C10.2 26 6 21.2 6 15.2V7z"/><path d="m11.5 16 3.2 3.2 6-6.4"/></svg>
+        <span>Is this a scam?</span>
+      </a>
+      <nav aria-label="Main">
+        <ul class="site-links">
+        <li><a href="Homepage.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg>Home</a></li>
+        <li><a href="Learn.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.5C5 4 8.5 4 12 6c3.5-2 7-2 9.5-.5V19c-2.5-1.5-6-1.5-9.5.5-3.5-2-7-2-9.5-.5z"/><path d="M12 6v13.5"/></svg>Learn</a></li>
+        <li><a href="Checker.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Checker</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
   <main class="page">
     <header class="page-header">
-      <nav class="page-links" aria-label="Pages">
-        <a class="back-home" href="Homepage.html">&larr; Home</a>
-        <a class="back-home" href="Learn.html">Learn the signs</a>
-      </nav>
       <h1 class="page-title">Is this a scam?</h1>
       <p class="page-lead">Paste a suspicious email or link. You'll get an answer, and the reasons behind it.</p>
     </header>

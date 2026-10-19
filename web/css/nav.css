@@ -1,0 +1,116 @@
+/* Is this a scam? -- the site header, shared by every page.
+ *
+ * One bar across the top: the name on the left (back to the homepage), and the
+ * three pages on the right -- Home, Learn, Checker. The page you're on is
+ * highlighted (aria-current="page" in the HTML), so visitors always know where
+ * they are. Colours come from theme.css. The Theme button (js/theme.js) sits in
+ * the top-right corner, so the bar keeps that corner free.
+ */
+
+.site-nav {
+  position: relative;
+  z-index: 25; /* above the page's decorative background, below the Theme panel */
+  border-bottom: 1px solid var(--line);
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.site-nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: 72px; /* the Theme button (40px tall, 1rem from the top) sits centred in it */
+}
+
+/* Keep clear of the Theme button until the screen is wide enough that it sits
+   outside the page's content width. */
+@media (max-width: 1599.98px) {
+  .site-nav-inner { padding-right: 8rem; }
+}
+
+.site-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--ink-strong);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.site-brand:hover, .site-brand:focus-visible { color: var(--ink-strong); }
+.site-brand svg {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  fill: rgba(var(--accent-rgb), 0.16);
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.site-links {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.site-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+.site-links svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.site-links a:hover {
+  color: var(--ink-strong);
+  background: rgba(var(--accent-rgb), 0.08);
+}
+.site-links a[aria-current="page"] {
+  color: var(--ink-strong);
+  background: rgba(var(--accent-rgb), 0.16);
+  border-color: rgba(var(--accent-rgb), 0.4);
+}
+
+.site-brand:focus-visible, .site-links a:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+}
+
+/* Phones: the name shrinks to its shield, the icons go, the links stay. */
+@media (max-width: 575.98px) {
+  .site-nav-inner { gap: 0.5rem; padding-right: 7.25rem; }
+  .site-brand span { display: none; }
+  .site-links { gap: 0.1rem; }
+  .site-links a { padding: 0.45rem 0.6rem; font-size: 0.86rem; }
+  .site-links svg { display: none; }
+}
+
+/* Very narrow phones: the Home link already leads home, so the shield steps aside. */
+@media (max-width: 379.98px) {
+  .site-brand { display: none; }
+  .site-nav-inner { justify-content: flex-start; }
+}
