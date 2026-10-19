@@ -41,6 +41,8 @@ body {
   margin-bottom: 1.75rem;
 }
 
+.page-links { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+
 .back-home {
   display: inline-block;
   margin-bottom: 1rem;

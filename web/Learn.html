@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en" data-theme="default" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learn to spot phishing — Is this a scam?</title>
+  <meta name="description" content="A short, friendly guide for young people: what phishing is, why it works, and how to spot a scam message at first sight.">
+  <meta name="theme-color" content="#0a0f1f">
+
+  <!-- Same fonts as the homepage: Sora for headings, Plus Jakarta Sans for text, JetBrains Mono for examples. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3.3 (grid and utilities). The integrity hash makes the browser refuse a changed file. -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous">
+  <!-- Colour theme (Default, Dark, Light), shared by every page. -->
+  <script src="js/theme.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/learn.css">
+  <!-- The page's behaviour. In <head> so it can switch the fade-ins on before the
+       first frame; it waits for the page before doing anything else. -->
+  <script src="js/learn.js"></script>
+</head>
+<body class="learn">
+  <!-- Background: grid, glow and drifting points of light. Purely decorative. -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow--left"></div>
+    <div class="bg-glow bg-glow--right"></div>
+    <div class="bg-stars" id="bg-stars"></div>
+  </div>
+
+  <nav class="topbar container-xl" aria-label="Pages">
+    <a class="topbar-link" href="Homepage.html">&larr; Home</a>
+    <a class="topbar-link" href="Checker.html">Checker</a>
+  </nav>
+
+  <main>
+    <!-- Hero ------------------------------------------------------------------>
+    <header class="hero container-xl">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-7">
+          <span class="eyebrow reveal delay-0">
+            <span class="eyebrow-dot"></span>
+            Learn &middot; about 5 minutes
+          </span>
+          <h1 class="hero-title reveal delay-1">
+            Spot the bait<br>
+            <span class="hero-word">before you bite.</span>
+          </h1>
+          <p class="hero-lead reveal delay-2">
+            Scam messages are made to look real and to make you act fast. This short guide shows
+            you what phishing is, why it works on <strong>anyone</strong>, and the quick checks that
+            help you feel something is off &mdash; before you tap, type or pay.
+          </p>
+          <div class="hero-actions reveal delay-3">
+            <a class="btn-glow" href="#what">
+              Start learning <span aria-hidden="true">&darr;</span>
+            </a>
+            <a class="btn-ghost" href="Checker.html">Try the checker <span aria-hidden="true">&rarr;</span></a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <figure class="art art--hero reveal delay-2">
+            <div class="lottie" data-lottie="animations/learn-phone.json" data-still="100"
+                 role="img" aria-label="Messages arrive on a phone; the last one is a scam and flashes red"></div>
+            <figcaption>Most messages are fine. Your job is to notice the one that isn't.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </header>
+
+    <!-- Chapter bar: jump to a part, and see how far you've read. -->
+    <nav class="chapters" id="chapters" aria-label="Parts of this guide">
+      <div class="container-xl chapters-inner">
+        <a class="chapter" href="#what"><span>01</span> What it is</a>
+        <a class="chapter" href="#why"><span>02</span> Why it works</a>
+        <a class="chapter" href="#flags"><span>03</span> Red flags</a>
+        <a class="chapter" href="#links"><span>04</span> Read the link</a>
+        <a class="chapter" href="#baits"><span>05</span> Common baits</a>
+        <a class="chapter" href="#act"><span>06</span> What to do</a>
+      </div>
+      <div class="chapters-progress" aria-hidden="true"><span id="read-progress"></span></div>
+    </nav>
+
+    <!-- 01 What is phishing ------------------------------------------------------>
+    <section class="lesson container-xl" id="what" aria-labelledby="what-title">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-4 order-lg-2">
+          <figure class="art fade-up">
+            <div class="lottie" data-lottie="animations/learn-hook.json" data-still="60"
+                 role="img" aria-label="An email hanging on a fishing hook like bait"></div>
+          </figure>
+        </div>
+        <div class="col-lg-8 order-lg-1">
+          <h2 class="section-title" id="what-title"><span class="section-index">01</span> What is phishing?</h2>
+          <p class="lesson-lead fade-up">
+            <strong>Phishing</strong> is when someone pretends to be a person or company you trust
+            &mdash; a bank, a delivery company, your school, a game, even a friend &mdash; to trick you
+            into clicking a link, typing a password, sharing a code or sending money.
+          </p>
+          <p class="fade-up">
+            The name comes from <em>fishing</em>: the scammer throws out bait to thousands of
+            people and waits for someone to bite. They don't need everyone. They only need you,
+            once.
+          </p>
+        </div>
+      </div>
+
+      <ol class="flow fade-up" aria-label="How a phishing message works">
+        <li class="flow-step">
+          <span class="flow-tag">The bait</span>
+          <h3>A message that looks real</h3>
+          <p>A logo, a familiar name, a believable story. It is built to look like something you'd expect.</p>
+        </li>
+        <li class="flow-step">
+          <span class="flow-tag">The hook</span>
+          <h3>Something to do, right now</h3>
+          <p>&ldquo;Log in&rdquo;, &ldquo;claim&rdquo;, &ldquo;verify&rdquo;, &ldquo;pay a small fee&rdquo;, &ldquo;scan this QR code&rdquo;.</p>
+        </li>
+        <li class="flow-step flow-step--catch">
+          <span class="flow-tag">The catch</span>
+          <h3>What they really want</h3>
+          <p>Your password, your one-time code (OTP), your card details, your money, or your account.</p>
+        </li>
+      </ol>
+
+      <div class="note fade-up">
+        <strong>It's not only email.</strong>
+        The same trick comes by SMS (<em>smishing</em>), phone calls (<em>vishing</em>), QR codes
+        (<em>quishing</em>), social media DMs, chat apps and in-game chat. Same bait, different pond.
+      </div>
+    </section>
+
+    <!-- 02 Why it works ---------------------------------------------------------->
+    <section class="lesson container-xl" id="why" aria-labelledby="why-title">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-4">
+          <figure class="art fade-up">
+            <div class="lottie" data-lottie="animations/learn-alarm.json" data-still="20"
+                 role="img" aria-label="An alarm clock shaking while a red ring counts down"></div>
+          </figure>
+        </div>
+        <div class="col-lg-8">
+          <h2 class="section-title" id="why-title"><span class="section-index">02</span> Why it works on anyone</h2>
+          <p class="lesson-lead fade-up">
+            Scammers rarely hack your phone. They hack your <strong>feelings</strong>. A strong feeling
+            makes you act before you think &mdash; and that's exactly the moment they want.
+          </p>
+          <p class="fade-up">Being smart doesn't protect you. Noticing the feeling does.</p>
+        </div>
+      </div>
+
+      <ul class="feelings" aria-label="Feelings scammers use">
+        <li class="feeling fade-up">
+          <span class="feeling-icon" aria-hidden="true">&#9201;</span>
+          <h3>Hurry</h3>
+          <p>No time to stop and check.</p>
+          <q>Reply within 24 hours or lose access.</q>
+        </li>
+        <li class="feeling fade-up">
+          <span class="feeling-icon" aria-hidden="true">&#9888;</span>
+          <h3>Fear</h3>
+          <p>Something bad will happen if you don't act.</p>
+          <q>Your account will be deleted.</q>
+        </li>
+        <li class="feeling fade-up">
+          <span class="feeling-icon" aria-hidden="true">&#127873;</span>
+          <h3>Reward</h3>
+          <p>Something free, rare or too good.</p>
+          <q>You've won! Claim your prize now.</q>
+        </li>
+        <li class="feeling fade-up">
+          <span class="feeling-icon" aria-hidden="true">&#128064;</span>
+          <h3>Curiosity</h3>
+          <p>You just have to see it.</p>
+          <q>Is this you in this video??</q>
+        </li>
+        <li class="feeling fade-up">
+          <span class="feeling-icon" aria-hidden="true">&#127979;</span>
+          <h3>Trust</h3>
+          <p>It seems to come from someone in charge, or someone you know.</p>
+          <q>Hi, it's your teacher / your bank / me, new number.</q>
+        </li>
+      </ul>
+
+      <p class="rule fade-up">
+        <span class="rule-badge">Remember</span>
+        Strong feeling <span aria-hidden="true">+</span> a request to act fast
+        <span aria-hidden="true">=</span> <strong>slow down</strong>.
+      </p>
+    </section>
+
+    <!-- 03 Red flags --------------------------------------------------------------->
+    <section class="lesson container-xl" id="flags" aria-labelledby="flags-title">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-4 order-lg-2">
+          <figure class="art fade-up">
+            <div class="lottie" data-lottie="animations/learn-magnifier.json" data-still="115"
+                 role="img" aria-label="A magnifying glass moves over a message and red flags pop up"></div>
+          </figure>
+        </div>
+        <div class="col-lg-8 order-lg-1">
+          <h2 class="section-title" id="flags-title"><span class="section-index">03</span> Red flags at first sight</h2>
+          <p class="lesson-lead fade-up">
+            You don't need to be an expert. Give every unexpected message a
+            <strong>5-second check</strong>:
+          </p>
+          <ol class="checklist fade-up">
+            <li><strong>Who sent it?</strong> Does the name match the address or number?</li>
+            <li><strong>Is it rushing or scaring me?</strong></li>
+            <li><strong>Is it too good to be true?</strong></li>
+            <li><strong>Where does the link really go?</strong> (Part 04 shows how.)</li>
+            <li><strong>Is it asking for a password, a code, or money?</strong></li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Practice: a made-up scam email. GameVault is not a real company. -->
+      <div class="practice fade-up" id="practice">
+        <div class="practice-head">
+          <h3>Practice: how many red flags can you find?</h3>
+          <button type="button" class="btn-glow btn-sm-pill" id="flags-toggle" aria-pressed="false" aria-controls="practice">
+            Show the red flags
+          </button>
+        </div>
+
+        <div class="row gx-lg-4 gy-3">
+          <div class="col-lg-7">
+            <article class="mail" aria-label="Example scam email">
+              <div class="mail-row">
+                <span class="mail-label">From</span>
+                <span>GameVault Support <mark class="flag" data-flag="1">&lt;support@gamevault-rewards.help&gt;</mark></span>
+              </div>
+              <div class="mail-row">
+                <span class="mail-label">Subject</span>
+                <span class="mail-subject">Your account will be locked in <mark class="flag" data-flag="3">2 hours</mark></span>
+              </div>
+              <div class="mail-body">
+                <p><mark class="flag" data-flag="2">Hi Player,</mark></p>
+                <p>
+                  We detected an unusual login on your <mark class="flag" data-flag="4">acount</mark>.
+                  To keep your skins and coins, verify your account now. If you don't verify within
+                  2 hours, your account will be <mark class="flag" data-flag="3">permanently deleted</mark>.
+                </p>
+                <p>As a thank you, verified players get <mark class="flag" data-flag="5">5,000 FREE coins!</mark></p>
+                <p class="mail-button-row">
+                  <mark class="flag flag--block" data-flag="6"><span class="mail-button">Verify my account</span></mark>
+                </p>
+                <p class="mail-link">The button goes to: <code>http://gamevault-rewards.help/login</code></p>
+              </div>
+            </article>
+          </div>
+          <div class="col-lg-5">
+            <ol class="flag-list" aria-label="The red flags in this email">
+              <li><button type="button" data-flag="1"><span class="flag-no">1</span>
+                <span><strong>Strange sender address.</strong> The real game wouldn't email from a "-rewards.help" website.</span></button></li>
+              <li><button type="button" data-flag="2"><span class="flag-no">2</span>
+                <span><strong>"Hi Player".</strong> A service you signed up for usually knows your name or username.</span></button></li>
+              <li><button type="button" data-flag="3"><span class="flag-no">3</span>
+                <span><strong>Rush and threat.</strong> "2 hours" and "permanently deleted" are there to make you panic.</span></button></li>
+              <li><button type="button" data-flag="4"><span class="flag-no">4</span>
+                <span><strong>Spelling mistake.</strong> "acount". Real companies check their messages.</span></button></li>
+              <li><button type="button" data-flag="5"><span class="flag-no">5</span>
+                <span><strong>Too-good reward.</strong> Free coins are the sweet part of the bait.</span></button></li>
+              <li><button type="button" data-flag="6"><span class="flag-no">6</span>
+                <span><strong>Log in through their button.</strong> Never sign in from a link in a message. Open the real app instead.</span></button></li>
+            </ol>
+            <p class="practice-hint" id="flags-hint">Read the email first, then press <em>Show the red flags</em>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 Read the link ----------------------------------------------------------->
+    <section class="lesson container-xl" id="links" aria-labelledby="links-title">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-4">
+          <figure class="art fade-up">
+            <div class="lottie" data-lottie="animations/learn-link.json" data-still="110"
+                 role="img" aria-label="A highlighter slides along a web address to the part that shows the real owner"></div>
+          </figure>
+        </div>
+        <div class="col-lg-8">
+          <h2 class="section-title" id="links-title"><span class="section-index">04</span> Read the link like a pro</h2>
+          <p class="lesson-lead fade-up">
+            A link can show any brand name it likes. What matters is <strong>who really owns it</strong>.
+            Find the first single <code>/</code> after <code>https://</code>, and read the words just
+            before it. That's the owner.
+          </p>
+        </div>
+      </div>
+
+      <div class="anatomy fade-up" aria-label="The parts of a web address">
+        <div class="anatomy-url">
+          <span class="part part--scheme">https://</span><span class="part part--sub">login.</span><span class="part part--owner">mybank.com.my</span><span class="part part--path">/account/settings</span>
+        </div>
+        <ul class="anatomy-keys">
+          <li><span class="key key--scheme"></span>how to connect</li>
+          <li><span class="key key--sub"></span>a part the owner can name anything</li>
+          <li><span class="key key--owner"></span><strong>the real owner</strong></li>
+          <li><span class="key key--path"></span>which page on that website</li>
+        </ul>
+      </div>
+
+      <h3 class="sub-title fade-up">Who really owns this link?</h3>
+      <p class="fade-up muted">Guess first, then reveal. (MyBank is a made-up bank for this example.)</p>
+      <ul class="quiz" aria-label="Link examples">
+        <li class="quiz-card fade-up" data-verdict="safe">
+          <code class="quiz-url">https://www.<b>mybank.com.my</b>/login</code>
+          <button type="button" class="quiz-reveal" aria-expanded="false">Reveal</button>
+          <div class="quiz-answer" hidden>
+            <span class="verdict verdict--safe">Real</span>
+            The owner is <strong>mybank.com.my</strong>. "www." is just a part the owner chose.
+          </div>
+        </li>
+        <li class="quiz-card fade-up" data-verdict="phish">
+          <code class="quiz-url">https://mybank.com.my.<b>account-check.top</b>/login</code>
+          <button type="button" class="quiz-reveal" aria-expanded="false">Reveal</button>
+          <div class="quiz-answer" hidden>
+            <span class="verdict verdict--phish">Scam</span>
+            The owner is <strong>account-check.top</strong>. The bank's name at the start is a disguise.
+          </div>
+        </li>
+        <li class="quiz-card fade-up" data-verdict="phish">
+          <code class="quiz-url">https://<b>rnybank.com.my</b>/login</code>
+          <button type="button" class="quiz-reveal" aria-expanded="false">Reveal</button>
+          <div class="quiz-answer" hidden>
+            <span class="verdict verdict--phish">Scam</span>
+            Look closely: <strong>r</strong> + <strong>n</strong> pretends to be <strong>m</strong>. A look-alike name.
+          </div>
+        </li>
+        <li class="quiz-card fade-up" data-verdict="warn">
+          <code class="quiz-url">https://<b>bit.ly</b>/3xYz9Qa</code>
+          <button type="button" class="quiz-reveal" aria-expanded="false">Reveal</button>
+          <div class="quiz-answer" hidden>
+            <span class="verdict verdict--warn">Can't tell</span>
+            A short link hides where it really goes. Don't open it from a stranger. Paste it into the checker first.
+          </div>
+        </li>
+      </ul>
+
+      <div class="tricks fade-up">
+        <div class="trick"><strong>Look-alike letters</strong><span>rn for m, 0 for o, 1 for l, extra or missing letters.</span></div>
+        <div class="trick"><strong>Brand in the wrong place</strong><span>The brand's name early in the link, but a different owner before the first /.</span></div>
+        <div class="trick"><strong>Odd endings</strong><span>Unusual endings such as .top, .xyz or .help on a "bank" or "delivery" site.</span></div>
+        <div class="trick"><strong>The padlock isn't proof</strong><span>&#128274; only means the connection is private. Scam websites have it too.</span></div>
+      </div>
+    </section>
+
+    <!-- 05 Common baits ---------------------------------------------------------------->
+    <section class="lesson container-xl" id="baits" aria-labelledby="baits-title">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-4 order-lg-2">
+          <figure class="art fade-up">
+            <div class="lottie" data-lottie="animations/learn-gift.json" data-still="60"
+                 role="img" aria-label="A gift box opens and a hook comes out"></div>
+          </figure>
+        </div>
+        <div class="col-lg-8 order-lg-1">
+          <h2 class="section-title" id="baits-title"><span class="section-index">05</span> Baits young people see a lot</h2>
+          <p class="lesson-lead fade-up">
+            Scammers follow the crowd. These are the stories they tell most often to students and
+            young people. Each one has a <strong>tell</strong> &mdash; the giveaway that it's bait.
+          </p>
+        </div>
+      </div>
+
+      <ul class="baits" aria-label="Common scam stories">
+        <li class="bait fade-up">
+          <span class="bait-tag">Games</span>
+          <h3>Free skins, coins or diamonds</h3>
+          <q>Log in with your game account to claim 5,000 free coins.</q>
+          <p class="tell"><span>The tell</span> Real games give rewards inside the game, never on another website.</p>
+        </li>
+        <li class="bait fade-up">
+          <span class="bait-tag">Delivery</span>
+          <h3>Parcel on hold</h3>
+          <q>Your parcel can't be delivered. Pay RM1.99 to reschedule.</q>
+          <p class="tell"><span>The tell</span> A tiny fee is a trick to get your card details. Check in the courier's own app.</p>
+        </li>
+        <li class="bait fade-up">
+          <span class="bait-tag">Social media</span>
+          <h3>Account will be suspended</h3>
+          <q>Your post broke copyright rules. Appeal here or lose your account.</q>
+          <p class="tell"><span>The tell</span> Real warnings appear inside the app, not as a DM with a login link.</p>
+        </li>
+        <li class="bait fade-up">
+          <span class="bait-tag">Jobs</span>
+          <h3>Easy money</h3>
+          <q>Earn RM300 a day just liking videos. No experience needed!</q>
+          <p class="tell"><span>The tell</span> Pay that's too easy, then a "deposit" or your bank account is needed later.</p>
+        </li>
+        <li class="bait fade-up">
+          <span class="bait-tag">Friends</span>
+          <h3>A friend needs help</h3>
+          <q>I sent you a 6-digit code by mistake, can you send it back?</q>
+          <p class="tell"><span>The tell</span> Their account may be hacked. Call them another way. Never share an OTP.</p>
+        </li>
+        <li class="bait fade-up">
+          <span class="bait-tag">Curiosity</span>
+          <h3>Shocking photo or video</h3>
+          <q>OMG is this you in this video?? &#128561;</q>
+          <p class="tell"><span>The tell</span> The link opens a fake login page to steal your account.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 06 What to do ----------------------------------------------------------------->
+    <section class="lesson container-xl" id="act" aria-labelledby="act-title">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-4">
+          <figure class="art fade-up">
+            <div class="lottie" data-lottie="animations/learn-shield.json" data-loop-from="48" data-still="119"
+                 role="img" aria-label="A shield draws itself and gets a green tick"></div>
+          </figure>
+        </div>
+        <div class="col-lg-8">
+          <h2 class="section-title" id="act-title"><span class="section-index">06</span> What to do: Stop, Check, Ask</h2>
+          <p class="lesson-lead fade-up">
+            You don't have to win an argument with a scammer. You only have to <strong>not act on
+            their message</strong>.
+          </p>
+        </div>
+      </div>
+
+      <ol class="sca fade-up" aria-label="Stop, check, ask">
+        <li class="sca-step">
+          <span class="sca-word">Stop</span>
+          <p>Don't tap, reply, scan or pay yet. A real message will still be real in ten minutes.</p>
+        </li>
+        <li class="sca-step">
+          <span class="sca-word">Check</span>
+          <p>Open the official app or type the website yourself. Read the link. Or paste it into our checker.</p>
+        </li>
+        <li class="sca-step">
+          <span class="sca-word">Ask</span>
+          <p>Show it to a parent, teacher or friend you trust. Two pairs of eyes beat one.</p>
+        </li>
+      </ol>
+
+      <div class="row gx-lg-4 gy-3 fade-up">
+        <div class="col-md-6">
+          <div class="panel panel--never">
+            <h3>Never share these</h3>
+            <ul class="ticks ticks--no">
+              <li>Your passwords</li>
+              <li>One-time codes (OTP / TAC), even with "the bank" or a friend</li>
+              <li>Card numbers, CVV or online banking details</li>
+              <li>Photos of your IC or other ID</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel--clicked">
+            <h3>Already clicked? Don't panic. Act fast.</h3>
+            <ul class="ticks">
+              <li>Change that password from the official app or website, and anywhere you reuse it.</li>
+              <li>Turn on two-step verification.</li>
+              <li>Shared bank or card details? Call your bank now, and the National Scam Response Centre on <strong>997</strong>.</li>
+              <li>Tell an adult you trust, then report and block the sender.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Next step ------------------------------------------------------------------------->
+    <section class="next container-xl fade-up" aria-labelledby="next-title">
+      <div class="next-card">
+        <div>
+          <h2 id="next-title">Got a message you're not sure about?</h2>
+          <p>Paste it into the checker. It gives an answer and shows the reasons behind it.</p>
+        </div>
+        <div class="next-actions">
+          <a class="btn-glow" href="Checker.html#url">Check a link</a>
+          <a class="btn-soft" href="Checker.html#email">Check an email</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container-xl">
+    <p>
+      A guide made for a Final Year Project research prototype. The examples on this page are made
+      up for teaching; GameVault and MyBank are not real companies.
+    </p>
+  </footer>
+
+  <!-- lottie-web 5.12.2 (light SVG player), the same pinned copy the homepage uses. -->
+  <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie_light.min.js"
+          integrity="sha384-Vtbz3QbtSBqleuQry6kQy5smig1gPZCXUoTFN7RmN9QW47xpEDsV/J1w0Pw0rDJu"
+          crossorigin="anonymous"></script>
+</body>
+</html>

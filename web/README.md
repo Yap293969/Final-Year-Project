@@ -12,17 +12,21 @@ web/
 ├── index.html          entry point only: sends the visitor to Homepage.html
 ├── Homepage.html       the homepage
 ├── Checker.html        the email and link checker
+├── Learn.html          the guide for young people: what phishing is and how to spot it
 ├── css/
 │   ├── theme.css       shared: the three colour themes
 │   ├── homepage.css    Homepage.html only
+│   ├── learn.css       Learn.html only
 │   └── checker.css     Checker.html only
 ├── js/
 │   ├── theme.js        shared: theme setting and the Theme button
 │   ├── config.js       shared: where the model server is
 │   ├── homepage.js     Homepage.html only
+│   ├── learn.js        Learn.html only
 │   └── checker.js      Checker.html only
 └── animations/
-    └── shield-scan.json
+    ├── shield-scan.json
+    └── learn-*.json    the seven animations on Learn.html
 ```
 
 | File | What it is |
@@ -30,6 +34,10 @@ web/
 | `index.html` | the site's entry point; Netlify and Laragon open it for the root address, and it forwards to `Homepage.html` |
 | `Homepage.html` | the homepage: what the prototype does, its measured test F1-scores, and an animated scan monitor |
 | `Checker.html` | the checker: two tabs (email, link), the forms, and where answers appear. `Checker.html#url` opens the link tab and `Checker.html#email` the email tab |
+| `Learn.html` | the education page for young people, in six parts: what phishing is, why it works (feelings scammers use), red flags at first sight with a practice email, reading a link, common baits, and what to do (Stop, Check, Ask). Each part has its own Lottie animation |
+| `css/learn.css` | the education page's layout, cards and motion, on top of Bootstrap |
+| `js/learn.js` | the education page's behaviour: plays each animation only while it is on screen, fades parts in, the chapter bar and reading progress, the "Show the red flags" practice, and the link quiz |
+| `animations/learn-*.json` | the education page's seven Lottie animations, made by `scripts/make_learn_lotties.py` (`python scripts/make_learn_lotties.py web/animations`) |
 | `css/theme.css` | the three colour themes (Default, Dark, Light) shared by every page, and the Theme button's look |
 | `css/homepage.css` | the homepage's layout and motion, on top of Bootstrap (`delay-0` ... `delay-5` set the order things appear in) |
 | `css/checker.css` | the checker's layout, on top of Bootstrap |

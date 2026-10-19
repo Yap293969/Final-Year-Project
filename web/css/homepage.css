@@ -601,6 +601,43 @@ main, .site-footer { position: relative; z-index: 1; }
   line-height: 1.6;
 }
 
+/* Pointer to Learn.html, under the four steps. */
+.learn-link {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.1rem;
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  border-radius: 12px;
+  background: rgba(var(--accent-rgb), 0.08);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.learn-link:hover, .learn-link:focus-visible {
+  color: var(--ink-strong);
+  border-color: rgba(var(--accent-rgb), 0.7);
+  background: rgba(var(--accent-rgb), 0.15);
+}
+.learn-link span[aria-hidden] { transition: transform 0.2s ease; }
+.learn-link:hover span[aria-hidden] { transform: translateX(4px); }
+.learn-link:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+.learn-link-tag {
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  background: var(--safe-soft);
+  border: 1px solid var(--safe-line);
+  color: var(--safe-ink);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .site-footer {
   padding-bottom: 2.5rem;
 }
