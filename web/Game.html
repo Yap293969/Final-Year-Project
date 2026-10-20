@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" data-theme="default" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scam or Safe? — Is this a scam?</title>
+  <meta name="description" content="A quick game for young people: read a message, decide if it's a scam or safe, then see the clues.">
+  <meta name="theme-color" content="#0a0f1f">
+
+  <!-- Same fonts as the other pages: Sora for headings, Plus Jakarta Sans for text, JetBrains Mono for links. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3.3 (grid and utilities). The integrity hash makes the browser refuse a changed file. -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous">
+  <!-- Colour theme (Default, Dark, Light), shared by every page. -->
+  <script src="js/theme.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body class="game">
+  <!-- Background: grid, glow and drifting points of light. Purely decorative. -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow--left"></div>
+    <div class="bg-glow bg-glow--right"></div>
+    <div class="bg-stars" id="bg-stars"></div>
+  </div>
+
+  <!-- Site header, the same on every page (styles in css/nav.css). -->
+  <header class="site-nav">
+    <div class="container-xl site-nav-inner">
+      <a class="site-brand" href="Homepage.html">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5 26 7v8.2c0 6-4.2 10.8-10 13.3C10.2 26 6 21.2 6 15.2V7z"/><path d="m11.5 16 3.2 3.2 6-6.4"/></svg>
+        <span>Is this a scam?</span>
+      </a>
+      <nav aria-label="Main">
+        <ul class="site-links">
+        <li><a href="Homepage.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg>Home</a></li>
+        <li><a href="Learn.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.5C5 4 8.5 4 12 6c3.5-2 7-2 9.5-.5V19c-2.5-1.5-6-1.5-9.5.5-3.5-2-7-2-9.5-.5z"/><path d="M12 6v13.5"/></svg>Learn</a></li>
+        <li><a href="Game.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="7" width="19" height="11" rx="5.5"/><path d="M7.5 10.5v4M5.5 12.5h4"/><path d="M15.5 11.5h.01M18 13.5h.01"/></svg>Game</a></li>
+        <li><a href="Checker.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Checker</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="game-main">
+    <noscript>
+      <p class="noscript">This game needs JavaScript. You can still read the guide on the <a href="Learn.html">Learn</a> page.</p>
+    </noscript>
+
+    <!-- 1. Start ------------------------------------------------------------------>
+    <section class="screen screen--start" id="screen-start" aria-labelledby="start-title">
+      <div class="start-art">
+        <div class="lottie lottie--cards" id="lottie-cards"
+             role="img" aria-label="Three cards: a red flag, a question mark and a green tick"></div>
+      </div>
+      <span class="eyebrow"><span class="eyebrow-dot"></span>Mini-game &middot; 10 rounds</span>
+      <h1 class="start-title" id="start-title">Scam <span class="or">or</span> <span class="safe-word">Safe?</span></h1>
+      <p class="start-lead">
+        Real messages, made-up companies. Read each one, think about the situation, and decide.
+        After every answer you'll see the clues that give it away.
+      </p>
+
+      <ol class="how-to" aria-label="How to play">
+        <li><span class="how-no">1</span><span><strong>Read</strong> the message and the situation</span></li>
+        <li><span class="how-no">2</span><span><strong>Choose</strong> Scam or Safe</span></li>
+        <li><span class="how-no">3</span><span><strong>Flip</strong> the card to see the clues</span></li>
+      </ol>
+
+      <div class="start-actions">
+        <button type="button" class="btn-glow btn-lg" id="start-button">Start the game</button>
+        <a class="btn-ghost" href="Learn.html">Read the guide first <span aria-hidden="true">&rarr;</span></a>
+      </div>
+      <p class="best-line" id="best-line" hidden></p>
+      <p class="tip">Careful: not every message is a scam. Some are real, just like in life.</p>
+    </section>
+
+    <!-- 2. Play ---------------------------------------------------------------------->
+    <section class="screen screen--play" id="screen-play" aria-label="The game" hidden>
+      <div class="hud">
+        <p class="hud-round" id="hud-round">Round 1 of 10</p>
+        <ol class="dots" id="dots" aria-label="Your answers so far"></ol>
+        <p class="hud-stats">
+          <span class="hud-score" id="hud-score">0 points</span>
+          <span class="hud-streak" id="hud-streak" hidden></span>
+        </p>
+      </div>
+
+      <div class="flip" id="flip">
+        <div class="flip-inner">
+          <!-- Front: the message and the question -->
+          <div class="face face--front" id="face-front">
+            <div class="situation">
+              <span class="situation-label">The situation</span>
+              <p id="front-situation" tabindex="-1"></p>
+            </div>
+            <div class="message-wrap" id="front-message"></div>
+
+            <h2 class="question">Is this a scam, or is it safe?</h2>
+            <div class="choices">
+              <button type="button" class="choice choice--scam" id="choose-scam">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4"/><path d="M5 4h12l-2.5 4L17 12H5"/></svg>
+                Scam
+              </button>
+              <button type="button" class="choice choice--safe" id="choose-safe">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.1 8.2 7.5 9.5 4.4-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+                Safe
+              </button>
+            </div>
+            <div class="hint-row">
+              <button type="button" class="hint-button" id="hint-button" aria-expanded="false" aria-controls="hint-text">Need a hint?</button>
+              <p class="hint-text" id="hint-text" hidden></p>
+            </div>
+          </div>
+
+          <!-- Back: the answer and the clues -->
+          <div class="face face--back" id="face-back" hidden>
+            <div class="verdict-row">
+              <div class="feedback-art" aria-hidden="true">
+                <div class="lottie lottie--feedback" id="lottie-correct"></div>
+                <div class="lottie lottie--feedback" id="lottie-wrong" hidden></div>
+              </div>
+              <div>
+                <h2 class="verdict" id="back-verdict" tabindex="-1"></h2>
+                <p class="verdict-sub" id="back-sub"></p>
+              </div>
+            </div>
+
+            <div class="message-wrap message-wrap--marked" id="back-message"></div>
+            <ol class="clue-list" id="back-clues"></ol>
+
+            <p class="takeaway"><span class="takeaway-label">Remember</span><span id="back-takeaway"></span></p>
+
+            <div class="back-actions">
+              <a class="learn-more" id="back-learn" href="Learn.html">Learn more about this <span aria-hidden="true">&rarr;</span></a>
+              <button type="button" class="btn-glow" id="next-button">Next message <span aria-hidden="true">&rarr;</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Read out by screen readers after each answer. -->
+      <p class="visually-hidden" id="announce" aria-live="polite"></p>
+    </section>
+
+    <!-- 3. Results --------------------------------------------------------------------->
+    <section class="screen screen--end" id="screen-end" aria-labelledby="end-title" hidden>
+      <div class="end-art">
+        <div class="lottie lottie--trophy" id="lottie-trophy" role="img" aria-label="A trophy with twinkling stars"></div>
+      </div>
+      <p class="end-rank" id="end-rank"></p>
+      <h1 class="end-title" id="end-title" tabindex="-1"></h1>
+      <p class="end-line" id="end-line"></p>
+
+      <dl class="end-stats">
+        <div><dt>Scams caught</dt><dd id="stat-scams"></dd></div>
+        <div><dt>Real ones trusted</dt><dd id="stat-safe"></dd></div>
+        <div><dt>Best streak</dt><dd id="stat-streak"></dd></div>
+        <div><dt>Your best score</dt><dd id="stat-best"></dd></div>
+      </dl>
+
+      <div class="end-actions">
+        <button type="button" class="btn-glow btn-lg" id="again-button">Play again</button>
+        <a class="btn-soft" href="Learn.html">Go to the guide</a>
+        <a class="btn-ghost" href="Checker.html">Check a real message <span aria-hidden="true">&rarr;</span></a>
+      </div>
+
+      <h2 class="review-title">Your answers</h2>
+      <ol class="review" id="review"></ol>
+
+      <p class="end-note">
+        In real life, when you're not sure: <strong>Stop</strong>, <strong>Check</strong>, <strong>Ask</strong>.
+        Don't tap the link. Open the official app yourself, or show the message to someone you trust.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>
+      A game made for a Final Year Project research prototype. Every company and person in it is
+      made up for teaching (SwiftPost, MyBank, GameVault, ZoomCart, TouchPay, StudyHub, Clipr).
+    </p>
+  </footer>
+
+  <!-- lottie-web 5.12.2 (light SVG player), the same pinned copy the other pages use. -->
+  <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie_light.min.js"
+          integrity="sha384-Vtbz3QbtSBqleuQry6kQy5smig1gPZCXUoTFN7RmN9QW47xpEDsV/J1w0Pw0rDJu"
+          crossorigin="anonymous"></script>
+  <script src="js/game-scenarios.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

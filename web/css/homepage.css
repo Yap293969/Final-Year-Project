@@ -626,6 +626,12 @@ main, .site-footer { position: relative; z-index: 1; }
 .learn-link span[aria-hidden] { transition: transform 0.2s ease; }
 .learn-link:hover span[aria-hidden] { transform: translateX(4px); }
 .learn-link:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+.learn-link + .learn-link { margin-left: 0.6rem; }
+.learn-link-tag--game {
+  background: rgba(255, 148, 64, 0.14) !important;
+  border-color: rgba(255, 148, 64, 0.45) !important;
+  color: var(--warn) !important;
+}
 .learn-link-tag {
   padding: 0.12rem 0.5rem;
   border-radius: 999px;

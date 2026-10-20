@@ -46,6 +46,7 @@
         <ul class="site-links">
         <li><a href="Homepage.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg>Home</a></li>
         <li><a href="Learn.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.5C5 4 8.5 4 12 6c3.5-2 7-2 9.5-.5V19c-2.5-1.5-6-1.5-9.5.5-3.5-2-7-2-9.5-.5z"/><path d="M12 6v13.5"/></svg>Learn</a></li>
+        <li><a href="Game.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="7" width="19" height="11" rx="5.5"/><path d="M7.5 10.5v4M5.5 12.5h4"/><path d="M15.5 11.5h.01M18 13.5h.01"/></svg>Game</a></li>
         <li><a href="Checker.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Checker</a></li>
         </ul>
       </nav>
@@ -59,7 +60,7 @@
         <div class="col-lg-7">
           <span class="eyebrow reveal delay-0">
             <span class="eyebrow-dot"></span>
-            Learn &middot; about 5 minutes
+            Learn &middot; about 8 minutes
           </span>
           <h1 class="hero-title reveal delay-1">
             Spot the bait<br>
@@ -95,7 +96,8 @@
         <a class="chapter" href="#flags"><span>03</span> Red flags</a>
         <a class="chapter" href="#links"><span>04</span> Read the link</a>
         <a class="chapter" href="#baits"><span>05</span> Common baits</a>
-        <a class="chapter" href="#act"><span>06</span> What to do</a>
+        <a class="chapter" href="#compare"><span>06</span> Real or fake</a>
+        <a class="chapter" href="#act"><span>07</span> What to do</a>
       </div>
       <div class="chapters-progress" aria-hidden="true"><span id="read-progress"></span></div>
     </nav>
@@ -423,7 +425,145 @@
       </ul>
     </section>
 
-    <!-- 06 What to do ----------------------------------------------------------------->
+    <!-- 06 Real or fake ------------------------------------------------------------->
+    <section class="lesson container-xl" id="compare" aria-labelledby="compare-title">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-4 order-lg-2">
+          <figure class="art fade-up">
+            <div class="lottie" data-lottie="animations/learn-compare.json" data-still="110"
+                 role="img" aria-label="Two look-alike messages are scanned; one gets a red cross, the other a green tick"></div>
+          </figure>
+        </div>
+        <div class="col-lg-8 order-lg-1">
+          <h2 class="section-title" id="compare-title"><span class="section-index">06</span> Real or fake? Side by side</h2>
+          <p class="lesson-lead fade-up">
+            Most messages you get are <strong>real</strong>. Scams copy them on purpose, so the
+            difference can be small. Here are three real messages next to their fake twins.
+          </p>
+          <p class="fade-up">Look at what each one <strong>asks you to do</strong>. That's where the fake gives itself away.</p>
+        </div>
+      </div>
+
+      <div class="pairs">
+        <!-- Pair 1: delivery text -->
+        <article class="pair fade-up" aria-labelledby="pair1-title">
+          <h3 class="pair-title" id="pair1-title"><span class="pair-no">1</span> A delivery text</h3>
+          <div class="twins">
+            <div class="twin twin--fake">
+              <span class="twin-tag">Fake</span>
+              <div class="twin-msg">
+                <p class="twin-from">+60 11-1234 5678 <span>Text message</span></p>
+                <p class="twin-text">SwiftPost: Your parcel could not be delivered. Pay RM1.99 to reschedule within 12 hours: swiftpost-redelivery.top</p>
+              </div>
+              <ul class="twin-points">
+                <li>Comes from a random mobile number</li>
+                <li>Asks you to pay through a link</li>
+                <li>Rushes you: "within 12 hours"</li>
+              </ul>
+            </div>
+            <div class="twin twin--real">
+              <span class="twin-tag">Real</span>
+              <div class="twin-msg">
+                <p class="twin-from">SwiftPost <span>Text message</span></p>
+                <p class="twin-text">SwiftPost: Your parcel SP4410 2938 MY is out for delivery today. Track it in the SwiftPost app. We will never ask you to pay by SMS.</p>
+              </div>
+              <ul class="twin-points">
+                <li>Gives a tracking number you can check yourself</li>
+                <li>No link: sends you to the official app</li>
+                <li>Asks you for nothing</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Pair 2: bank sign-in alert -->
+        <article class="pair fade-up" aria-labelledby="pair2-title">
+          <h3 class="pair-title" id="pair2-title"><span class="pair-no">2</span> A bank sign-in alert</h3>
+          <div class="twins">
+            <div class="twin twin--fake">
+              <span class="twin-tag">Fake</span>
+              <div class="twin-msg">
+                <p class="twin-from">MyBank Security <span>security@mybank-alerts.help</span></p>
+                <p class="twin-text">Dear Customer, we detected a new sign-in. Your account will be suspended within 24 hours. Verify now and enter the TAC code we send you.</p>
+                <p class="twin-button">Verify now</p>
+              </div>
+              <ul class="twin-points">
+                <li>The address isn't mybank.com.my</li>
+                <li>"Dear Customer" plus a threat</li>
+                <li>Wants your TAC through a link</li>
+              </ul>
+            </div>
+            <div class="twin twin--real">
+              <span class="twin-tag">Real</span>
+              <div class="twin-msg">
+                <p class="twin-from">MyBank <span>alerts@mybank.com.my</span></p>
+                <p class="twin-text">Hi Daniel, your account was signed in on Chrome today at 8:14pm. If this was you, you don't need to do anything. If not, open the MyBank app.</p>
+              </div>
+              <ul class="twin-points">
+                <li>The bank's own address</li>
+                <li>Uses your name, and matches what you just did</li>
+                <li>No login link: points you to the app</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <!-- Pair 3: friend message -->
+        <article class="pair fade-up" aria-labelledby="pair3-title">
+          <h3 class="pair-title" id="pair3-title"><span class="pair-no">3</span> A message from a friend</h3>
+          <div class="twins">
+            <div class="twin twin--fake">
+              <span class="twin-tag">Fake</span>
+              <div class="twin-msg">
+                <p class="twin-from">+60 12-1234 5678 <span>Not in your contacts</span></p>
+                <p class="twin-text">Hi it's Aina, new number! I sent a 6-digit code to you by mistake, can you send it back? Quick pls!</p>
+              </div>
+              <ul class="twin-points">
+                <li>Unknown number with a "new number" story</li>
+                <li>Asks for a code that unlocks your account</li>
+                <li>Rushes you</li>
+              </ul>
+            </div>
+            <div class="twin twin--real">
+              <span class="twin-tag">Real</span>
+              <div class="twin-msg">
+                <p class="twin-from">Aina 🌸 <span>Saved contact</span></p>
+                <p class="twin-text">Are we still meeting at the library at 3? I'll bring the Biology notes 📚</p>
+              </div>
+              <ul class="twin-points">
+                <li>Her saved number, in your usual chat</li>
+                <li>Fits your plans</li>
+                <li>No link, no code, no money</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="real-signs fade-up">
+        <h3>What real messages usually do</h3>
+        <ul>
+          <li><strong>Come from the real sender.</strong> The company's own address or name. Names can be faked, so check the rest too.</li>
+          <li><strong>Know you.</strong> They use your name and match something you actually did.</li>
+          <li><strong>Stay calm.</strong> No countdowns, threats or "act now".</li>
+          <li><strong>Never ask for secrets.</strong> No password, PIN, OTP / TAC or card CVV.</li>
+          <li><strong>Let you check yourself.</strong> "Open the app", a tracking number, the number on your card.</li>
+          <li><strong>Use real links.</strong> If there is a link, its owner is the real company.</li>
+        </ul>
+        <p class="muted">Still not sure? Treat it as a scam until you've checked, and open the official app yourself instead of using the message.</p>
+      </div>
+
+      <div class="play-cta fade-up">
+        <div>
+          <span class="play-tag">Mini-game</span>
+          <h3>Ready to test yourself?</h3>
+          <p>Ten messages, some real and some fake. Decide <strong>Scam</strong> or <strong>Safe</strong>, then see the clues.</p>
+        </div>
+        <a class="btn-glow" href="Game.html">Play Scam or Safe? <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </section>
+
+    <!-- 07 What to do ----------------------------------------------------------------->
     <section class="lesson container-xl" id="act" aria-labelledby="act-title">
       <div class="row align-items-center gx-lg-5 gy-4">
         <div class="col-lg-4">
@@ -433,7 +573,7 @@
           </figure>
         </div>
         <div class="col-lg-8">
-          <h2 class="section-title" id="act-title"><span class="section-index">06</span> What to do: Stop, Check, Ask</h2>
+          <h2 class="section-title" id="act-title"><span class="section-index">07</span> What to do: Stop, Check, Ask</h2>
           <p class="lesson-lead fade-up">
             You don't have to win an argument with a scammer. You only have to <strong>not act on
             their message</strong>.
@@ -492,6 +632,7 @@
         <div class="next-actions">
           <a class="btn-glow" href="Checker.html#url">Check a link</a>
           <a class="btn-soft" href="Checker.html#email">Check an email</a>
+          <a class="btn-ghost" href="Game.html">Play the game</a>
         </div>
       </div>
     </section>

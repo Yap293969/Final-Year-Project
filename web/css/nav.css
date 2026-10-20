@@ -114,3 +114,9 @@
   .site-brand { display: none; }
   .site-nav-inner { justify-content: flex-start; }
 }
+
+/* The smallest phones (320px wide): a little tighter, so four links fit beside the Theme button. */
+@media (max-width: 359.98px) {
+  .site-nav-inner { padding-right: 6.5rem; }
+  .site-links a { padding: 0.4rem 0.42rem; font-size: 0.8rem; }
+}

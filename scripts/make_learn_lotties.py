@@ -5,7 +5,7 @@ here, so the animations need no design tool and can be rebuilt at any time.
 
     python scripts/make_learn_lotties.py web/animations
 
-writes seven files, one per part of the page:
+writes eight files, one per part of the page:
 
     learn-phone.json      hero: messages pop up on a phone, the last one is a scam
     learn-hook.json       01 What is phishing: an email on a fishing hook
@@ -13,7 +13,8 @@ writes seven files, one per part of the page:
     learn-magnifier.json  03 Red flags: a magnifier finds the warning signs
     learn-link.json       04 Read the link: the real owner of a web address
     learn-gift.json       05 Common baits: a "free gift" with a hook inside
-    learn-shield.json     06 What to do: a shield draws itself and ticks
+    learn-compare.json    06 Real or fake: two look-alike messages, one gets a cross, one a tick
+    learn-shield.json     07 What to do: a shield draws itself and ticks
 
 All are 160 x 160 at 30 fps and loop. learn-shield.json draws itself in frames
 0-48, then loops 48-120 (js/learn.js reads that from data-loop-from in the HTML).
@@ -334,7 +335,44 @@ def gift():
     return build("learn-gift", op, groups, masks={"scam-hook": above_box})
 
 
-# --- 06: a shield draws itself, then ticks -----------------------------------------
+# --- 06: two look-alike messages, one fake and one real ------------------------------
+
+def compare():
+    op = 150
+
+    def mini_card(name, x):
+        return grp(name, [
+            grp("lines", [rect(34, 4, 2, p=(-2, -14)), rect(40, 4, 2, p=(1, -4)),
+                          rect(28, 4, 2, p=(-5, 6)), fill(LIGHT, 55)]),
+            grp("dot", [ell(9, p=(-15, -26)), fill(BLUE, 70)]),
+            grp("face", [rect(54, 76, 9), fill(BLUE, 10), stroke(LIGHT, 2.5)]),
+        ], p=(x, 78))
+
+    scan_p = anim([(0, [80, 36]), (10, [80, 36]), (50, [80, 120]), (150, [80, 120])])
+    scan_o = anim([(0, 0), (10, 90), (46, 90), (54, 0), (150, 0)])
+    bad_s, bad_o = pop_in(58, 146, 132)
+    good_s, good_o = pop_in(74, 146, 132)
+    groups = [
+        grp("cross-badge", [
+            grp("x", [path([(-5, -5), (5, 5)]), path([(5, -5), (-5, 5)]), stroke([1, 1, 1, 1], 3)]),
+            grp("circle", [ell(24), fill(RED)]),
+        ], p=(66, 44), s=bad_s, o=bad_o),
+        grp("tick-badge", [
+            grp("v", [path([(-6, 0), (-1.5, 4.5), (6, -4)]), stroke([1, 1, 1, 1], 3)]),
+            grp("circle", [ell(24), fill(GREEN)]),
+        ], p=(126, 44), s=good_s, o=good_o),
+        grp("scan", [rect(132, 3, 1.5), fill(BLUE)], p=scan_p, o=scan_o),
+        grp("fake-ring", [rect(60, 82, 11), stroke(RED, 2.5)], p=(46, 78),
+            o=anim([(0, 0), (58, 0), (64, 100), (132, 100), (146, 0)])),
+        grp("real-ring", [rect(60, 82, 11), stroke(GREEN, 2.5)], p=(114, 78),
+            o=anim([(0, 0), (74, 0), (80, 100), (132, 100), (146, 0)])),
+        mini_card("fake-card", 46),
+        mini_card("real-card", 114),
+    ]
+    return build("learn-compare", op, groups)
+
+
+# --- 07: a shield draws itself, then ticks -----------------------------------------
 
 SHIELD = path_data(
     [(80, 26), (117, 40), (117, 72), (80, 128), (43, 72), (43, 40)],
@@ -360,7 +398,7 @@ def shield():
 ANIMATIONS = {
     "learn-phone.json": phone, "learn-hook.json": hook, "learn-alarm.json": alarm,
     "learn-magnifier.json": magnifier, "learn-link.json": link,
-    "learn-gift.json": gift, "learn-shield.json": shield,
+    "learn-gift.json": gift, "learn-compare.json": compare, "learn-shield.json": shield,
 }
 
 if __name__ == "__main__":
