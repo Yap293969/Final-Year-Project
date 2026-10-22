@@ -33,6 +33,27 @@ Current Results for the full reading.
 
 ## Completed
 
+* **Attack technique names added to the checker** (2026-10-22). New
+  `server/attack_mapping.py` names the MITRE ATT&CK (v20) and CAPEC (3.9) technique that
+  each phishing clue belongs to; `app.py` adds it to `/api/check-url` and
+  `/api/explain-email` as `attack_techniques`, and `web/js/checker.js` shows it as a card
+  under "Why the model decided this". **Implementation decision, not a methodology
+  change:** it is fixed rules over the SHAP output; it never changes a verdict, a score
+  or a SHAP value, and BERT + XGBoost are untouched. Rules: nothing is named for a
+  legitimate answer; a specific technique needs the clue to be really present AND a SHAP
+  push towards phishing of at least 0.1 log-odds (links) or a place among the 10
+  strongest phishing words (emails); general techniques (T1566.002, T1204.001, CAPEC-98
+  for links; T1566, CAPEC-98 for emails) follow from the verdict alone. Stated
+  limitations: BERT's 768 numbers are never mapped; typosquatting (CAPEC-630) is not
+  claimed because the model has no brand list. CVE was considered and rejected for this
+  card (phishing rarely exploits a software flaw); real CVEs go to the education page
+  instead. IDs, names and links checked on attack.mitre.org / capec.mitre.org on
+  2026-10-22. Verified: `server/test_attack_mapping.py` **115/115** (including every
+  rule feature against the notebook's real `FEATURE_NAMES`), and **18/18** page checks
+  in jsdom with stand-in server answers (order, safe links, pasted markup shown as text,
+  no card for legitimate answers, email card after "Explain why"). **Not yet checked:**
+  a run against the real models, and how the card looks in a real browser.
+
 * **Landing page added to `web/`** (2026-10-12). `web/index.html` is now a dark landing
   page (Bootstrap 5.3.3) that introduces the prototype, quotes the measured test F1-scores
   (email 0.9846, URL 0.9641), and plays an animated scan monitor with a hand-made Lottie

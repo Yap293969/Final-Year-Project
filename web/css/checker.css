@@ -340,6 +340,77 @@ body {
 .word-chip.to-phishing { background: var(--phish-soft); color: var(--phish-ink); }
 .word-chip.to-legitimate { background: var(--safe-soft); color: var(--safe-ink); }
 
+/* Known attack techniques (MITRE ATT&CK / CAPEC), under the "why" card. */
+.techniques {
+  margin-top: 1rem;
+}
+
+.technique-group {
+  margin-top: 1rem;
+}
+
+.technique-group h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.technique-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.technique {
+  border-left: 3px solid var(--line-strong);
+  padding: 0.15rem 0 0.15rem 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.technique-shap {
+  border-left-color: var(--phish);
+}
+
+.technique-heading {
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+}
+
+.technique-id {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.05rem 0.5rem;
+  border-radius: 999px;
+  background: var(--chip-bg);
+  color: var(--ink-chip);
+  white-space: nowrap;
+}
+
+.technique-name {
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.technique-meaning {
+  margin: 0.2rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+
+.technique-clues {
+  margin: 0.3rem 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.95rem;
+}
+
+.technique .reason-push {
+  margin: 0.25rem 0 0;
+}
+
 .why-method {
   margin: 1rem 0 0;
   font-size: 0.82rem;

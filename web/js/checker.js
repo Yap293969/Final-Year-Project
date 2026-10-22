@@ -3,7 +3,8 @@
 // WHAT THIS FILE DOES, in plain words
 // -----------------------------------
 // It reads what the user pasted, sends it to the model server, and shows the
-// answer: the verdict, the confidence, and the reasons (SHAP explanations).
+// answer: the verdict, the confidence, the reasons (SHAP explanations), and the
+// MITRE ATT&CK / CAPEC attack techniques those reasons point to.
 // The models themselves (BERT + XGBoost) run on the model server, not in the
 // browser. The requests this page makes are listed in web/README.md.
 //
@@ -328,6 +329,88 @@
     container.appendChild(card);
   }
 
+  // Known attack techniques (MITRE ATT&CK and CAPEC) that the SHAP reasons point to.
+  // Worked out on the model server by server/attack_mapping.py. Added BELOW the
+  // "why" card, so it is appended rather than clearing the container. Nothing is
+  // shown for a legitimate answer.
+  var TECHNIQUE_SITES = ["https://attack.mitre.org/", "https://capec.mitre.org/"];
+
+  function techniqueLink(technique) {
+    var url = String(technique.url || "");
+    var trusted = TECHNIQUE_SITES.some(function (site) { return url.indexOf(site) === 0; });
+    if (!trusted) {
+      return el("span", "technique-name", technique.name);
+    }
+    var link = el("a", "technique-name", technique.name);
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    return link;
+  }
+
+  function techniqueItem(technique) {
+    var item = el("li", "technique technique-" + technique.basis);
+    var heading = el("p", "technique-heading");
+    heading.appendChild(el("span", "technique-id", technique.id));
+    heading.appendChild(techniqueLink(technique));
+    item.appendChild(heading);
+    item.appendChild(el("p", "technique-meaning", technique.meaning));
+
+    if (technique.basis === "shap" && technique.evidence && technique.evidence.length) {
+      var clues = el("ul", "technique-clues");
+      technique.evidence.forEach(function (clue) { clues.appendChild(el("li", null, clue)); });
+      item.appendChild(clues);
+      if (typeof technique.push === "number") {
+        item.appendChild(el("p", "reason-push to-phishing",
+                            "Clue's " + pushText(technique.push)));
+      }
+    }
+    return item;
+  }
+
+  function renderTechniques(container, mapping, thing) {
+    if (!mapping || !mapping.applies || !(mapping.techniques || []).length) { return; }
+
+    var fromShap = mapping.techniques.filter(function (t) { return t.basis === "shap"; });
+    var general = mapping.techniques.filter(function (t) { return t.basis === "verdict"; });
+
+    var card = el("div", "why techniques");
+    card.appendChild(el("h3", null, "Which known attack tricks this matches"));
+    card.appendChild(el("p", "why-intro",
+      "Security experts keep public lists of attack techniques, called MITRE ATT&CK and " +
+      "CAPEC. This shows where the model's reasons fit in those lists. Tap a name to read " +
+      "about it on MITRE's website."));
+
+    var specific = el("div", "technique-group");
+    specific.appendChild(el("h4", null, "Pointed to by the model's reasons"));
+    if (fromShap.length) {
+      var list = el("ul", "technique-list");
+      fromShap.forEach(function (t) { list.appendChild(techniqueItem(t)); });
+      specific.appendChild(list);
+    } else {
+      specific.appendChild(el("p", "why-intro",
+        "None of the model's strongest named clues matches a specific technique. Much of " +
+        "the answer comes from the overall pattern BERT reads, which has no single name."));
+    }
+    card.appendChild(specific);
+
+    if (general.length) {
+      var block = el("div", "technique-group");
+      block.appendChild(el("h4", null, "What any phishing " + thing + " is"));
+      var generalList = el("ul", "technique-list");
+      general.forEach(function (t) { generalList.appendChild(techniqueItem(t)); });
+      block.appendChild(generalList);
+      card.appendChild(block);
+    }
+
+    card.appendChild(el("p", "why-method",
+      "Matched with fixed rules: a clue counts only when it is really there and SHAP says it " +
+      "pushed towards phishing. This names the kind of trick; it doesn't prove an attack, and " +
+      "it is only as right as the model's answer. Sources: " +
+      (mapping.catalogues || []).join(", ") + "."));
+    container.appendChild(card);
+  }
+
   // --- The email tab -------------------------------------------------------------
 
   var emailForm = byId("email-form");
@@ -364,7 +447,10 @@
     var payload = { subject: emailSubject.value, body: emailBody.value };
     var done = setBusy(emailExplain, "Explaining…");
     request("/api/explain-email", payload, EXPLAIN_TIMEOUT_MS)
-      .then(function (explanation) { renderEmailExplanation(emailExplanation, explanation); })
+      .then(function (explanation) {
+        renderEmailExplanation(emailExplanation, explanation);
+        renderTechniques(emailExplanation, explanation && explanation.attack_techniques, "email");
+      })
       .catch(function (error) { renderError(emailExplanation, error.message); })
       .finally(done);
   });
@@ -392,6 +478,7 @@
       .then(function (result) {
         renderVerdict(urlResult, result, result.warning_signs || []);
         renderLinkExplanation(urlExplanation, result.explanation);
+        renderTechniques(urlExplanation, result.attack_techniques, "link");
       })
       .catch(function (error) { renderError(urlResult, error.message); })
       .finally(done);

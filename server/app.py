@@ -22,6 +22,10 @@
 #   12.1 prepare_*_input, features_for_query, classify, url_warning_signs
 #   12.4 explain_link, explain_email                         (SHAP explanations)
 #
+# and attack_mapping.py (in this folder), which names the MITRE ATT&CK / CAPEC
+# technique each phishing clue belongs to. It only reads the SHAP answer; it never
+# changes a verdict or a score.
+#
 # and the settings MODEL_NAME, POOLING and TASK_SETTINGS from cell 8.3. So a URL or
 # email typed into the page goes through exactly the same code as the training rows.
 #
@@ -45,6 +49,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from xgboost import XGBClassifier
+
+import attack_mapping
 
 SERVER_FOLDER = os.path.dirname(os.path.abspath(__file__))
 PROJECT_FOLDER = os.path.dirname(SERVER_FOLDER)
@@ -269,15 +275,22 @@ def check_email(request: EmailRequest):
 
 @app.post("/api/explain-email")
 def explain_email(request: EmailRequest):
-    """Word-by-word SHAP explanation: explain_email() from 12.4. Takes several seconds."""
+    """Word-by-word SHAP explanation: explain_email() from 12.4. Takes several seconds.
+
+    Also names the ATT&CK / CAPEC techniques the strongest phishing words point to.
+    """
     text = prepared_email(request)
     with MODEL_LOCK:
-        return NB["explain_email"](PREDICTORS["email"], text)
+        answer = NB["explain_email"](PREDICTORS["email"], text)
+    if answer is not None:
+        answer["attack_techniques"] = attack_mapping.map_email(answer)
+    return answer
 
 
 @app.post("/api/check-url")
 def check_url(request: UrlRequest):
-    """Verdict for a link, its general warning signs, and its exact TreeSHAP reasons."""
+    """Verdict for a link, its general warning signs, its exact TreeSHAP reasons, and
+    the ATT&CK / CAPEC techniques those reasons point to."""
     text = NB["prepare_url_input"](request.url)
     if text == "":
         raise HTTPException(status_code=422, detail="The link is empty.")
@@ -285,6 +298,8 @@ def check_url(request: UrlRequest):
         answer = NB["classify"](PREDICTORS["url"], text)
         answer["warning_signs"] = NB["url_warning_signs"](text)
         answer["explanation"] = NB["explain_link"](PREDICTORS["url"], text)
+    answer["attack_techniques"] = attack_mapping.map_link(
+        answer["verdict"], answer["explanation"], NB["extract_url_features"](text))
     return answer
 
 

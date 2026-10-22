@@ -167,6 +167,31 @@ Sent: `{"url": "..."}`. Answer: `classify()`, plus `url_warning_signs()` and
                               "value": 1.6, "feature": "host_hyphen_count"}]}}
 ```
 
+Both `/api/check-url` and `/api/explain-email` also return `attack_techniques`: the
+MITRE ATT&CK / CAPEC techniques the SHAP reasons point to, worked out by
+`server/attack_mapping.py`. It is only filled in for a phishing answer.
+
+```json
+"attack_techniques": {
+  "applies": true, "reason": "",
+  "catalogues": ["MITRE ATT&CK v20", "MITRE CAPEC 3.9"],
+  "techniques": [
+    {"id": "CAPEC-632", "framework": "CAPEC", "name": "Homograph Attack via Homoglyphs",
+     "url": "https://capec.mitre.org/data/definitions/632.html",
+     "meaning": "A website name written with look-alike characters, ...",
+     "basis": "shap", "push": 1.2,
+     "evidence": ["The website name uses look-alike (punycode) characters."]},
+    {"id": "T1566.002", "framework": "ATT&CK", "name": "Phishing: Spearphishing Link",
+     "url": "https://attack.mitre.org/techniques/T1566/002/", "meaning": "...",
+     "basis": "verdict", "push": null, "evidence": []}]}
+```
+
+`basis` is `"shap"` when a SHAP reason pointed to the technique (strongest first), or
+`"verdict"` for the general techniques any phishing link or email belongs to. For a
+legitimate answer `applies` is false and `techniques` is empty, and the page shows
+nothing. The page only makes a link clickable when it goes to attack.mitre.org or
+capec.mitre.org.
+
 SHAP values are in log-odds: positive pushes towards phishing, negative towards
 legitimate. The page describes a push of 1.0 or more as strong and 0.3 or more as
 moderate, the same cut-offs as notebook section 12.4.
