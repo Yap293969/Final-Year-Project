@@ -6,5 +6,5 @@
 //
 // This is the only line to change when the model server moves.
 window.APP_CONFIG = {
-  apiBaseUrl: "https://combo-justice-path-solved.trycloudflare.com"
+  apiBaseUrl: "https://importantly-holder-fed-andrea.trycloudflare.com"
 };
