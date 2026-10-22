@@ -1,0 +1,284 @@
+{
+  "about": "Content for Vulnerabilities.html (the 'Hidden weak spots' page under Learn). Text is written for young readers. Facts about each CVE come from CISA's Known Exploited Vulnerabilities (KEV) catalogue and the reports listed in 'sources'. Re-check with: python scripts/check_vulnerability_data.py",
+  "checked": "2026-10-22",
+  "catalogue": {
+    "name": "CISA Known Exploited Vulnerabilities",
+    "version": "2026.10.21",
+    "count": 1754,
+    "url": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog"
+  },
+  "glossary": [
+    {
+      "term": "Vulnerability",
+      "plain": "A weak spot in an app: a mistake in its code that attackers could use.",
+      "like": "A window that doesn't lock properly."
+    },
+    {
+      "term": "Exploit",
+      "plain": "The trick that uses the weak spot.",
+      "like": "Someone climbing in through that window."
+    },
+    {
+      "term": "CVE",
+      "plain": "An ID for one known weak spot, so everyone talks about the same one.",
+      "like": "A case number."
+    },
+    {
+      "term": "Patch / update",
+      "plain": "The fix, sent out by the company that made the app.",
+      "like": "Fixing the lock."
+    },
+    {
+      "term": "Zero-day",
+      "plain": "A weak spot attackers use before any fix exists.",
+      "like": "A broken lock nobody knew about yet."
+    },
+    {
+      "term": "KEV list",
+      "plain": "A public list, kept by the US cyber agency CISA, of weak spots attackers are known to really use.",
+      "like": "A 'most wanted' list."
+    }
+  ],
+  "anatomy": {
+    "id": "CVE-2023-38831",
+    "parts": [
+      {
+        "text": "CVE",
+        "role": "list",
+        "means": "The name of the list: Common Vulnerabilities and Exposures."
+      },
+      {
+        "text": "2023",
+        "role": "year",
+        "means": "The year this ID was given out."
+      },
+      {
+        "text": "38831",
+        "role": "number",
+        "means": "Its own number, so no two weak spots share an ID."
+      }
+    ]
+  },
+  "examples": [
+    {
+      "id": "CVE-2022-30190",
+      "nickname": "Follina",
+      "kind": "file",
+      "icon": "document",
+      "app": "Microsoft Word, on Windows",
+      "arrived": "A Word document sent by email, or a link to one.",
+      "trap": "Opening the document, or even just previewing it, let the attacker run their own program on the computer. It didn't need macros.",
+      "click": {
+        "level": "open",
+        "text": "Opening or previewing the file"
+      },
+      "fixed": "Windows update, June 2022.",
+      "lesson": "Be careful with documents you weren't expecting, even ones that look ordinary.",
+      "kev": {
+        "product": "Windows",
+        "dateAdded": "2022-06-14"
+      },
+      "sources": [
+        {
+          "title": "NVD: CVE-2022-30190",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-30190"
+        },
+        {
+          "title": "TechRepublic: Follina abuses Microsoft Office",
+          "url": "https://www.techrepublic.com/de/article/follina-abuses-microsoft-office-to-execute-remote-code/"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2017-11882",
+      "nickname": "The old maths-tool bug",
+      "kind": "file",
+      "icon": "document",
+      "app": "Microsoft Office's old Equation Editor",
+      "arrived": "Spam emails with document attachments, written in many languages.",
+      "trap": "Opening the attachment quietly downloaded a harmful program onto the computer.",
+      "click": {
+        "level": "open",
+        "text": "Opening the attachment"
+      },
+      "fixed": "Fixed in 2017, yet attackers were still using it in 2019 against computers that had never updated.",
+      "lesson": "An old bug only works on you if you skip updates.",
+      "kev": {
+        "product": "Office",
+        "dateAdded": "2021-11-03"
+      },
+      "sources": [
+        {
+          "title": "NVD: CVE-2017-11882",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2017-11882"
+        },
+        {
+          "title": "Infosecurity Magazine: Microsoft warns of campaign exploiting 2017 bug",
+          "url": "https://www.infosecurity-magazine.com/news/microsoft-warns-of-campaign-1/"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2023-23397",
+      "nickname": "The reminder-sound trap",
+      "kind": "email",
+      "icon": "email",
+      "app": "Microsoft Outlook, on Windows",
+      "arrived": "An email or meeting invite with a booby-trapped reminder sound.",
+      "trap": "As soon as the email arrived, Outlook contacted the attacker's computer and leaked a scrambled copy of the user's login password.",
+      "click": {
+        "level": "none",
+        "text": "Nothing. Arriving in the inbox was enough"
+      },
+      "fixed": "Microsoft update, March 2023.",
+      "lesson": "Updates protect you even from traps you would never see.",
+      "kev": {
+        "product": "Office",
+        "dateAdded": "2023-03-14"
+      },
+      "sources": [
+        {
+          "title": "NVD: CVE-2023-23397",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-23397"
+        },
+        {
+          "title": "TrustedSec: technical analysis of CVE-2023-23397",
+          "url": "https://www.trustedsec.com/blog/critical-outlook-vulnerability-in-depth-technical-analysis-and-recommendations-cve-2023-23397"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2023-38831",
+      "nickname": "The fake picture in a ZIP",
+      "kind": "file",
+      "icon": "archive",
+      "app": "WinRAR, an app that opens ZIP and RAR files",
+      "arrived": "ZIP files posted on online trading forums, pretending to be trading tips.",
+      "trap": "Inside was what looked like a picture. Clicking it ran a hidden program instead, which was used to get into people's trading accounts.",
+      "click": {
+        "level": "open",
+        "text": "Opening the 'picture' inside the ZIP"
+      },
+      "fixed": "WinRAR 6.23, August 2023.",
+      "lesson": "Apps you rarely open need updating too.",
+      "kev": {
+        "product": "WinRAR",
+        "dateAdded": "2023-08-24"
+      },
+      "sources": [
+        {
+          "title": "NVD: CVE-2023-38831",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-38831"
+        },
+        {
+          "title": "Group-IB: the WinRAR zero-day",
+          "url": "https://www.group-ib.com/blog/cve-2023-38831-winrar/"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2023-41064",
+      "nickname": "BLASTPASS",
+      "kind": "phone",
+      "icon": "phone",
+      "app": "iPhone and iPad (also Mac)",
+      "arrived": "An iMessage with a booby-trapped image attached, sent by the attacker.",
+      "trap": "The phone handled the image by itself, and the attacker could install spyware. It was aimed at a few chosen people, not at everyone.",
+      "click": {
+        "level": "none",
+        "text": "Nothing at all"
+      },
+      "fixed": "iOS 16.6.1, September 2023.",
+      "lesson": "Install phone updates soon, even when you didn't do anything wrong.",
+      "kev": {
+        "product": "iOS, iPadOS, and macOS",
+        "dateAdded": "2023-09-11"
+      },
+      "sources": [
+        {
+          "title": "NVD: CVE-2023-41064",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-41064"
+        },
+        {
+          "title": "BleepingComputer: zero-click iMessage exploit",
+          "url": "https://www.bleepingcomputer.com/news/security/apple-zero-click-imessage-exploit-used-to-infect-iphones-with-spyware/"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2023-4863",
+      "nickname": "The broken WebP picture",
+      "kind": "browser",
+      "icon": "browser",
+      "app": "Chrome, Edge, Firefox and other apps that show WebP pictures",
+      "arrived": "A specially made web page with a broken picture on it.",
+      "trap": "Browsers show pictures automatically, and this one could let the attacker run code inside the browser.",
+      "click": {
+        "level": "open",
+        "text": "Visiting the page"
+      },
+      "fixed": "Chrome and Firefox updates, September 2023.",
+      "lesson": "When your browser asks to restart, say yes: that's when the fix goes in.",
+      "kev": {
+        "product": "Chromium WebP",
+        "dateAdded": "2023-09-13"
+      },
+      "sources": [
+        {
+          "title": "NVD: CVE-2023-4863",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-4863"
+        },
+        {
+          "title": "The Register: Chrome WebP exploit",
+          "url": "https://www.theregister.com/2023/09/12/chrome_browser_webp_exploit/"
+        }
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What does a software update often contain?",
+      "options": [
+        "Only new emojis",
+        "Fixes for weak spots attackers could use",
+        "More adverts",
+        "Nothing important"
+      ],
+      "answer": 1,
+      "explain": "Updates often close weak spots. Every example on this page was stopped by an update."
+    },
+    {
+      "question": "A stranger sends you a ZIP file you weren't expecting. What's the safest move?",
+      "options": [
+        "Open it to see what's inside",
+        "Rename it first, then open it",
+        "Don't open it. Ask someone you trust, or delete it",
+        "Forward it to a friend"
+      ],
+      "answer": 2,
+      "explain": "The WinRAR trap hid a program behind what looked like a picture. Unexpected files are best left closed."
+    },
+    {
+      "question": "In CVE-2023-23397, what does \"2023\" tell you?",
+      "options": [
+        "How many people were attacked",
+        "The year the ID was given out",
+        "How dangerous it is",
+        "The app's version number"
+      ],
+      "answer": 1,
+      "explain": "A CVE ID is the list name, the year the ID was given out, and its own number."
+    },
+    {
+      "question": "Which habit protects you even from traps you can't see?",
+      "options": [
+        "Using dark mode",
+        "Turning the volume down",
+        "Keeping your apps and phone updated",
+        "Deleting old photos"
+      ],
+      "answer": 2,
+      "explain": "Two examples here needed no click at all. Only an update stopped them."
+    }
+  ]
+}

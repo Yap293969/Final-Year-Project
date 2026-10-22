@@ -13,25 +13,30 @@ web/
 ├── Homepage.html       the homepage
 ├── Checker.html        the email and link checker
 ├── Learn.html          the guide for young people: what phishing is and how to spot it
+├── Vulnerabilities.html  under Learn: software weak spots (CVEs), six real cases, why updates matter
 ├── Game.html           the "Scam or Safe?" mini-game
 ├── css/
 │   ├── theme.css       shared: the three colour themes
 │   ├── nav.css         shared: the site header (Home, Learn, Checker)
 │   ├── homepage.css    Homepage.html only
-│   ├── learn.css       Learn.html only
+│   ├── learn.css       Learn.html (and Vulnerabilities.html, which builds on it)
+│   ├── vulnerabilities.css  Vulnerabilities.html only, on top of learn.css
 │   ├── game.css        Game.html only
 │   └── checker.css     Checker.html only
 ├── js/
 │   ├── theme.js        shared: theme setting and the Theme button
 │   ├── config.js       shared: where the model server is
 │   ├── homepage.js     Homepage.html only
-│   ├── learn.js        Learn.html only
+│   ├── learn.js        Learn.html (and Vulnerabilities.html: animations, fade-ins, chapter bar)
+│   ├── vulnerabilities.js  Vulnerabilities.html only: builds the page from data/vulnerabilities.json
 │   ├── game.js         Game.html only: how the game plays
 │   ├── game-scenarios.js  Game.html only: the 18 messages the game uses
 │   └── checker.js      Checker.html only
+├── data/
+│   └── vulnerabilities.json  the words, cases and quiz shown on Vulnerabilities.html
 └── animations/
     ├── shield-scan.json
-    ├── learn-*.json    the eight animations on Learn.html
+    ├── learn-*.json    the eight animations on Learn.html, plus learn-patch and learn-update
     └── game-*.json     the four animations on Game.html
 ```
 
@@ -41,6 +46,9 @@ web/
 | `Homepage.html` | the homepage: what the prototype does, its measured test F1-scores, and an animated scan monitor |
 | `Checker.html` | the checker: two tabs (email, link), the forms, and where answers appear. `Checker.html#url` opens the link tab and `Checker.html#email` the email tab |
 | `Learn.html` | the education page for young people, in seven parts: what phishing is, why it works (feelings scammers use), red flags at first sight with a practice email, reading a link, common baits, real or fake side by side (three real messages next to their fake twins, and what real messages usually do), and what to do (Stop, Check, Ask). Each part has its own Lottie animation; part 06 ends with a link to the game |
+| `Vulnerabilities.html` | the "Hidden weak spots" page under Learn, in five parts: what a weak spot (vulnerability, CVE) is and how to read a CVE ID, the two kinds of trap (tricks you / tricks your app), six real cases from CISA's Known Exploited Vulnerabilities list that arrived by message, file or web page (with filters and a "What happened?" story for each), what to do (updates), and a four-question quick check. Learn.html links to it at the end of part 07. Its words and facts are in `data/vulnerabilities.json`, so the page needs to be opened through a web server (Netlify, Laragon or `python -m http.server`), not straight from disk |
+| `data/vulnerabilities.json` | the content of Vulnerabilities.html. Each case's CISA facts (product, date added) are checked against CISA's live feed by `python scripts/check_vulnerability_data.py` (add `--update` to refresh the catalogue count and checked date) |
+| `css/vulnerabilities.css`, `js/vulnerabilities.js` | the page's own styles and behaviour, on top of `learn.css` and `learn.js`. The JavaScript builds every case and question with `textContent`, never as HTML |
 | `css/learn.css` | the education page's layout, cards and motion, on top of Bootstrap |
 | `js/learn.js` | the education page's behaviour: plays each animation only while it is on screen, fades parts in, the chapter bar and reading progress, the "Show the red flags" practice, and the link quiz |
 | `animations/learn-*.json` | the education page's eight Lottie animations, made by `scripts/make_learn_lotties.py` (`python scripts/make_learn_lotties.py web/animations`) |

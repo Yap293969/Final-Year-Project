@@ -33,6 +33,27 @@ Current Results for the full reading.
 
 ## Completed
 
+* **"Hidden weak spots" page added under Learn** (2026-10-22). New `web/Vulnerabilities.html`
+  (linked from the end of Learn.html part 07) explains software weak spots (CVEs) for young
+  readers in five parts: what a vulnerability / CVE is and how to read a CVE ID; the two kinds
+  of trap (tricks you vs tricks your app, with a note that the checker looks at words and
+  links and does not scan files); six real cases that arrived by message, file or web page
+  (CVE-2022-30190, CVE-2017-11882, CVE-2023-23397, CVE-2023-38831, CVE-2023-41064,
+  CVE-2023-4863) with filters and a "What happened?" story each; what to do (updates); and a
+  four-question quick check. Content lives in `web/data/vulnerabilities.json`; the page uses
+  learn.css / learn.js plus its own `css/vulnerabilities.css` and `js/vulnerabilities.js`.
+  Two new Lottie animations (`learn-patch.json`, `learn-update.json`) were added to
+  `scripts/make_learn_lotties.py`; the existing eight rebuild byte-for-byte unchanged.
+  **Sources:** every case is on CISA's Known Exploited Vulnerabilities catalogue (version
+  2026.10.21, 1,754 entries); how each one reached people was checked against the original
+  reports linked on each case. New `scripts/check_vulnerability_data.py` re-checks each
+  case's product and date-added against CISA's live feed (`--update` refreshes the count and
+  date); a deliberately wrong date was caught. **Verified:** 24/24 page checks in jsdom
+  (rendering, filters, story toggle, quiz scoring, footer facts, pasted markup shown as text,
+  non-https links not clickable, friendly message when the JSON can't load), and both new
+  animations load and draw in lottie-web 5.12.2. **Not yet checked:** how the page looks in
+  a real browser at desktop and phone width (no local web server was running).
+
 * **Attack technique names added to the checker** (2026-10-22). New
   `server/attack_mapping.py` names the MITRE ATT&CK (v20) and CAPEC (3.9) technique that
   each phishing clue belongs to; `app.py` adds it to `/api/check-url` and

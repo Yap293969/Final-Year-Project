@@ -5,7 +5,8 @@ here, so the animations need no design tool and can be rebuilt at any time.
 
     python scripts/make_learn_lotties.py web/animations
 
-writes eight files, one per part of the page:
+writes ten files: one per part of Learn.html, and two for the "Hidden weak spots"
+page (Vulnerabilities.html), which sits under it:
 
     learn-phone.json      hero: messages pop up on a phone, the last one is a scam
     learn-hook.json       01 What is phishing: an email on a fishing hook
@@ -15,6 +16,10 @@ writes eight files, one per part of the page:
     learn-gift.json       05 Common baits: a "free gift" with a hook inside
     learn-compare.json    06 Real or fake: two look-alike messages, one gets a cross, one a tick
     learn-shield.json     07 What to do: a shield draws itself and ticks
+    learn-patch.json      Vulnerabilities.html hero: a bug finds a crack in an app,
+                          a patch covers it, and it gets a tick
+    learn-update.json     Vulnerabilities.html "What to do": an update downloads and
+                          installs, then ticks
 
 All are 160 x 160 at 30 fps and loop. learn-shield.json draws itself in frames
 0-48, then loops 48-120 (js/learn.js reads that from data-loop-from in the HTML).
@@ -395,10 +400,80 @@ def shield():
     return build("learn-shield", op, groups)
 
 
+# --- Vulnerabilities.html hero: a bug finds a crack, a patch covers it -------------
+
+def patch():
+    op = 150
+    end = anim([(0, 100), (136, 100), (148, 0)])        # everything fades before looping
+    crack_o = anim([(0, 0), (26, 0), (28, 100), (136, 100), (148, 0)])
+    bug_p = anim([(0, [14, 116]), (18, [14, 116]), (60, [70, 96]),
+                  (74, [70, 96]), (92, [8, 132])], "io")
+    bug_o = anim([(0, 0), (18, 0), (24, 100), (76, 100), (90, 0)])
+    patch_s, patch_o = pop_in(66, 148, 136)
+    tick_s, tick_o = pop_in(92, 148, 136)
+    leg = lambda y: grp("leg", [path([(-6, y), (6, y)]), stroke(RED, 1.6)])
+    groups = [
+        grp("tick-badge", [
+            grp("v", [path([(-6, 0), (-1.5, 4.5), (6, -4)]), stroke([1, 1, 1, 1], 3)]),
+            grp("circle", [ell(24), fill(GREEN)]),
+        ], p=(126, 42), s=tick_s, o=tick_o),
+        grp("patch", [
+            grp("dots", [ell(2.6, p=(-5, -2)), ell(2.6, p=(5, -2)), ell(2.6, p=(-5, 3)),
+                         ell(2.6, p=(5, 3)), fill(GREEN)]),
+            grp("pad", [rect(14, 12, 2), fill(GREEN, 35)]),
+            grp("strip", [rect(48, 17, 6), fill(GREEN, 22), stroke(GREEN, 2)]),
+        ], p=(78, 90), r=-16, s=patch_s, o=patch_o),
+        grp("bug", [
+            grp("head", [ell(6, p=(9, 0)), fill(RED)]),
+            grp("body", [ell(14, 9), fill(RED)]),
+            leg(-3), leg(0), leg(3),
+        ], p=bug_p, o=bug_o),
+        grp("crack", [path([(60, 82), (69, 92), (75, 84), (84, 96), (92, 88)]),
+                      trim(anim([(0, 0), (28, 0), (44, 100)], "out")), stroke(RED, 2.5)],
+            o=crack_o),
+        grp("lines", [rect(56, 4, 2, p=(72, 62)), rect(40, 4, 2, p=(64, 108)),
+                      fill(LIGHT, 40)], o=end),
+        grp("title-dots", [ell(5, p=(34, 41)), ell(5, p=(43, 41)), ell(5, p=(52, 41)),
+                           fill(LIGHT, 70)]),
+        grp("title-bar", [path([(22, 50), (138, 50)]), stroke(LIGHT, 2, 60)]),
+        grp("window", [rect(116, 92, 12, p=(80, 80)), fill(BLUE, 8), stroke(LIGHT, 3)]),
+    ]
+    return build("learn-patch", op, groups)
+
+
+# --- Vulnerabilities.html "What to do": an update installs, then ticks -------------
+
+def update():
+    op = 120
+    spin = anim([(0, 0), (84, 360)], "io")
+    arrows_o = anim([(0, 100), (84, 100), (92, 0), (118, 0), (120, 100)], "lin")
+    bar_w = anim([(0, [0, 8]), (6, [0, 8]), (80, [96, 8]), (108, [96, 8]), (116, [0, 8])], "io")
+    bar_p = anim([(0, [32, 124]), (6, [32, 124]), (80, [80, 124]), (108, [80, 124]),
+                  (116, [32, 124])], "io")
+    tick_s, tick_o = pop_in(86, 116, 106)
+    head = lambda name, x, y, r: grp(name, [path([(-5, -4), (0, 1), (5, -4)]),
+                                            stroke(BLUE, 4)], p=(x, y), r=r)
+    groups = [
+        grp("tick", [path([(64, 64), (76, 76), (98, 52)]), stroke(GREEN, 7)],
+            p=(80, 64), a=(80, 64), s=tick_s, o=tick_o),
+        grp("arrows", [
+            head("head-1", 116, 58, 0),
+            head("head-2", 44, 70, 180),
+            grp("arc-1", [ell(72, p=(80, 64)), trim(38, 4), stroke(BLUE, 5)]),
+            grp("arc-2", [ell(72, p=(80, 64)), trim(88, 54), stroke(BLUE, 5)]),
+        ], p=(80, 64), a=(80, 64), r=spin, o=arrows_o),
+        grp("bar-fill", [{"ty": "rc", "nm": "rect", "p": static([0, 0]), "s": bar_w,
+                          "r": static(4)}, fill(GREEN)], p=bar_p),
+        grp("bar-track", [rect(96, 8, 4, p=(80, 124)), fill(LIGHT, 18)]),
+    ]
+    return build("learn-update", op, groups)
+
+
 ANIMATIONS = {
     "learn-phone.json": phone, "learn-hook.json": hook, "learn-alarm.json": alarm,
     "learn-magnifier.json": magnifier, "learn-link.json": link,
     "learn-gift.json": gift, "learn-compare.json": compare, "learn-shield.json": shield,
+    "learn-patch.json": patch, "learn-update.json": update,
 }
 
 if __name__ == "__main__":

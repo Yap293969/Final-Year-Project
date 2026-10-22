@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en" data-theme="default" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hidden weak spots — Is this a scam?</title>
+  <meta name="description" content="A short guide for young people: what software weak spots (CVEs) are, six real ones that arrived by message, and why updates matter.">
+  <meta name="theme-color" content="#0a0f1f">
+
+  <!-- Same fonts as Learn.html. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3.3 (grid and utilities). The integrity hash makes the browser refuse a changed file. -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+        crossorigin="anonymous">
+  <!-- This page sits under Learn, so it uses Learn's look (learn.css) and behaviour
+       (learn.js: animations, fade-ins, chapter bar), plus its own extra files. -->
+  <script src="js/theme.js"></script>
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/learn.css">
+  <link rel="stylesheet" href="css/vulnerabilities.css">
+  <script src="js/learn.js"></script>
+</head>
+<body class="learn">
+  <!-- Background: grid, glow and drifting points of light. Purely decorative. -->
+  <div class="bg-layer" aria-hidden="true">
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow--left"></div>
+    <div class="bg-glow bg-glow--right"></div>
+    <div class="bg-stars" id="bg-stars"></div>
+  </div>
+
+  <!-- Site header, the same on every page (styles in css/nav.css). This page is part of Learn. -->
+  <header class="site-nav">
+    <div class="container-xl site-nav-inner">
+      <a class="site-brand" href="Homepage.html">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3.5 26 7v8.2c0 6-4.2 10.8-10 13.3C10.2 26 6 21.2 6 15.2V7z"/><path d="m11.5 16 3.2 3.2 6-6.4"/></svg>
+        <span>Is this a scam?</span>
+      </a>
+      <nav aria-label="Main">
+        <ul class="site-links">
+        <li><a href="Homepage.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5h4v5"/></svg>Home</a></li>
+        <li><a href="Learn.html" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 5.5C5 4 8.5 4 12 6c3.5-2 7-2 9.5-.5V19c-2.5-1.5-6-1.5-9.5.5-3.5-2-7-2-9.5-.5z"/><path d="M12 6v13.5"/></svg>Learn</a></li>
+        <li><a href="Game.html"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="7" width="19" height="11" rx="5.5"/><path d="M7.5 10.5v4M5.5 12.5h4"/><path d="M15.5 11.5h.01M18 13.5h.01"/></svg>Game</a></li>
+        <li><a href="Checker.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Checker</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero ------------------------------------------------------------------>
+    <header class="hero container-xl">
+      <nav class="crumbs reveal delay-0" aria-label="You are here">
+        <a href="Learn.html">Learn</a>
+        <span aria-hidden="true">&rsaquo;</span>
+        <span aria-current="page">Hidden weak spots</span>
+      </nav>
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-7">
+          <span class="eyebrow reveal delay-0">
+            <span class="eyebrow-dot"></span>
+            Learn extra &middot; about 5 minutes
+          </span>
+          <h1 class="hero-title reveal delay-1">
+            Hidden weak spots<br>
+            <span class="hero-word">and why updates matter.</span>
+          </h1>
+          <p class="hero-lead reveal delay-2">
+            Most phishing tricks <strong>you</strong>. But now and then a message carries something
+            that tricks your <strong>app</strong> instead, by using a mistake hidden in its code.
+            Here's what those mistakes are, six real ones, and the easy habit that blocks them.
+          </p>
+          <div class="hero-actions reveal delay-3">
+            <a class="btn-glow" href="#what">
+              Start <span aria-hidden="true">&darr;</span>
+            </a>
+            <a class="btn-ghost" href="Learn.html"><span aria-hidden="true">&larr;</span> Back to the main guide</a>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <figure class="art art--hero reveal delay-2">
+            <div class="lottie" data-lottie="animations/learn-patch.json" data-still="110"
+                 role="img" aria-label="A bug crawls to a crack in an app window, a patch covers the crack, and a green tick appears"></div>
+            <figcaption>A weak spot is like a crack. An update is the patch.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </header>
+
+    <!-- Chapter bar: jump to a part, and see how far you've read. -->
+    <nav class="chapters" id="chapters" aria-label="Parts of this page">
+      <div class="container-xl chapters-inner">
+        <a class="chapter" href="#what"><span>01</span> What it is</a>
+        <a class="chapter" href="#kinds"><span>02</span> Two kinds of trap</a>
+        <a class="chapter" href="#cases"><span>03</span> Real cases</a>
+        <a class="chapter" href="#act"><span>04</span> What to do</a>
+        <a class="chapter" href="#quiz"><span>05</span> Quick check</a>
+      </div>
+      <div class="chapters-progress" aria-hidden="true"><span id="read-progress"></span></div>
+    </nav>
+
+    <!-- Shown only if the page's data (data/vulnerabilities.json) can't be loaded. -->
+    <div class="container-xl">
+      <p class="note data-error" id="data-error" role="status" hidden></p>
+    </div>
+
+    <!-- 01 What is a weak spot ------------------------------------------------>
+    <section class="lesson container-xl" id="what" aria-labelledby="what-title">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-4 order-lg-2">
+          <figure class="art fade-up">
+            <div class="lottie" data-lottie="animations/learn-magnifier.json" data-still="115"
+                 role="img" aria-label="A magnifying glass moves over a page and warning signs pop up"></div>
+          </figure>
+        </div>
+        <div class="col-lg-8 order-lg-1">
+          <h2 class="section-title" id="what-title"><span class="section-index">01</span> What is a weak spot?</h2>
+          <p class="lesson-lead fade-up">
+            Apps are written by people, and people make mistakes. Some mistakes let an attacker
+            make the app do something it shouldn't. Security experts call that a
+            <strong>vulnerability</strong>, and give each known one an ID called a <strong>CVE</strong>.
+          </p>
+          <p class="fade-up">Six words are enough to follow the rest of this page:</p>
+        </div>
+      </div>
+
+      <ul class="words fade-up" id="glossary" aria-label="Six words to know"></ul>
+
+      <h3 class="sub-title fade-up">How to read a CVE ID</h3>
+      <div class="cve-anatomy fade-up" id="anatomy"></div>
+    </section>
+
+    <!-- 02 Two kinds of trap -------------------------------------------------------->
+    <section class="lesson container-xl" id="kinds" aria-labelledby="kinds-title">
+      <h2 class="section-title" id="kinds-title"><span class="section-index">02</span> Two kinds of trap</h2>
+      <p class="lesson-lead fade-up">
+        A scam message can go after two different things. Knowing which helps you know what
+        protects you.
+      </p>
+
+      <div class="kinds fade-up">
+        <article class="kind kind--you">
+          <span class="kind-tag">Most phishing</span>
+          <h3>It tricks <em>you</em></h3>
+          <p>A fake page, a scary story, a request for your password or code. No weak spot is needed: it works on how people feel.</p>
+          <p class="kind-shield"><strong>What protects you:</strong> Stop, Check, Ask &mdash; the main guide.</p>
+        </article>
+        <article class="kind kind--app">
+          <span class="kind-tag">Rarer</span>
+          <h3>It tricks your <em>app</em></h3>
+          <p>A file, picture or email built to hit a weak spot in an app. Sometimes you only need to open it, and once in a while not even that.</p>
+          <p class="kind-shield"><strong>What protects you:</strong> keeping your apps and phone updated.</p>
+        </article>
+      </div>
+
+      <div class="note fade-up">
+        <strong>About our checker.</strong>
+        It reads the words of an email and the shape of a link, so it looks for the first kind.
+        It doesn't open files or scan them for weak spots, which is why updates still matter.
+      </div>
+    </section>
+
+    <!-- 03 Real cases --------------------------------------------------------------->
+    <section class="lesson container-xl" id="cases" aria-labelledby="cases-title">
+      <h2 class="section-title" id="cases-title"><span class="section-index">03</span> Six real cases</h2>
+      <p class="lesson-lead fade-up">
+        Each of these reached people through a message, a file or a web page. All six are on
+        <strong>CISA's list of weak spots attackers really used</strong>, and all six were stopped by an update.
+      </p>
+
+      <div class="case-filters fade-up" role="group" aria-label="Show cases by type" id="case-filters">
+        <button type="button" class="case-filter is-active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="case-filter" data-filter="file" aria-pressed="false">Files</button>
+        <button type="button" class="case-filter" data-filter="email" aria-pressed="false">Email</button>
+        <button type="button" class="case-filter" data-filter="phone" aria-pressed="false">Phone</button>
+        <button type="button" class="case-filter" data-filter="browser" aria-pressed="false">Browser</button>
+        <button type="button" class="case-filter" data-filter="noclick" aria-pressed="false">No click needed</button>
+      </div>
+
+      <ul class="cases fade-up" id="cases-list" aria-live="polite"></ul>
+    </section>
+
+    <!-- 04 What to do ----------------------------------------------------------------->
+    <section class="lesson container-xl" id="act" aria-labelledby="act-title">
+      <div class="row align-items-center gx-lg-5 gy-4">
+        <div class="col-lg-4">
+          <figure class="art fade-up">
+            <div class="lottie" data-lottie="animations/learn-update.json" data-still="100"
+                 role="img" aria-label="An update downloads, the bar fills up and a green tick appears"></div>
+          </figure>
+        </div>
+        <div class="col-lg-8">
+          <h2 class="section-title" id="act-title"><span class="section-index">04</span> What to do: keep the patches coming</h2>
+          <p class="lesson-lead fade-up">
+            You can't spot a hidden weak spot yourself. You don't need to. The fix comes to you
+            as an update &mdash; you just have to let it in.
+          </p>
+        </div>
+      </div>
+
+      <div class="row gx-lg-4 gy-3 fade-up">
+        <div class="col-md-6">
+          <div class="panel panel--clicked">
+            <h3>Easy habits</h3>
+            <ul class="ticks">
+              <li>Turn on automatic updates on your phone, computer and apps.</li>
+              <li>When an app or browser asks to restart, say yes soon. That's when the fix goes in.</li>
+              <li>Update apps you rarely use too, like file openers and old games.</li>
+              <li>Phone update waiting? Install it within a few days, with the phone charging.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel--never">
+            <h3>Stop and ask first</h3>
+            <ul class="ticks ticks--no">
+              <li>Opening a file, ZIP or document you weren't expecting.</li>
+              <li>A document that tells you to "Enable editing" or "Enable content".</li>
+              <li>An "update" offered inside a message or pop-up. Update from the app store or settings instead.</li>
+              <li>Apps from outside the official app store.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <p class="rule fade-up">
+        <span class="rule-badge">Remember</span>
+        Updates <span aria-hidden="true">+</span> Stop, Check, Ask
+        <span aria-hidden="true">=</span> <strong>most traps blocked</strong>.
+      </p>
+    </section>
+
+    <!-- 05 Quick check ---------------------------------------------------------------->
+    <section class="lesson container-xl" id="quiz" aria-labelledby="quiz-title">
+      <h2 class="section-title" id="quiz-title"><span class="section-index">05</span> Quick check</h2>
+      <p class="lesson-lead fade-up">Four quick questions. Pick an answer to see if you're right.</p>
+      <ol class="vq fade-up" id="quiz-list"></ol>
+      <p class="vq-score" id="quiz-score" aria-live="polite"></p>
+    </section>
+
+    <!-- Next step ------------------------------------------------------------------------->
+    <section class="next container-xl fade-up" aria-labelledby="next-title">
+      <div class="next-card">
+        <div>
+          <h2 id="next-title">Back to spotting the bait</h2>
+          <p>Most scams still trick people, not apps. Practise the signs, or check a message.</p>
+        </div>
+        <div class="next-actions">
+          <a class="btn-glow" href="Learn.html">The main guide</a>
+          <a class="btn-soft" href="Game.html">Play the game</a>
+          <a class="btn-ghost" href="Checker.html">Use the checker</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer container-xl">
+    <p id="sources-note">
+      A guide made for a Final Year Project research prototype. The six cases are real; the
+      facts come from CISA's Known Exploited Vulnerabilities catalogue and the reports linked on each case.
+    </p>
+  </footer>
+
+  <!-- lottie-web 5.12.2 (light SVG player), the same pinned copy the other pages use. -->
+  <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie_light.min.js"
+          integrity="sha384-Vtbz3QbtSBqleuQry6kQy5smig1gPZCXUoTFN7RmN9QW47xpEDsV/J1w0Pw0rDJu"
+          crossorigin="anonymous"></script>
+  <script src="js/vulnerabilities.js"></script>
+</body>
+</html>
