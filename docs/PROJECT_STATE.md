@@ -2,7 +2,7 @@
 
 > Purpose: single source of truth for "Where are we now?".
 > Update this file at the end of every working session or whenever a stage, dataset, model, experiment, or result changes.
-> Last updated: 2026-10-12
+> Last updated: 2026-10-23
 
 ## Current Stage
 
@@ -32,6 +32,30 @@ baselines' favour. This is recorded as the result rather than explained away; se
 Current Results for the full reading.
 
 ## Completed
+
+* **Optional accounts with My records (PHP + MySQL, Laragon)** (2026-10-23). Working copy for
+  this is `C:\laragon\www\Final-Year-Project`. New `database/schema.sql` (database
+  `isthisascam`: `users`, `scan_results`, `game_attempts`) and a PHP API in a new `api/`
+  folder beside `web/`, so Netlify never publishes it: `signup.php`, `login.php`,
+  `logout.php`, `me.php`, `scans.php`, `game-attempts.php`, shared `_bootstrap.php`,
+  settings in `config.php` (Laragon defaults: root, no password). Sign-up asks for email,
+  first name, last name and password only. New pages `web/Login.html` (log in / sign up) and
+  `web/Account.html` (My records), with `css/account.css`, `js/login.js`, `js/account.js`
+  and the shared `js/auth.js`, which every page now loads after `js/config.js` (new setting
+  `accountApiUrl: "../api"`). `checker.js` saves each answer (for an email only the subject
+  and first 200 characters) and `game.js` each finished game, only when logged in. **A game
+  counts as passed at 8/10 right** (`game_pass_mark`), decided on the server, which also
+  refuses results that don't add up. Passwords are `password_hash()` hashes; all queries are
+  prepared statements; the session cookie is HttpOnly + SameSite=Lax; POSTs must be JSON
+  (CSRF). Details: `api/README.md`. **Verified:** every endpoint exercised against MariaDB
+  10.11 with PHP 8.3 (validation, duplicate email, wrong password, logout, saving and
+  listing, rejected inconsistent game results, non-JSON refused), and 40/40 browser checks
+  in Chromium (sign-up to My records, link and email checks saved, a failed and a passed
+  game saved, logout and login with `?next=`, a foreign `next` ignored, pasted markup shown
+  as text, no sideways scroll and header clear of the Theme button at 320/375/414 px, Light
+  theme, and with no PHP the site behaves as before with no Log in link). The model server
+  was simulated in those checks. **Not yet checked:** on Laragon's own MySQL 8 and Apache.
+  **Limitation:** accounts work only when the site is served by Laragon, not on Netlify.
 
 * **"Hidden weak spots" page added under Learn** (2026-10-22). New `web/Vulnerabilities.html`
   (linked from the end of Learn.html part 07) explains software weak spots (CVEs) for young
@@ -1241,6 +1265,7 @@ into a second validation set and destroy the honesty of every number in this fil
 
 | Date | Change |
 | --- | --- |
+| 2026-10-23 | **Optional accounts added (PHP + MySQL on Laragon).** `database/schema.sql`, new `api/` folder (signup, login, logout, me, scans, game-attempts), new `web/Login.html` and `web/Account.html` (My records) with `css/account.css`, `js/auth.js`, `js/login.js`, `js/account.js`; every page loads `js/auth.js`; `checker.js` and `game.js` save results when logged in; `config.js` gains `accountApiUrl`. Pass mark 8/10. See Completed. |
 | 2026-10-20 | **"Scam or Safe?" mini-game `web/Game.html` added**, with `css/game.css`, `js/game.js`, `js/game-scenarios.js` (18 made-up messages: 11 scams, 7 real, across text, email, chat, phone call and web/QR) and four Lottie animations built by the new `scripts/make_game_lotties.py` (which reuses the helpers in `make_learn_lotties.py`). Each game is 10 rounds (6 scams + 4 real, random). A round shows the situation and the message; the player picks Scam or Safe (optional hint, costs 50 of the 100 points); the card flips to show the verdict, the message with numbered clue marks, the clue explanations, a takeaway and a link to the matching Learn part. Results: score, rank, scams caught, real messages trusted, best streak, best score (localStorage `isthisascam-game-best`), and a review of every answer. All text is put on screen with `textContent`. **Learn.html part 06 "Real or fake? Side by side" added** (three real/fake pairs: delivery text, bank sign-in alert, friend message; "What real messages usually do"; a link to the game) with animation `learn-compare.json`; "What to do" is now part 07. **Game added to every page's header**, plus a pointer on the homepage; `nav.css` tightened for 320 px phones. Verified in headless Chromium: full 10-round games in Default, Dark and Light themes on desktop and phone and with reduced motion (every round flips, clues marked, scoring, hint penalty, streak, best score remembered, focus moves to the verdict and results, no console errors, no horizontal scroll); the 18 scenarios checked so every clue mark has an explanation and vice versa; the four-link header checked at 320 to 1024 px wide with no overlap of the Theme button. |
 | 2026-10-19 | **Shared site header on every page.** New `web/css/nav.css`; `Homepage.html`, `Learn.html` and `Checker.html` all start with the same `<header class="site-nav">`: the name (shield icon) back to the homepage, and Home / Learn / Checker links with the current page highlighted (`aria-current="page"`). Replaces the one-off links ("Home / Checker" on Learn, "Home / Learn the signs" on the checker) and their CSS; the homepage hero no longer needs extra top room on phones for the Theme button. The header keeps the top-right corner free for the Theme button. Verified on Learn.html in headless Chromium at 1280, 800, 390 and 340 px wide: no overlap with the Theme button, one row of links, no horizontal scroll. |
 | 2026-10-19 | **Education page `web/Learn.html` added** (youth audience), with `css/learn.css`, `js/learn.js` and seven Lottie animations `web/animations/learn-*.json` built by the new `scripts/make_learn_lotties.py`. Six parts: what phishing is (bait, hook, catch; smishing, vishing, quishing), why it works (hurry, fear, reward, curiosity, trust), red flags at first sight (5-second check plus a practice email with six hidden red flags), reading a link (anatomy of a web address, a four-link "who owns this?" quiz, common tricks), common baits young people see, and what to do (Stop, Check, Ask; never share; already clicked, including NSRC 997). All examples use made-up names (GameVault, MyBank). Animations load only near the screen and play only while visible; with reduced motion they show one still frame. Linked from the homepage (under "How it works") and the checker header. Verified in headless Chromium: desktop and phone, Default and Light themes, no horizontal scroll, all seven animations load, red-flag practice and link quiz work, chapter bar tracks the current part, reduced motion shows everything. |

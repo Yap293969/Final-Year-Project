@@ -1,0 +1,8 @@
+# Is this a scam? -- the accounts API (Apache, as used by Laragon).
+# The settings file and the shared start-up file are only for the other PHP files
+# to include; nobody should open them in a browser.
+<FilesMatch "^(config|_bootstrap)\.php$">
+  Require all denied
+</FilesMatch>
+
+Options -Indexes

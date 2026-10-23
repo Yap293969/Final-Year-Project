@@ -746,6 +746,17 @@ code {
 }
 .end-title:focus { outline: none; }
 .end-line { max-width: 34rem; margin: 0 auto 1.5rem; color: var(--ink-soft); }
+.saved-line {
+  max-width: 34rem;
+  margin: -0.75rem auto 1.5rem;
+  padding: 0.6rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: var(--panel);
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+.saved-line.is-pass { border-color: var(--safe-line); background: var(--safe-soft); color: var(--ink); }
 
 .end-stats {
   display: grid;

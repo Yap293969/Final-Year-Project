@@ -458,3 +458,10 @@ body {
     transition: none;
   }
 }
+
+/* "Saved to My records" under a verdict, when logged in (js/auth.js). */
+.saved-note {
+  margin: 0.6rem 0 0;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}

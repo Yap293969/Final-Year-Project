@@ -120,3 +120,26 @@
   .site-nav-inner { padding-right: 6.5rem; }
   .site-links a { padding: 0.4rem 0.42rem; font-size: 0.8rem; }
 }
+
+/* --- The account link (added by js/auth.js) -------------------------------------
+ * Only appears when the accounts API answers (Laragon with PHP + MySQL). It reads
+ * "Log in", or the person's first name when they are logged in. On phones it
+ * shrinks to its icon, so the four page links still fit beside the Theme button. */
+.site-account-label {
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.site-links a.site-account {
+  border-color: var(--line-strong);
+}
+@media (max-width: 575.98px) {
+  .site-links a.site-account { padding: 0.45rem; }
+  .site-links a.site-account svg { display: block; width: 17px; height: 17px; }
+  .site-account-label { display: none; }
+}
+@media (max-width: 359.98px) {
+  .site-links a { padding: 0.4rem 0.34rem; }
+  .site-links a.site-account { padding: 0.3rem; }
+  .site-links a.site-account svg { width: 16px; height: 16px; }
+}

@@ -411,6 +411,31 @@
     container.appendChild(card);
   }
 
+  // --- Saving to My records (only when logged in) -------------------------------------
+  // js/auth.js does the saving; it does nothing when nobody is logged in or when
+  // the accounts server isn't there (Netlify), so checking works exactly as before.
+
+  function strongestReason(explanation) {
+    var reasons = ((explanation && explanation.reasons) || [])
+      .filter(function (reason) { return reason.value !== 0; })
+      .sort(function (a, b) { return Math.abs(b.value) - Math.abs(a.value); });
+    if (!reasons.length) { return ""; }
+    return reasons[0].label + (reasons[0].detail ? ": " + reasons[0].detail : "");
+  }
+
+  function saveToRecords(container, record) {
+    if (!window.Account) { return; }
+    window.Account.saveScan(record).then(function (saved) {
+      if (!saved || !container.firstChild) { return; }
+      var note = el("p", "saved-note");
+      note.appendChild(document.createTextNode("Saved to "));
+      var link = el("a", null, "My records");
+      link.href = "Account.html";
+      note.appendChild(link);
+      container.appendChild(note);
+    });
+  }
+
   // --- The email tab -------------------------------------------------------------
 
   var emailForm = byId("email-form");
@@ -438,6 +463,11 @@
       .then(function (result) {
         renderVerdict(emailResult, result, []);
         emailExplainBlock.hidden = false;
+        saveToRecords(emailResult, {
+          scan_type: "email", subject: payload.subject, body: payload.body,
+          verdict: result.verdict, confidence: result.confidence,
+          phishing_probability: result.phishing_probability
+        });
       })
       .catch(function (error) { renderError(emailResult, error.message); })
       .finally(done);
@@ -479,6 +509,12 @@
         renderVerdict(urlResult, result, result.warning_signs || []);
         renderLinkExplanation(urlExplanation, result.explanation);
         renderTechniques(urlExplanation, result.attack_techniques, "link");
+        saveToRecords(urlResult, {
+          scan_type: "url", url: payload.url.trim(),
+          verdict: result.verdict, confidence: result.confidence,
+          phishing_probability: result.phishing_probability,
+          top_reason: strongestReason(result.explanation)
+        });
       })
       .catch(function (error) { renderError(urlResult, error.message); })
       .finally(done);

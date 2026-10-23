@@ -15,6 +15,8 @@ web/
 ├── Learn.html          the guide for young people: what phishing is and how to spot it
 ├── Vulnerabilities.html  under Learn: software weak spots (CVEs), six real cases, why updates matter
 ├── Game.html           the "Scam or Safe?" mini-game
+├── Login.html          log in / sign up (optional accounts, needs Laragon: see api/README.md)
+├── Account.html        "My records": the logged-in person's saved checks and games
 ├── css/
 │   ├── theme.css       shared: the three colour themes
 │   ├── nav.css         shared: the site header (Home, Learn, Checker)
@@ -22,10 +24,14 @@ web/
 │   ├── learn.css       Learn.html (and Vulnerabilities.html, which builds on it)
 │   ├── vulnerabilities.css  Vulnerabilities.html only, on top of learn.css
 │   ├── game.css        Game.html only
+│   ├── account.css     Login.html and Account.html
 │   └── checker.css     Checker.html only
 ├── js/
 │   ├── theme.js        shared: theme setting and the Theme button
-│   ├── config.js       shared: where the model server is
+│   ├── config.js       shared: where the model server and the accounts API are
+│   ├── auth.js         shared: who is logged in, the header's account link, saving records
+│   ├── login.js        Login.html only
+│   ├── account.js      Account.html only
 │   ├── homepage.js     Homepage.html only
 │   ├── learn.js        Learn.html (and Vulnerabilities.html: animations, fade-ins, chapter bar)
 │   ├── vulnerabilities.js  Vulnerabilities.html only: builds the page from data/vulnerabilities.json
@@ -62,7 +68,11 @@ web/
 | `css/homepage.css` | the homepage's layout and motion, on top of Bootstrap (`delay-0` ... `delay-5` set the order things appear in) |
 | `css/checker.css` | the checker's layout, on top of Bootstrap |
 | `js/theme.js` | applies the saved theme before the page is drawn, and adds the Theme button (top-right) |
-| `js/config.js` | **where the model server is** (`apiBaseUrl`) — the only setting |
+| `js/config.js` | **where the model server is** (`apiBaseUrl`), and where the accounts API is (`accountApiUrl`, `"../api"`) |
+| `js/auth.js` | loaded on every page after `config.js`. Asks `api/me.php` who is logged in and adds one link to the end of the header: "Log in", or the person's first name (to My records). If the API can't be reached (Netlify has no PHP) nothing is added. Gives `window.Account` to the other scripts: `checker.js` saves each answer and `game.js` each finished game, only when logged in |
+| `Login.html`, `js/login.js` | one card with two forms: Log in (email, password) and Sign up (first name, last name, email, password). `Login.html#signup` opens sign-up; `?next=Game.html` returns there afterwards (only this site's own pages are accepted) |
+| `Account.html`, `js/account.js` | My records: totals, every Scam or Safe? attempt (passed or not, with the pass mark of 8/10 and which try was the first pass), and every saved check. Logged-out visitors are sent to Login.html |
+| `css/account.css` | the two account pages' styles, the same look as the other pages |
 | `js/homepage.js` | the homepage's motion: count-up figures, typed examples, the Lottie shield |
 | `js/checker.js` | sends what the user pasted to the model server, shows the answer, and opens the tab named by `#url` or `#email` |
 | `animations/shield-scan.json` | the Lottie (JSON) shield animation, made by `scripts/make_shield_lottie.py` |
@@ -104,6 +114,15 @@ applies to both pages. Every colour is a variable in `css/theme.css`, so a theme
 list of values that the pages' own stylesheets use. Red still means "towards
 phishing" and green "towards legitimate" in every theme. If the browser blocks storage, the
 theme still switches but is not remembered.
+
+## Accounts (optional)
+
+Visitors can sign up to keep **My records**. Accounts are PHP + MySQL in the `api/` folder
+next to `web/` (so Netlify never publishes it); set-up steps, tables and requests are in
+`api/README.md`. They only work when the project is opened through Laragon; everywhere else
+the site behaves as before and the header shows no "Log in" link. While logged in, the
+Checker shows "Saved to My records" under each answer and the game's results screen says
+whether the round counted as a pass.
 
 ## Status
 

@@ -519,6 +519,58 @@
 
     show("screen-end");
     $("end-title").focus({ preventScroll: true });
+
+    saveToRecords({
+      score: game.score,
+      correct_count: right,
+      total_rounds: total,
+      scams_caught: count(scamRounds),
+      scams_total: scamRounds.length,
+      safe_trusted: count(safeRounds),
+      safe_total: safeRounds.length,
+      best_streak: game.bestStreak,
+      hints_used: game.results.filter(function (r) { return r.hinted; }).length
+    });
+  }
+
+  // --- Saving to My records (js/auth.js; only when logged in) ----------------------------
+  // Logged in: the game is saved, and the line says whether it counted as a pass.
+  // Logged out (but accounts are available): a nudge to log in next time.
+  // No accounts server (Netlify): nothing is shown, as before.
+
+  function saveToRecords(record) {
+    var line = $("saved-line");
+    line.hidden = true;
+    line.textContent = "";
+    if (!window.Account) return;
+
+    window.Account.ready.then(function (user) {
+      if (user === undefined) return;
+      if (!user) {
+        line.appendChild(document.createTextNode("Want to keep track of your tries? "));
+        var login = el("a", null, "Log in or sign up");
+        login.href = "Login.html?next=Game.html";
+        line.appendChild(login);
+        line.appendChild(document.createTextNode(" and your next games are saved."));
+        line.hidden = false;
+        return;
+      }
+      window.Account.saveGame(record).then(function (saved) {
+        if (!saved) return;
+        var s = saved.stats;
+        line.appendChild(document.createTextNode(
+          (saved.passed ? "Passed! " : "Not a pass yet (" + s.pass_mark + " right needed). ") +
+          "Saved to "));
+        var link = el("a", null, "My records");
+        link.href = "Account.html";
+        line.appendChild(link);
+        line.appendChild(document.createTextNode(
+          ": passed " + s.passed + (s.passed === 1 ? " time" : " times") + " in " +
+          s.attempts + (s.attempts === 1 ? " game." : " games.")));
+        line.classList.toggle("is-pass", !!saved.passed);
+        line.hidden = false;
+      });
+    });
   }
 
   // --- Background points of light (as on the other pages) --------------------------------
