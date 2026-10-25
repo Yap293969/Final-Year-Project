@@ -11,6 +11,6 @@
 //   http://localhost/Final-Year-Project/web/Homepage.html -> .../Final-Year-Project/api/
 //   On Netlify there is no PHP, so the account features simply stay hidden.
 window.APP_CONFIG = {
-  apiBaseUrl: "https://importantly-holder-fed-andrea.trycloudflare.com",
+  apiBaseUrl: "https://cms-being-starring-our.trycloudflare.com",
   accountApiUrl: "../api"
 };
