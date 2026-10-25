@@ -224,9 +224,11 @@ app = FastAPI(title="Is this a scam? -- model server",
 # CORS lets the Netlify page (a different web address) call this server. The API has
 # no logins, cookies or secrets, so allowing any page to call it is safe. To lock it to
 # your site only, set ALLOWED_ORIGINS, e.g. "https://your-site.netlify.app".
+# The localhost / .test addresses are for testing the pages through Laragon.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.environ.get("ALLOWED_ORIGINS", "https://fascinating-gaufre-07e604.netlify.app,http://localhost:8000").split(","),
+    allow_origins=os.environ.get("ALLOWED_ORIGINS", "https://fascinating-gaufre-07e604.netlify.app,http://localhost:8000,"
+                                 "http://localhost,http://127.0.0.1,http://final-year-project.test").split(","),
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )
