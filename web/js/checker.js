@@ -40,6 +40,57 @@
     }
   };
 
+  // Risk Level Guide: reads the phishing score (the model's phishing probability).
+  // The verdict above it is still the model's own yes/no decision.
+  var RISK_LEVELS = [
+    { min: 80, range: "80% – 100%", level: "High Risk", status: "Phishing", key: "high" },
+    { min: 40, range: "40% – 79%", level: "Medium Risk", status: "Suspicious", key: "medium" },
+    { min: 0, range: "0% – 39%", level: "Low Risk", status: "Legitimate", key: "low" }
+  ];
+
+  function riskLevelFor(score) {
+    for (var i = 0; i < RISK_LEVELS.length; i++) {
+      if (score >= RISK_LEVELS[i].min) { return RISK_LEVELS[i]; }
+    }
+    return RISK_LEVELS[RISK_LEVELS.length - 1];
+  }
+
+  function renderRiskGuide(score) {
+    var current = riskLevelFor(score);
+    var guide = el("div", "risk-guide");
+
+    var line = el("p", "risk-score");
+    line.appendChild(document.createTextNode("Phishing score: "));
+    line.appendChild(el("strong", null, score.toFixed(1) + "%"));
+    line.appendChild(el("span", "risk-badge risk-" + current.key, current.level));
+    guide.appendChild(line);
+
+    guide.appendChild(el("h3", null, "Risk Level Guide"));
+    var table = el("table", "risk-table");
+    var head = el("thead");
+    var headRow = el("tr");
+    ["Phishing score", "Risk level", "Status"].forEach(function (text) {
+      var th = el("th", null, text);
+      th.setAttribute("scope", "col");
+      headRow.appendChild(th);
+    });
+    head.appendChild(headRow);
+    table.appendChild(head);
+
+    var body = el("tbody");
+    RISK_LEVELS.slice().reverse().forEach(function (band) {
+      var row = el("tr", band === current ? "is-current" : null);
+      if (band === current) { row.setAttribute("aria-current", "true"); }
+      row.appendChild(el("td", null, band.range));
+      row.appendChild(el("td", "risk-" + band.key, band.level));
+      row.appendChild(el("td", "risk-" + band.key, band.status));
+      body.appendChild(row);
+    });
+    table.appendChild(body);
+    guide.appendChild(table);
+    return guide;
+  }
+
   var EXAMPLES = {
     "email-scam": {
       subject: "Your account has been suspended",
@@ -183,6 +234,11 @@
     progress.appendChild(bar);
     confidence.appendChild(progress);
     card.appendChild(confidence);
+
+    var score = Number(result.phishing_probability);
+    if (!isNaN(score)) {
+      card.appendChild(renderRiskGuide(score));
+    }
 
     if (warningSigns && warningSigns.length) {
       var signs = el("div", "warning-signs");
