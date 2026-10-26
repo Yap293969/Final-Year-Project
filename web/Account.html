@@ -52,10 +52,22 @@
 
     <div id="records" hidden>
       <header class="account-intro account-intro--row">
-        <div>
-          <span class="eyebrow"><span class="eyebrow-dot"></span>My records</span>
-          <h1 class="account-title" id="hello" tabindex="-1"></h1>
-          <p class="account-lead account-lead--small" id="who"></p>
+        <div class="profile">
+          <!-- Profile picture (optional). The default picture shows until one is uploaded. -->
+          <div class="profile-photo">
+            <img id="avatar-img" src="img/default-avatar.jpg" alt="Your profile picture" width="112" height="112">
+          </div>
+          <div class="profile-text">
+            <span class="eyebrow"><span class="eyebrow-dot"></span>My records</span>
+            <h1 class="account-title" id="hello" tabindex="-1"></h1>
+            <p class="account-lead account-lead--small" id="who"></p>
+            <div class="profile-actions">
+              <button type="button" class="btn-soft btn-small" id="avatar-change">Upload picture</button>
+              <button type="button" class="btn-ghost btn-small" id="avatar-remove" hidden>Remove picture</button>
+              <input type="file" id="avatar-input" accept="image/jpeg,image/png,image/webp" hidden>
+            </div>
+            <p class="profile-hint" id="avatar-status" role="status">JPG, PNG or WebP, up to 2 MB. Optional.</p>
+          </div>
         </div>
         <button type="button" class="btn-ghost" id="logout-button">Log out</button>
       </header>

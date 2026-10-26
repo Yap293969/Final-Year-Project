@@ -142,19 +142,38 @@ function log_in(int $userId): void
 
 function public_user(array $row): array
 {
+    $updated = $row['avatar_updated_at'] ?? null;
     return [
         'id'         => (int) $row['id'],
         'email'      => $row['email'],
         'first_name' => $row['first_name'],
         'last_name'  => $row['last_name'],
         'created_at' => $row['created_at'],
+        // null = no picture uploaded, so the page shows the default one.
+        // Otherwise a number that changes whenever the picture does; the page adds
+        // it to the picture's address so the browser never shows an old picture.
+        'avatar_version' => $updated ? (int) strtotime($updated) : null,
     ];
 }
 
 function find_user(int $id): ?array
 {
-    $stmt = db()->prepare('SELECT id, email, first_name, last_name, created_at FROM users WHERE id = ?');
-    $stmt->execute([$id]);
+    try {
+        $stmt = db()->prepare('SELECT id, email, first_name, last_name, created_at,
+                                      CASE WHEN avatar_image IS NULL THEN NULL ELSE avatar_updated_at END
+                                        AS avatar_updated_at
+                               FROM users WHERE id = ?');
+        $stmt->execute([$id]);
+    } catch (PDOException $e) {
+        // 42S22 = unknown column: database/add_profile_picture.sql hasn't been run yet.
+        // Logging in still works; everyone just gets the default picture.
+        if ($e->getCode() !== '42S22') {
+            throw $e;
+        }
+        error_log('isthisascam: profile pictures are off until database/add_profile_picture.sql is run');
+        $stmt = db()->prepare('SELECT id, email, first_name, last_name, created_at FROM users WHERE id = ?');
+        $stmt->execute([$id]);
+    }
     $row = $stmt->fetch();
     return $row ?: null;
 }

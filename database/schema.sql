@@ -7,7 +7,8 @@
 --
 -- Running it again is safe: nothing that already exists is dropped or changed.
 --
--- users         one row per account (email, first name, last name, password hash)
+-- users         one row per account (email, first name, last name, password hash,
+--               and an optional profile picture)
 -- scan_results  one row per check made on Checker.html while logged in
 -- game_attempts one row per finished round of "Scam or Safe?" (Game.html) while logged in
 --
@@ -28,6 +29,11 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash VARCHAR(255) NOT NULL,          -- password_hash(), never the password itself
   created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
   last_login_at DATETIME     NULL,
+  -- Profile picture (optional). NULL means the site shows the default picture,
+  -- web/img/default-avatar.jpg. Existing databases: run add_profile_picture.sql once.
+  avatar_image      MEDIUMBLOB  NULL,             -- the picture itself, kept in the database
+  avatar_type       VARCHAR(20) NULL,             -- image/jpeg, image/png or image/webp
+  avatar_updated_at DATETIME    NULL,             -- when it last changed
   PRIMARY KEY (id),
   UNIQUE KEY uq_users_email (email)
 ) ENGINE = InnoDB;

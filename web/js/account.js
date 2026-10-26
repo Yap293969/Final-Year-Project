@@ -3,6 +3,7 @@
 // Shows the logged-in person's saved records from the accounts API:
 //   api/game-attempts.php  every finished round of Scam or Safe?, and how many passed
 //   api/scans.php          every link and email checked in the Checker
+//   api/avatar.php         the optional profile picture (upload, change, remove)
 // Nobody logged in: goes to Login.html, and comes back here afterwards.
 //
 // SAFETY: everything from the database is put on screen with textContent, never
@@ -130,6 +131,80 @@
     });
   }
 
+  // --- Profile picture -------------------------------------------------------------------
+  // Optional. Without one, the default picture (img/default-avatar.jpg) is shown.
+
+  var AVATAR_MAX_BYTES = 2 * 1024 * 1024;
+  var AVATAR_TYPES = ["image/jpeg", "image/png", "image/webp"];
+  var AVATAR_HINT = "JPG, PNG or WebP, up to 2 MB. Optional.";
+
+  function avatarStatus(message, isError) {
+    var status = $("avatar-status");
+    status.textContent = message;
+    status.classList.toggle("is-error", !!isError);
+  }
+
+  function showAvatar(user) {
+    $("avatar-img").src = Account.avatarUrl(user);
+    var has = !!(user && user.avatar_version);
+    $("avatar-remove").hidden = !has;
+    $("avatar-change").textContent = has ? "Change picture" : "Upload picture";
+  }
+
+  function setAvatarBusy(busy) {
+    $("avatar-change").disabled = busy;
+    $("avatar-remove").disabled = busy;
+  }
+
+  // A picture that can't be loaded falls back to the default, never a broken icon.
+  $("avatar-img").addEventListener("error", function () {
+    if ($("avatar-img").getAttribute("src") !== "img/default-avatar.jpg") {
+      $("avatar-img").src = "img/default-avatar.jpg";
+    }
+  });
+
+  $("avatar-change").addEventListener("click", function () { $("avatar-input").click(); });
+
+  $("avatar-input").addEventListener("change", function () {
+    var input = $("avatar-input");
+    var file = input.files && input.files[0];
+    input.value = ""; // so choosing the same file again still triggers "change"
+    if (!file) return;
+
+    // Quick checks here; the server checks everything again properly.
+    if (AVATAR_TYPES.indexOf(file.type) === -1) {
+      avatarStatus("Please choose a JPG, PNG or WebP picture.", true);
+      return;
+    }
+    if (file.size > AVATAR_MAX_BYTES) {
+      avatarStatus("That picture is too large. Please choose one under 2 MB.", true);
+      return;
+    }
+
+    setAvatarBusy(true);
+    avatarStatus("Uploading…");
+    Account.uploadAvatar(file)
+      .then(function (user) {
+        showAvatar(user);
+        avatarStatus("Profile picture saved.");
+      })
+      .catch(function (error) { avatarStatus(error.message, true); })
+      .then(function () { setAvatarBusy(false); });
+  });
+
+  $("avatar-remove").addEventListener("click", function () {
+    if (!window.confirm("Remove your profile picture? The default picture will be shown instead.")) return;
+    setAvatarBusy(true);
+    avatarStatus("Removing…");
+    Account.removeAvatar()
+      .then(function (user) {
+        showAvatar(user);
+        avatarStatus("Profile picture removed. " + AVATAR_HINT);
+      })
+      .catch(function (error) { avatarStatus(error.message, true); })
+      .then(function () { setAvatarBusy(false); });
+  });
+
   // --- Start -----------------------------------------------------------------------------
 
   Account.ready.then(function (user) {
@@ -145,6 +220,7 @@
 
     $("hello").textContent = "Hi, " + user.first_name + " " + user.last_name;
     $("who").textContent = user.email + " · member since " + day(user.created_at);
+    showAvatar(user);
 
     Promise.all([Account.request("game-attempts.php"), Account.request("scans.php")])
       .then(function (results) {

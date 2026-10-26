@@ -21,9 +21,11 @@ api/
 ├── me.php              GET   who is logged in (or null)
 ├── scans.php           GET   my checks   · POST save one check
 ├── game-attempts.php   GET   my games    · POST save one game
+├── avatar.php          GET   my profile picture · POST upload one · DELETE remove it
 └── .htaccess           blocks opening config.php and _bootstrap.php in a browser
 database/
-└── schema.sql          creates the isthisascam database and its three tables
+├── schema.sql          creates the isthisascam database and its three tables
+└── add_profile_picture.sql   adds profile pictures to a database made before 26 Oct 2026
 ```
 
 ## Setting it up in Laragon (once)
@@ -38,6 +40,24 @@ database/
    A **Log in** link appears at the right end of the header.
 
 If MySQL has a password, or a different user or port, change `api/config.php`.
+
+**Profile pictures (added 26 Oct 2026).** A database created before then needs one
+update: run `database/add_profile_picture.sql` the same way as step 2. Until it is run,
+logging in still works and everyone sees the default picture (`web/img/default-avatar.jpg`).
+
+## Profile pictures
+
+Optional. On **My records** a logged-in person can upload, change or remove their
+picture; without one the default picture is shown, on that page and in the header.
+
+- JPG, PNG or WebP, up to 2 MB. The file's real contents are checked, not its name.
+- With PHP's GD extension (on in Laragon) the picture is redrawn as a 256 × 256 JPG,
+  cropped from the middle. That also removes hidden data such as a photo's GPS location.
+- It is stored in the `users` table (`avatar_image`), not as a file in the website
+  folder, so an upload can never be opened or run as a page.
+- Only the logged-in person can see or change their own picture. Uploads and removals
+  must carry an `X-Requested-With: fetch` header, which other websites can't send
+  without the server's permission (CSRF protection).
 
 The page finds this API at `accountApiUrl` in `web/js/config.js` (`"../api"`: one folder
 up from `web/`).

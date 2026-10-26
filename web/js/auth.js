@@ -17,6 +17,10 @@
 //      Account.saveScan(record)         used by js/checker.js
 //      Account.saveGame(record)         used by js/game.js
 //      Account.logout()
+//      Account.avatarUrl(user)          the person's profile picture, or the default
+//                                       one (img/default-avatar.jpg) when they have none
+//      Account.uploadAvatar(file)       used by js/account.js
+//      Account.removeAvatar()           used by js/account.js
 //    saveScan and saveGame do nothing (and never throw) when nobody is logged in.
 //
 // SAFETY: names are put on screen with textContent, never as HTML.
@@ -70,6 +74,69 @@
       .finally(function () { clearTimeout(timer); });
   }
 
+  // Uploads (FormData) and DELETE. The X-Requested-With header is checked by
+  // api/avatar.php: another website can't add it without asking the server first.
+  function send(method, path, formData) {
+    var controller = new AbortController();
+    var timer = setTimeout(function () { controller.abort(); }, 30000);
+    return fetch(BASE + "/" + path, {
+      method: method,
+      credentials: "same-origin",
+      signal: controller.signal,
+      headers: { "Accept": "application/json", "X-Requested-With": "fetch" },
+      body: formData || undefined
+    })
+      .then(function (response) {
+        var type = response.headers.get("Content-Type") || "";
+        if (type.indexOf("application/json") === -1) {
+          throw new AccountError("The accounts server isn't available here.", response.status);
+        }
+        return response.json().then(function (data) {
+          if (!response.ok || !data.ok) {
+            throw new AccountError(data.error || "Something went wrong. Please try again.",
+                                   response.status);
+          }
+          return data;
+        });
+      }, function (error) {
+        if (error && error.name === "AbortError") {
+          throw new AccountError("The upload took too long. Please try again.", 0);
+        }
+        throw new AccountError("Couldn't reach the accounts server. Is Laragon running?", 0);
+      })
+      .finally(function () { clearTimeout(timer); });
+  }
+
+  var DEFAULT_AVATAR = "img/default-avatar.jpg";
+
+  function avatarUrl(user) {
+    if (user && user.avatar_version) {
+      return BASE + "/avatar.php?v=" + encodeURIComponent(user.avatar_version);
+    }
+    return DEFAULT_AVATAR;
+  }
+
+  // An <img> for a profile picture. If the picture can't be loaded it falls back
+  // to the default one, so a broken-image icon is never shown.
+  function avatarImage(user, className, alt) {
+    var img = document.createElement("img");
+    img.className = className;
+    img.alt = alt || "";
+    img.decoding = "async";
+    img.addEventListener("error", function () {
+      if (img.getAttribute("src") !== DEFAULT_AVATAR) img.src = DEFAULT_AVATAR;
+    });
+    img.src = avatarUrl(user);
+    return img;
+  }
+
+  // After a new picture is saved (or removed), show it in the header too.
+  function refreshHeaderAvatar(user) {
+    current = user;
+    var img = document.querySelector(".site-account-avatar");
+    if (img) img.src = avatarUrl(user);
+  }
+
   var current; // undefined until known
 
   var ready = request("me.php")
@@ -105,7 +172,12 @@
     var item = document.createElement("li");
     var link = document.createElement("a");
     link.className = "site-account";
-    link.innerHTML = ICON_USER; // fixed markup written above, never user input
+    if (user) {
+      link.classList.add("has-avatar");
+      link.appendChild(avatarImage(user, "site-account-avatar", ""));
+    } else {
+      link.innerHTML = ICON_USER; // fixed markup written above, never user input
+    }
     var label = document.createElement("span");
     label.className = "site-account-label";
 
@@ -141,6 +213,22 @@
     user: function () { return current; },
     saveScan: function (record) { return saveIfLoggedIn("scans.php", record); },
     saveGame: function (record) { return saveIfLoggedIn("game-attempts.php", record); },
-    logout: function () { return request("logout.php", {}); }
+    logout: function () { return request("logout.php", {}); },
+    avatarUrl: avatarUrl,
+    avatarImage: avatarImage,
+    uploadAvatar: function (file) {
+      var form = new FormData();
+      form.append("avatar", file);
+      return send("POST", "avatar.php", form).then(function (data) {
+        refreshHeaderAvatar(data.user);
+        return data.user;
+      });
+    },
+    removeAvatar: function () {
+      return send("DELETE", "avatar.php").then(function (data) {
+        refreshHeaderAvatar(data.user);
+        return data.user;
+      });
+    }
   };
 })();
