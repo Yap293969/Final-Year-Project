@@ -4,6 +4,8 @@
 --   Laragon -> Database (opens HeidiSQL) -> File -> Run SQL file... -> pick this file
 -- or, from Laragon's Terminal:
 --   mysql -u root < database/schema.sql
+-- or simply double-click database/setup_database.bat (Laragon 6.0.0 / MySQL 8.0.30),
+-- which also checks the result.
 --
 -- Running it again is safe: nothing that already exists is dropped or changed.
 --
