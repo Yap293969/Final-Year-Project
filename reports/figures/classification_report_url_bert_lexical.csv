@@ -1,0 +1,6 @@
+,Precision,Recall,F1 Score,Support
+Legitimate,0.9616,0.9671,0.9643,10536
+Phishing,0.9669,0.9614,0.9641,10536
+Accuracy,,,0.9642,21072
+Macro Average,0.9642,0.9642,0.9642,21072
+Weighted Average,0.9642,0.9642,0.9642,21072
